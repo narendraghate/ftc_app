@@ -14,9 +14,9 @@ public class RobotConfiguration {
 
     private Gamepad _gamepad;
     private Telemetry _telemetry;
-    private JewelColor _jewelColor;
+    private AllianceColor _allianceColor;
 
-    public enum JewelColor
+    public enum AllianceColor
     {
         Blue,
         Red
@@ -26,25 +26,25 @@ public class RobotConfiguration {
     {
         _gamepad = gamepad;
         _telemetry = telemetry;
-        _jewelColor = JewelColor.Red;
+        _allianceColor = AllianceColor.Blue;
     }
 
-    public JewelColor getJewelColor() {
-        return _jewelColor;
+    public AllianceColor getAllianceColor() {
+        return _allianceColor;
     }
 
     public void ShowMenu() {
         do {
             if (_gamepad.x) {
-                _jewelColor = JewelColor.Red;
+                _allianceColor = AllianceColor.Blue;
             }
 
             if (_gamepad.b) {
-                _jewelColor = JewelColor.Blue;
+                _allianceColor = AllianceColor.Red;
             }
 
-            _telemetry.addData("Menu", "x = Red, b = Blue,");
-            _telemetry.addData("Selected", "JewelColor %s", _jewelColor);
+            _telemetry.addData("Menu", "x = Blue, b = Red,");
+            _telemetry.addData("Alliance color is", "%s", _allianceColor);
             _telemetry.update();
         } while (true);
     }
