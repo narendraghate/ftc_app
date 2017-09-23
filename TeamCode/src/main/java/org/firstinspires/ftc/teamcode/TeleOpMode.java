@@ -31,6 +31,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -51,14 +52,33 @@ import com.qualcomm.robotcore.util.Range;
  */
 
 @TeleOp(name="TeleOpMode Mode", group="Robot Opmode")
-public class TeleOpMode extends LinearOpMode {
+public class TeleOpMode extends OpMode {
+
+    private PieceOfCakeRobot robot = new PieceOfCakeRobot();
 
     // Declare OpMode members.
-    private ElapsedTime runtime = new ElapsedTime();
+    /*private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftDrive = null;
-    private DcMotor rightDrive = null;
+    private DcMotor rightDrive = null;*/
 
     @Override
+    public void init(){
+        robot.init(hardwareMap);
+    }
+
+    @Override
+    public void loop(){
+        if (gamepad2.left_bumper){
+            robot.ClawR.setPosition(robot.ClawR.getPosition()-1);
+            robot.ClawL.setPosition(robot.ClawL.getPosition()-1);
+        }
+
+        if (gamepad2.right_bumper){
+            robot.ClawR.setPosition(robot.ClawR.getPosition()+1);
+            robot.ClawR.setPosition(robot.ClawR.getPosition()+1);
+        }
+    }
+    /*@Override
     public void runOpMode() {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
@@ -109,5 +129,5 @@ public class TeleOpMode extends LinearOpMode {
             telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
             telemetry.update();
         }
-    }
+    }*/
 }
