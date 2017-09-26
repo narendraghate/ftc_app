@@ -9,8 +9,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 */
 //Defining motors
 public class PieceOfCakeRobot {
-    public Servo ClawL = null;
-    public Servo ClawR = null;
+    private Servo ClawL = null;
+    private Servo ClawR = null;
     public DcMotor FrontL = null;
     public DcMotor FrontR = null;
     public DcMotor BackL = null;
@@ -24,19 +24,34 @@ public class PieceOfCakeRobot {
     public PieceOfCakeRobot() {
 
     }
+
     //Hardware naming
     public void init(HardwareMap ahwMap) {
+        Servo servo = null;
         hwMap = ahwMap;
+
         //Motor naming
         /*FrontL = hwMap.dcMotor.get("front left");
         FrontR = hwMap.dcMotor.get("front right");
         BackL = hwMap.dcMotor.get("back left");
         BackR = hwMap.dcMotor.get("back right");
         Slide = hwMap.dcMotor.get("slide");*/
-        ClawL = hwMap.servo.get("claw left");
-        ClawR = hwMap.servo.get("claw right");
-
-
+        servo = hwMap.servo.get("claw left");
+        SetClawL(servo);
+        servo = hwMap.servo.get("claw right");
+        SetClawR(servo);
     }
 
+    public Servo GetClawL() {
+        return ClawL;
+    }
+
+    public Servo GetClawR() {
+        return ClawR;
+    }
+
+    private void SetClawR(Servo servo) { ClawR = servo; }
+    private void SetClawL(Servo servo) {
+        ClawL = servo;
+    }
 }

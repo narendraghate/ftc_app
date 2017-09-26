@@ -69,13 +69,13 @@ public class TeleOpMode extends OpMode {
     @Override
     public void loop(){
         if (gamepad2.left_bumper){
-            robot.ClawR.setPosition(robot.ClawR.getPosition()-1);
-            robot.ClawL.setPosition(robot.ClawL.getPosition()-1);
+            robot.GetClawR().setPosition(robot.GetClawR().getPosition()-1);
+            robot.GetClawL().setPosition(robot.GetClawL().getPosition()-1);
         }
 
         if (gamepad2.right_bumper){
-            robot.ClawR.setPosition(robot.ClawR.getPosition()+1);
-            robot.ClawR.setPosition(robot.ClawR.getPosition()+1);
+            robot.GetClawR().setPosition(robot.GetClawR().getPosition()+1);
+            robot.GetClawR().setPosition(robot.GetClawR().getPosition()+1);
         }
     }
     /*@Override
