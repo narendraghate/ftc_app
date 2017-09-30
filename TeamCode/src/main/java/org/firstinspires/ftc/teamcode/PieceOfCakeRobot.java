@@ -1,21 +1,24 @@
 package org.firstinspires.ftc.teamcode;
 //Imports
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.DcMotor;
+
+import java.util.Set;
 
 /**
 * Created by MeechMeechman on 9/23/17.
 */
 //Defining motors
 public class PieceOfCakeRobot {
-    private Servo ClawL = null;
-    private Servo ClawR = null;
-    public DcMotor FrontL = null;
-    public DcMotor FrontR = null;
-    public DcMotor BackL = null;
-    public DcMotor BackR = null;
-    public DcMotor Slide = null;
+    private CRServo ClawL = null;
+    private CRServo ClawR = null;
+    private DcMotor FrontL = null;
+    private DcMotor FrontR = null;
+    private DcMotor BackL = null;
+    private DcMotor BackR = null;
+    private DcMotor Slide = null;
 
 
     private HardwareMap hwMap = null;
@@ -27,7 +30,8 @@ public class PieceOfCakeRobot {
 
     //Hardware naming
     public void init(HardwareMap ahwMap) {
-        Servo servo = null;
+        CRServo crservo = null;
+        DcMotor dcMotor = null;
         hwMap = ahwMap;
 
         //Motor naming
@@ -36,22 +40,63 @@ public class PieceOfCakeRobot {
         BackL = hwMap.dcMotor.get("back left");
         BackR = hwMap.dcMotor.get("back right");
         Slide = hwMap.dcMotor.get("slide");*/
-        servo = hwMap.servo.get("claw left");
-        SetClawL(servo);
-        servo = hwMap.servo.get("claw right");
-        SetClawR(servo);
+        crservo = hwMap.crservo.get("claw left");
+        SetClawL(crservo);
+
+        crservo = hwMap.crservo.get("claw right");
+        SetClawR(crservo);
+
+        dcMotor = hwMap.dcMotor.get("front left");
+        SetFrontL(dcMotor);
+
+        dcMotor = hwMap.dcMotor.get("front right");
+        SetFrontR(dcMotor);
+
+       dcMotor = hwMap.dcMotor.get("back left");
+        SetBackL(dcMotor);
+
+        dcMotor = hwMap.dcMotor.get("back right");
+        SetBackR(dcMotor);
+
+        dcMotor = hwMap.dcMotor.get("slide");
+        SetSlide(dcMotor);
+
     }
 
-    public Servo GetClawL() {
+    public CRServo GetClawL() {
         return ClawL;
     }
 
-    public Servo GetClawR() {
+    public CRServo GetClawR() {
         return ClawR;
     }
 
-    private void SetClawR(Servo servo) { ClawR = servo; }
-    private void SetClawL(Servo servo) {
-        ClawL = servo;
+    public DcMotor GetFrontL()  {
+        return FrontL;
     }
+
+    public DcMotor GetFrontR()  {
+        return FrontR;
+    }
+
+    public DcMotor GetBackL()  {
+        return BackL;
+    }
+
+    public DcMotor GetBackR()  {
+        return BackR;
+    }
+
+    public DcMotor GetSlide()  {
+        return Slide;
+    }
+
+    private void SetClawR(CRServo crservo) { ClawR = crservo; }
+    private void SetClawL(CRServo crservo) { ClawL = crservo; }
+    private void SetFrontL(DcMotor dcMotor) { FrontL = dcMotor; }
+    private void SetFrontR(DcMotor dcMotor) { FrontR = dcMotor; }
+    private void SetBackL(DcMotor dcMotor) { BackL = dcMotor; }
+    private void SetBackR(DcMotor dcMotor) { BackR = dcMotor; }
+    private void SetSlide(DcMotor dcMotor) { Slide = dcMotor; }
+
 }
