@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 //Imports
 import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -19,7 +20,7 @@ public class PieceOfCakeRobot {
     private DcMotor BackL = null;
     private DcMotor BackR = null;
     private DcMotor Slide = null;
-
+    private ColorSensor colorsensor = null;
 
     private HardwareMap hwMap = null;
 
@@ -32,6 +33,8 @@ public class PieceOfCakeRobot {
     public void init(HardwareMap ahwMap) {
         CRServo crservo = null;
         DcMotor dcMotor = null;
+        ColorSensor colorSensor =null;
+
         hwMap = ahwMap;
 
         //Motor naming
@@ -61,6 +64,8 @@ public class PieceOfCakeRobot {
         dcMotor = hwMap.dcMotor.get("slide");
         SetSlide(dcMotor);
 
+        colorSensor = hwMap.colorSensor.get("colorsensor");
+        Setcolorsensor(colorSensor);
     }
 
     public CRServo GetClawL() {
@@ -91,6 +96,11 @@ public class PieceOfCakeRobot {
         return Slide;
     }
 
+    public ColorSensor getcolorsensor() {
+        return colorsensor;
+    }
+
+
     private void SetClawR(CRServo crservo) { ClawR = crservo; }
     private void SetClawL(CRServo crservo) { ClawL = crservo; }
     private void SetFrontL(DcMotor dcMotor) { FrontL = dcMotor; }
@@ -98,5 +108,8 @@ public class PieceOfCakeRobot {
     private void SetBackL(DcMotor dcMotor) { BackL = dcMotor; }
     private void SetBackR(DcMotor dcMotor) { BackR = dcMotor; }
     private void SetSlide(DcMotor dcMotor) { Slide = dcMotor; }
+    private void Setcolorsensor(ColorSensor colorSensor) { colorsensor = colorSensor; }
+    
+
 
 }

@@ -1,5 +1,8 @@
 package org.firstinspires.ftc.teamcode;
 
+import android.graphics.Color;
+
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -15,6 +18,7 @@ public class RobotConfiguration {
     private Gamepad _gamepad;
     private Telemetry _telemetry;
     private AllianceColor _allianceColor;
+
 
     public enum AllianceColor
     {
@@ -43,10 +47,17 @@ public class RobotConfiguration {
                 _allianceColor = AllianceColor.Red;
             }
 
+
             _telemetry.addData("Menu", "x = Blue, b = Red,");
             _telemetry.addData("Alliance color is", "%s", _allianceColor);
             _telemetry.update();
         } while (true);
+
+
+
+
+
+
     }
 
 
