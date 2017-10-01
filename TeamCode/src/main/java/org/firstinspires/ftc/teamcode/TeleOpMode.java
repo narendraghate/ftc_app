@@ -56,11 +56,6 @@ public class TeleOpMode extends OpMode {
 
     private PieceOfCakeRobot robot = new PieceOfCakeRobot();
 
-    // Declare OpMode members.
-    /*private ElapsedTime runtime = new ElapsedTime();
-    private DcMotor leftDrive = null;
-    private DcMotor rightDrive = null;*/
-
     @Override
     public void init(){
         robot.init(hardwareMap);
@@ -68,12 +63,43 @@ public class TeleOpMode extends OpMode {
 
     @Override
     public void loop(){
-        if (gamepad2.left_bumper){
+        double leftClawPower = 0.0;
+        double rightClawPower = 0.0;
+        double power = 0.0;
+
+        if (gamepad2.left_bumper) {
+            leftClawPower = -0.5;
+            rightClawPower = 0.5;
         }
 
-        if (gamepad2.right_bumper){
+        if (gamepad2.right_bumper) {
+            leftClawPower = 0.5;
+            rightClawPower = -0.5;
         }
+
+        power = robot.GetClawL().getPower();
+
+        telemetry.addData("left power", "%f", power);
+
+        robot.GetClawL().setPower(leftClawPower);
+        power = robot.GetClawL().getPower();
+
+        telemetry.addData("left updated power", "%f", power);
+
+        // uncomment the line below when you have the other servo hooked up
+        //power = robot.GetClawR().getPower();
+
+        telemetry.addData("right power", "%f", power);
+
+        // uncomment the two lines below when you have the other servo hooked up
+        //robot.GetClawR().setPower(rightClawPower);
+        //power = robot.GetClawR().getPower();
+
+        telemetry.addData("right updated power", "%f", power);
+
+        telemetry.update();
     }
+
     /*@Override
     public void runOpMode() {
         telemetry.addData("Status", "Initialized");

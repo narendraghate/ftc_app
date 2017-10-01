@@ -20,7 +20,7 @@ public class PieceOfCakeRobot {
     private DcMotor BackL = null;
     private DcMotor BackR = null;
     private DcMotor Slide = null;
-    private ColorSensor colorsensor = null;
+    private ColorSensor ColorSensor = null;
 
     private HardwareMap hwMap = null;
 
@@ -37,35 +37,33 @@ public class PieceOfCakeRobot {
 
         hwMap = ahwMap;
 
-        //Motor naming
-        /*FrontL = hwMap.dcMotor.get("front left");
-        FrontR = hwMap.dcMotor.get("front right");
-        BackL = hwMap.dcMotor.get("back left");
-        BackR = hwMap.dcMotor.get("back right");
-        Slide = hwMap.dcMotor.get("slide");*/
-        crservo = hwMap.crservo.get("claw left");
+        crservo = hwMap.crservo.get("clawleftservo");
         SetClawL(crservo);
 
-        crservo = hwMap.crservo.get("claw right");
+        // uncomment the two lines belowonce you have the
+        // other servo hooked into slot 1 and named clawrightservo
+        // then go uncomment the code in the teleopmode.java class
+        crservo = hwMap.crservo.get("clawrightservo");
         SetClawR(crservo);
-
-        dcMotor = hwMap.dcMotor.get("front left");
+/*
+        dcMotor = hwMap.dcMotor.get("frontleftmotor");
         SetFrontL(dcMotor);
 
-        dcMotor = hwMap.dcMotor.get("front right");
+        dcMotor = hwMap.dcMotor.get("frontrightmotor");
         SetFrontR(dcMotor);
 
-       dcMotor = hwMap.dcMotor.get("back left");
+        dcMotor = hwMap.dcMotor.get("backleftmotor");
         SetBackL(dcMotor);
 
-        dcMotor = hwMap.dcMotor.get("back right");
+        dcMotor = hwMap.dcMotor.get("backrightmotor");
         SetBackR(dcMotor);
 
-        dcMotor = hwMap.dcMotor.get("slide");
+        dcMotor = hwMap.dcMotor.get("slidemotor");
         SetSlide(dcMotor);
 
         colorSensor = hwMap.colorSensor.get("colorsensor");
         Setcolorsensor(colorSensor);
+*/
     }
 
     public CRServo GetClawL() {
@@ -96,8 +94,8 @@ public class PieceOfCakeRobot {
         return Slide;
     }
 
-    public ColorSensor getcolorsensor() {
-        return colorsensor;
+    public ColorSensor GetColorSensor() {
+        return ColorSensor;
     }
 
 
@@ -108,8 +106,5 @@ public class PieceOfCakeRobot {
     private void SetBackL(DcMotor dcMotor) { BackL = dcMotor; }
     private void SetBackR(DcMotor dcMotor) { BackR = dcMotor; }
     private void SetSlide(DcMotor dcMotor) { Slide = dcMotor; }
-    private void Setcolorsensor(ColorSensor colorSensor) { colorsensor = colorSensor; }
-    
-
-
+    private void SetColorSensor(ColorSensor colorSensor) { ColorSensor = colorSensor; }
 }
