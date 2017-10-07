@@ -68,6 +68,7 @@ public class TeleOpMode extends OpMode {
     public void loop(){
         ProcessClaw();
         LiftControl();
+        DriveControl();
     }
 
     private void ProcessClaw()
@@ -130,5 +131,22 @@ public class TeleOpMode extends OpMode {
         }
         
         robot.GetLift().setPower(LiftPower);
+    }
+
+    private void DriveControl(){
+        float xValue = gamepad1.left_stick_x;
+        float yValue = -gamepad1.left_stick_y;
+
+        //calculate the power needed for each motor
+        float leftPower = yValue + xValue;
+        float rightPower = yValue - xValue;
+
+        //clip the power values so that it only goes from -1 to 1
+        leftPower = Range.clip(leftPower, -1, 1);
+        rightPower = Range.clip(rightPower, -1, 1);
+
+        //set the power of the motors with the gamepad values
+        robot.GetLeft().setPower(leftPower);
+        robot.GetRight().setPower(rightPower);
     }
 }
