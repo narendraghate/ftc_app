@@ -45,10 +45,10 @@ public class PieceOfCakeRobot {
         // then go uncomment the code in the teleopmode.java class
         crservo = hwMap.crservo.get("clawrightservo");
         SetClawR(crservo);
-/*
+
         dcMotor = hwMap.dcMotor.get("frontleftmotor");
         SetFrontL(dcMotor);
-
+/*
         dcMotor = hwMap.dcMotor.get("frontrightmotor");
         SetFrontR(dcMotor);
 
@@ -64,6 +64,10 @@ public class PieceOfCakeRobot {
         colorSensor = hwMap.colorSensor.get("colorsensor");
         Setcolorsensor(colorSensor);
 */
+
+
+
+
     }
 
     public CRServo GetClawL() {

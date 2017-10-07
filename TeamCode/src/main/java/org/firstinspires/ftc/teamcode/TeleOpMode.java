@@ -87,19 +87,21 @@ public class TeleOpMode extends OpMode {
         telemetry.addData("left updated power", "%f", power);
 
         // uncomment the line below when you have the other servo hooked up
-        //power = robot.GetClawR().getPower();
+        power = robot.GetClawR().getPower();
 
         telemetry.addData("right power", "%f", power);
 
         // uncomment the two lines below when you have the other servo hooked up
-        //robot.GetClawR().setPower(rightClawPower);
-        //power = robot.GetClawR().getPower();
+        robot.GetClawR().setPower(rightClawPower);
+        power = robot.GetClawR().getPower();
 
         telemetry.addData("right updated power", "%f", power);
 
         // this should always be the last line so any telemetry that wes done in other
         // methods is displayed
         telemetry.update();
+        // get x position on robot.GetLeftFront().SetPower(gamepad 1 gamepad1.left_joystick.x);
+        gamepad1.left_stick_x
     }
 
     private void ProcessClaw()
