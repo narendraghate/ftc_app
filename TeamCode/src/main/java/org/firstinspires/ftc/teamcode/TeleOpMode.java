@@ -63,6 +63,11 @@ public class TeleOpMode extends OpMode {
 
     @Override
     public void loop(){
+    }
+
+    private void ProcessClaw()
+    {
+
         double leftClawPower = 0.0;
         double rightClawPower = 0.0;
         double power = 0.0;
@@ -101,13 +106,6 @@ public class TeleOpMode extends OpMode {
         // methods is displayed
         telemetry.update();
         // get x position on robot.GetLeftFront().SetPower(gamepad 1 gamepad1.left_joystick.x);
-        gamepad1.left_stick_x
-    }
-
-    private void ProcessClaw()
-    {
-        // eventually we want to move all the code related to the claw into here and call it from
-        // the main loop
     }
 
     private void ProcessMovement()
