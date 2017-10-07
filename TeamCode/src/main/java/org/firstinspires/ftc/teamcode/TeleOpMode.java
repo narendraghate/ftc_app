@@ -126,9 +126,9 @@ public class TeleOpMode extends OpMode {
         }
 
         if (gamepad2.dpad_right) {
-            LiftPower = 0.5;
+            LiftPower = -0.5;
         }
-        
+
         robot.GetLift().setPower(LiftPower);
     }
 }
