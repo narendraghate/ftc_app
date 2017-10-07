@@ -120,12 +120,15 @@ public class TeleOpMode extends OpMode {
     private void LiftControl()
     {
         double LiftPower = 0.0;
-        robot.GetLift().setPower(LiftPower);
+
         if (gamepad2.dpad_left) {
-            robot.GetLift().setPower(0.5);
+            LiftPower = 0.5;
         }
+
         if (gamepad2.dpad_right) {
-            robot.GetLift().setPower(-0.5);
+            LiftPower = 0.5;
         }
+        
+        robot.GetLift().setPower(LiftPower);
     }
 }
