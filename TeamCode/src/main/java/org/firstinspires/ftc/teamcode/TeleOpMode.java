@@ -29,6 +29,7 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.hardware.lynx.commands.core.LynxSetMotorConstantPowerCommand;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
@@ -36,6 +37,8 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
+
+import static android.R.attr.left;
 
 
 /**
@@ -64,11 +67,11 @@ public class TeleOpMode extends OpMode {
     @Override
     public void loop(){
         ProcessClaw();
+        LiftControl();
     }
 
     private void ProcessClaw()
     {
-
         double leftClawPower = 0.0;
         double rightClawPower = 0.0;
         double power = 0.0;
@@ -112,5 +115,17 @@ public class TeleOpMode extends OpMode {
     {
         // eventually we want to move all the code related to the movement of the robot into this
         // method and call it from the main loop
+    }
+
+    private void LiftControl()
+    {
+        double LiftPower = 0.0;
+
+        if (gamepad2.dpad_left) {
+            robot.GetLift().setPower(0.5);
+        }
+        if (gamepad2.dpad_right) {
+            robot.GetLift().setPower(-0.5);
+        }
     }
 }
