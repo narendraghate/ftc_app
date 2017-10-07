@@ -45,19 +45,19 @@ public class PieceOfCakeRobot {
         crservo = hwMap.crservo.get("clawrightservo");
         SetClawR(crservo);
 
-        dcMotor = hwMap.dcMotor.get("frontleftmotor");
+        dcMotor = hwMap.dcMotor.get("left");
         SetLeft(dcMotor);
 
-        dcMotor = hwMap.dcMotor.get("frontrightmotor");
+        dcMotor = hwMap.dcMotor.get("right");
         SetRight(dcMotor);
 
-        dcMotor = hwMap.dcMotor.get("backleftmotor");
+        dcMotor = hwMap.dcMotor.get("lift");
         SetLift(dcMotor);
 
         //dcMotor = hwMap.dcMotor.get("backrightmotor");
         //SetBackR(dcMotor);
 
-        dcMotor = hwMap.dcMotor.get("slidemotor");
+        dcMotor = hwMap.dcMotor.get("slide");
         SetSlide(dcMotor);
 
         //colorSensor = hwMap.colorSensor.get("colorsensor");

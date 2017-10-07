@@ -127,10 +127,26 @@ public class TeleOpMode extends OpMode {
         }
 
         if (gamepad2.dpad_right) {
-            LiftPower = 0.5;
+            LiftPower = -0.5;
         }
         
         robot.GetLift().setPower(LiftPower);
+    }
+
+
+    private void SlideControl()
+    {
+        double SlidePower = 0.0;
+
+        if (gamepad1.left_bumper) {
+            SlidePower = 0.5;
+        }
+        if (gamepad1.right_bumper) {
+            SlidePower = -0.5;
+        }
+
+        robot.GetSlide().setPower(SlidePower);
+
     }
 
     private void DriveControl(){
