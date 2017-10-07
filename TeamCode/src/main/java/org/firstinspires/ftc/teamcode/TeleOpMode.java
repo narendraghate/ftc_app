@@ -63,6 +63,7 @@ public class TeleOpMode extends OpMode {
 
     @Override
     public void loop(){
+        ProcessClaw();
     }
 
     private void ProcessClaw()
@@ -83,7 +84,6 @@ public class TeleOpMode extends OpMode {
         }
 
         power = robot.GetClawL().getPower();
-
         telemetry.addData("left power", "%f", power);
 
         robot.GetClawL().setPower(leftClawPower);
