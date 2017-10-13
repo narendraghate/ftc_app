@@ -62,6 +62,10 @@ public class TeleOpMode extends OpMode {
     @Override
     public void init(){
         robot.init(hardwareMap);
+        robot.GetTilt().setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.GetTilt().setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        robot.GetLift().setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.GetLift().setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
     @Override
@@ -69,6 +73,10 @@ public class TeleOpMode extends OpMode {
         ProcessClaw();
         LiftControl();
         DriveControl();
+        TiltControl();
+        // this should always be the last line so any telemetry that wes done in other
+        // methods is displayed
+        telemetry.update();
     }
 
     private void ProcessClaw()
@@ -105,11 +113,6 @@ public class TeleOpMode extends OpMode {
         power = robot.GetClawR().getPower();
 
         telemetry.addData("right updated power", "%f", power);
-
-        // this should always be the last line so any telemetry that wes done in other
-        // methods is displayed
-        telemetry.update();
-        // get x position on robot.GetLeftFront().SetPower(gamepad 1 gamepad1.left_joystick.x);
     }
 
     private void ProcessMovement()
@@ -131,6 +134,8 @@ public class TeleOpMode extends OpMode {
         }
 
         robot.GetLift().setPower(LiftPower);
+
+        telemetry.addData("Lift", "%d", robot.GetLift().getCurrentPosition());
     }
 
 
@@ -164,5 +169,22 @@ public class TeleOpMode extends OpMode {
         //set the power of the motors with the gamepad values
         robot.GetLeft().setPower(leftPower);
         robot.GetRight().setPower(rightPower);
+
+    }
+
+    private void TiltControl()
+    {
+        double TiltPower = 0.0;
+
+        if (gamepad1.left_bumper) {
+            TiltPower = 0.5;
+        }
+        if (gamepad2.right_bumper) {
+            TiltPower = -0.5;
+        }
+
+        robot.GetTilt().setPower(TiltPower);
+
+        telemetry.addData("Tilt", "%d", robot.GetTilt().getCurrentPosition());
     }
 }

@@ -19,6 +19,7 @@ public class PieceOfCakeRobot {
     private DcMotor Right = null;
     private DcMotor Lift = null;
     private DcMotor Slide = null;
+    private DcMotor Tilt = null;
     private ColorSensor ColorSensor = null;
 
     private HardwareMap hwMap = null;
@@ -54,8 +55,8 @@ public class PieceOfCakeRobot {
         dcMotor = hwMap.dcMotor.get("lift");
         SetLift(dcMotor);
 
-        //dcMotor = hwMap.dcMotor.get("backrightmotor");
-        //SetBackR(dcMotor);
+        dcMotor = hwMap.dcMotor.get("tilt");
+        SetTilt(dcMotor);
 
         dcMotor = hwMap.dcMotor.get("slide");
         SetSlide(dcMotor);
@@ -93,6 +94,8 @@ public class PieceOfCakeRobot {
         return Slide;
     }
 
+    public DcMotor GetTilt() {return Tilt;}
+
     public ColorSensor GetColorSensor() {
         return ColorSensor;
     }
@@ -104,5 +107,6 @@ public class PieceOfCakeRobot {
     private void SetRight(DcMotor dcMotor) { Right = dcMotor; }
     private void SetLift(DcMotor dcMotor) { Lift = dcMotor; }
     private void SetSlide(DcMotor dcMotor) { Slide = dcMotor; }
+    private void SetTilt(DcMotor dcMotor) {Tilt = dcMotor;}
     private void SetColorSensor(ColorSensor colorSensor) { ColorSensor = colorSensor; }
 }
