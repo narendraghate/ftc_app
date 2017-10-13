@@ -69,6 +69,7 @@ public class TeleOpMode extends OpMode {
         ProcessClaw();
         LiftControl();
         DriveControl();
+        PowerPercent();
     }
 
     private void ProcessClaw()
@@ -139,13 +140,34 @@ public class TeleOpMode extends OpMode {
         double SlidePower = 0.0;
 
         if (gamepad1.left_bumper) {
-            SlidePower = 0.5;
+            SlidePower = 0.5 * robot.GetPowerPercentage();
         }
         if (gamepad1.right_bumper) {
-            SlidePower = -0.5;
+            SlidePower = -0.5 * robot.GetPowerPercentage();
         }
 
         robot.GetSlide().setPower(SlidePower);
+
+    }
+
+    private void PowerPercent()
+    {
+        double PowerPercentage = 0;
+        if (gamepad1.y){
+            PowerPercentage = 0.25;
+        }
+        if (gamepad1.b){
+            PowerPercentage = 0.5;
+        }
+        if (gamepad1.a){
+            PowerPercentage = 0.75;
+        }
+        if (gamepad1.x){
+            PowerPercentage = 1;
+        }
+        robot.SetPowerPercentage(PowerPercentage);
+
+        telemetry.addData("PowerPercentage", "%d", robot.GetPowerPercentage());
 
     }
 
@@ -154,8 +176,8 @@ public class TeleOpMode extends OpMode {
         float yValue = -gamepad1.left_stick_y;
 
         //calculate the power needed for each motor
-        float leftPower = yValue + xValue;
-        float rightPower = yValue - xValue;
+        double leftPower = (yValue + xValue) * robot.GetPowerPercentage();
+        double rightPower =(yValue - xValue) * robot.GetPowerPercentage();
 
         //clip the power values so that it only goes from -1 to 1
         leftPower = Range.clip(leftPower, -1, 1);
