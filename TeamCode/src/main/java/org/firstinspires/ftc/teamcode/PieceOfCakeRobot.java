@@ -60,8 +60,8 @@ public class PieceOfCakeRobot {
         dcMotor = hwMap.dcMotor.get("tilt");
         SetTilt(dcMotor);
 
-        dcMotor = hwMap.dcMotor.get("slide");
-        SetSlide(dcMotor);
+        //dcMotor = hwMap.dcMotor.get("slide");
+        //SetSlide(dcMotor);
 
         //colorSensor = hwMap.colorSensor.get("colorsensor");
         //Setcolorsensor(colorSensor);

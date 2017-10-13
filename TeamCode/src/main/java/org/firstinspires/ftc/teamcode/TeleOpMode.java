@@ -58,6 +58,8 @@ import static android.R.attr.left;
 public class TeleOpMode extends OpMode {
 
     private PieceOfCakeRobot robot = new PieceOfCakeRobot();
+    private int MaximumLiftHeight = 5780;
+    private int MinimiumLiftHeight = 5275;
 
     @Override
     public void init(){
@@ -96,24 +98,8 @@ public class TeleOpMode extends OpMode {
             rightClawPower = -0.5;
         }
 
-        power = robot.GetClawL().getPower();
-        telemetry.addData("left power", "%f", power);
-
         robot.GetClawL().setPower(leftClawPower);
-        power = robot.GetClawL().getPower();
-
-        telemetry.addData("left updated power", "%f", power);
-
-        // uncomment the line below when you have the other servo hooked up
-        power = robot.GetClawR().getPower();
-
-        telemetry.addData("right power", "%f", power);
-
-        // uncomment the two lines below when you have the other servo hooked up
         robot.GetClawR().setPower(rightClawPower);
-        power = robot.GetClawR().getPower();
-
-        telemetry.addData("right updated power", "%f", power);
     }
 
     private void ProcessMovement()
@@ -125,18 +111,31 @@ public class TeleOpMode extends OpMode {
     private void LiftControl()
     {
         double LiftPower = 0.0;
+        int currentLiftPosition = robot.GetLift().getCurrentPosition();
+        int currentTiltPosition = robot.GetTilt().getCurrentPosition();
 
-        if (gamepad2.left_stick_y > 0) {
-            LiftPower = 0.5;
+        if (currentTiltPosition > 200) {
+            if ((gamepad2.left_stick_y > 0) && (currentLiftPosition > MinimiumLiftHeight)) {
+                LiftPower = -0.5;
+            }
+
+            if ((gamepad2.left_stick_y < 0) && (currentLiftPosition < MaximumLiftHeight)) {
+                LiftPower = 0.5;
+            }
         }
+        else {
+            if ((gamepad2.left_stick_y > 0)) {
+                LiftPower = -0.5;
+            }
 
-        if (gamepad2.left_stick_y < 0) {
-            LiftPower = -0.5;
+            if ((gamepad2.left_stick_y < 0) && (currentLiftPosition < MaximumLiftHeight)) {
+                LiftPower = 0.5;
+            }
         }
 
         robot.GetLift().setPower(LiftPower);
 
-        telemetry.addData("Lift", "%d", robot.GetLift().getCurrentPosition());
+        telemetry.addData("Lift", "%d", currentLiftPosition);
     }
 
 
@@ -158,6 +157,7 @@ public class TeleOpMode extends OpMode {
     private void PowerPercent()
     {
         double PowerPercentage = 0;
+
         if (gamepad1.y){
             PowerPercentage = 0.25;
         }
@@ -170,10 +170,10 @@ public class TeleOpMode extends OpMode {
         if (gamepad1.x){
             PowerPercentage = 1;
         }
+
         robot.SetPowerPercentage(PowerPercentage);
 
-        telemetry.addData("PowerPercentage", "%d", robot.GetPowerPercentage());
-
+        telemetry.addData("PowerPercentage", "%f", robot.GetPowerPercentage());
     }
 
     private void DriveControl(){
