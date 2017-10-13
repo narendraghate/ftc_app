@@ -74,6 +74,7 @@ public class TeleOpMode extends OpMode {
         LiftControl();
         DriveControl();
         TiltControl();
+        PowerPercent();
         // this should always be the last line so any telemetry that wes done in other
         // methods is displayed
         telemetry.update();
@@ -125,11 +126,11 @@ public class TeleOpMode extends OpMode {
     {
         double LiftPower = 0.0;
 
-        if (gamepad2.dpad_left) {
+        if (gamepad2.left_stick_y > 0) {
             LiftPower = 0.5;
         }
 
-        if (gamepad2.dpad_right) {
+        if (gamepad2.left_stick_y < 0) {
             LiftPower = -0.5;
         }
 
@@ -144,13 +145,34 @@ public class TeleOpMode extends OpMode {
         double SlidePower = 0.0;
 
         if (gamepad1.left_bumper) {
-            SlidePower = 0.5;
+            SlidePower = 0.5 * robot.GetPowerPercentage();
         }
         if (gamepad1.right_bumper) {
-            SlidePower = -0.5;
+            SlidePower = -0.5 * robot.GetPowerPercentage();
         }
 
         robot.GetSlide().setPower(SlidePower);
+
+    }
+
+    private void PowerPercent()
+    {
+        double PowerPercentage = 0;
+        if (gamepad1.y){
+            PowerPercentage = 0.25;
+        }
+        if (gamepad1.b){
+            PowerPercentage = 0.5;
+        }
+        if (gamepad1.a){
+            PowerPercentage = 0.75;
+        }
+        if (gamepad1.x){
+            PowerPercentage = 1;
+        }
+        robot.SetPowerPercentage(PowerPercentage);
+
+        telemetry.addData("PowerPercentage", "%d", robot.GetPowerPercentage());
 
     }
 
@@ -159,8 +181,8 @@ public class TeleOpMode extends OpMode {
         float yValue = -gamepad1.left_stick_y;
 
         //calculate the power needed for each motor
-        float leftPower = yValue + xValue;
-        float rightPower = yValue - xValue;
+        double leftPower = (yValue + xValue) * robot.GetPowerPercentage();
+        double rightPower =(yValue - xValue) * robot.GetPowerPercentage();
 
         //clip the power values so that it only goes from -1 to 1
         leftPower = Range.clip(leftPower, -1, 1);
@@ -176,10 +198,10 @@ public class TeleOpMode extends OpMode {
     {
         double TiltPower = 0.0;
 
-        if (gamepad1.left_bumper) {
+        if (gamepad2.dpad_left) {
             TiltPower = 0.5;
         }
-        if (gamepad2.right_bumper) {
+        if (gamepad2.dpad_right) {
             TiltPower = -0.5;
         }
 

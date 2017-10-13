@@ -24,6 +24,8 @@ public class PieceOfCakeRobot {
 
     private HardwareMap hwMap = null;
 
+    private double PowerPercentace;
+
     // Constructor
     public PieceOfCakeRobot() {
 
@@ -100,6 +102,8 @@ public class PieceOfCakeRobot {
         return ColorSensor;
     }
 
+    public Double GetPowerPercentage(){return  PowerPercentace;}
+
 
     private void SetClawR(CRServo crservo) { ClawR = crservo; }
     private void SetClawL(CRServo crservo) { ClawL = crservo; }
@@ -109,4 +113,5 @@ public class PieceOfCakeRobot {
     private void SetSlide(DcMotor dcMotor) { Slide = dcMotor; }
     private void SetTilt(DcMotor dcMotor) {Tilt = dcMotor;}
     private void SetColorSensor(ColorSensor colorSensor) { ColorSensor = colorSensor; }
+    public void SetPowerPercentage(Double PowerPercentage){ PowerPercentage = null;}
 }
