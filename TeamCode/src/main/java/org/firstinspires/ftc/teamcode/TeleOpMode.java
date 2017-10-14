@@ -195,8 +195,8 @@ public class TeleOpMode extends OpMode {
         float yValue = -gamepad1.left_stick_y;
 
         //calculate the power needed for each motor
-        double leftPower = (yValue + xValue) * robot.GetPowerPercentage();
-        double rightPower =(yValue - xValue) * robot.GetPowerPercentage();
+        double leftPower = (yValue - xValue) * robot.GetPowerPercentage();
+        double rightPower =(yValue + xValue) * robot.GetPowerPercentage();
 
         //clip the power values so that it only goes from -1 to 1
         leftPower = Range.clip(leftPower, -1, 1);

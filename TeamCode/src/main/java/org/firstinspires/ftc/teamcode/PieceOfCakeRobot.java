@@ -24,7 +24,7 @@ public class PieceOfCakeRobot {
 
     private HardwareMap hwMap = null;
 
-    private double PowerPercentage;
+    private double PowerPercentage = 1;
 
     // Constructor
     public PieceOfCakeRobot() {
