@@ -74,6 +74,7 @@ public class TeleOpMode extends OpMode {
 
         robot.GetLeft().setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.GetLeft().setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        robot.GetLeft().setDirection(DcMotor.Direction.REVERSE);
 
         robot.GetRight().setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.GetRight().setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -171,7 +172,7 @@ public class TeleOpMode extends OpMode {
 
     private void PowerPercent()
     {
-        double PowerPercentage = 0;
+        double PowerPercentage = robot.GetPowerPercentage();
 
         if (gamepad1.y){
             PowerPercentage = 0.25;
