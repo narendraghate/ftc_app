@@ -58,16 +58,25 @@ import static android.R.attr.left;
 public class TeleOpMode extends OpMode {
 
     private PieceOfCakeRobot robot = new PieceOfCakeRobot();
-    private int MaximumLiftHeight = 5780;
-    private int MinimiumLiftHeight = 5275;
+    static final int MaximumLiftHeight = 5780;
+    static final int MinimiumLiftHeight = 5275;
+    static final int MinimiumLiftHeight2 = 3275;
 
     @Override
     public void init(){
         robot.init(hardwareMap);
+
         robot.GetTilt().setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.GetTilt().setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
         robot.GetLift().setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.GetLift().setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        robot.GetLeft().setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.GetLeft().setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        robot.GetRight().setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.GetRight().setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
     @Override
@@ -77,6 +86,14 @@ public class TeleOpMode extends OpMode {
         DriveControl();
         TiltControl();
         PowerPercent();
+
+        telemetry.addData("Tilt", "%d", robot.GetTilt().getCurrentPosition());
+        telemetry.addData("Lift", "%d", robot.GetLift().getCurrentPosition());
+
+        telemetry.addData("Left Position", "%d", robot.GetLeft().getCurrentPosition());
+        telemetry.addData("Right Position", "%d", robot.GetRight().getCurrentPosition());
+
+        telemetry.addData("PowerPercentage", "%f", robot.GetPowerPercentage());
         // this should always be the last line so any telemetry that wes done in other
         // methods is displayed
         telemetry.update();
@@ -134,8 +151,6 @@ public class TeleOpMode extends OpMode {
         }
 
         robot.GetLift().setPower(LiftPower);
-
-        telemetry.addData("Lift", "%d", currentLiftPosition);
     }
 
 
@@ -172,8 +187,6 @@ public class TeleOpMode extends OpMode {
         }
 
         robot.SetPowerPercentage(PowerPercentage);
-
-        telemetry.addData("PowerPercentage", "%f", robot.GetPowerPercentage());
     }
 
     private void DriveControl(){
@@ -191,22 +204,23 @@ public class TeleOpMode extends OpMode {
         //set the power of the motors with the gamepad values
         robot.GetLeft().setPower(leftPower);
         robot.GetRight().setPower(rightPower);
-
     }
 
     private void TiltControl()
     {
         double TiltPower = 0.0;
+        long currentLiftPosition = robot.GetLift().getCurrentPosition();
+        long currentTiltPosition = robot.GetTilt().getCurrentPosition();
 
-        if (gamepad2.dpad_left) {
-            TiltPower = 0.5;
-        }
-        if (gamepad2.dpad_right) {
-            TiltPower = -0.5;
+        if ((currentLiftPosition >= MinimiumLiftHeight2) && (currentLiftPosition <= MaximumLiftHeight)) {
+            if (gamepad2.dpad_left) {
+                TiltPower = 0.5;
+            }
+            if ((gamepad2.dpad_right) && (currentTiltPosition > -100)){
+                TiltPower = -0.5;
+            }
         }
 
         robot.GetTilt().setPower(TiltPower);
-
-        telemetry.addData("Tilt", "%d", robot.GetTilt().getCurrentPosition());
     }
 }
