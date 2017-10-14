@@ -58,7 +58,7 @@ import static android.R.attr.left;
 public class TeleOpMode extends OpMode {
 
     private PieceOfCakeRobot robot = new PieceOfCakeRobot();
-    static final int MaximumLiftHeight = 5780;
+    static final int MaximumLiftHeight = 6040;
     static final int MinimiumLiftHeight = 5275;
     static final int MinimiumLiftHeight2 = 3275;
 
