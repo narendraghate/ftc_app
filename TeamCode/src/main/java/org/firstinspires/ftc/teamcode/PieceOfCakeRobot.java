@@ -26,6 +26,8 @@ public class PieceOfCakeRobot {
 
     private double PowerPercentage = 1;
 
+    private double LiftPercentage = 1;
+
     // Constructor
     public PieceOfCakeRobot() {
 
@@ -104,6 +106,7 @@ public class PieceOfCakeRobot {
 
     public Double GetPowerPercentage(){return  PowerPercentage;}
 
+    public Double GetLiftPowerPercentage() {return LiftPercentage;}
 
     private void SetClawR(CRServo crservo) { ClawR = crservo; }
     private void SetClawL(CRServo crservo) { ClawL = crservo; }
@@ -114,4 +117,5 @@ public class PieceOfCakeRobot {
     private void SetTilt(DcMotor dcMotor) {Tilt = dcMotor;}
     private void SetColorSensor(ColorSensor colorSensor) { ColorSensor = colorSensor; }
     public void SetPowerPercentage(Double powerPercentage){ PowerPercentage = powerPercentage;}
+    public void SetLiftPercentage(Double liftPercentage){LiftPercentage = liftPercentage;}
 }

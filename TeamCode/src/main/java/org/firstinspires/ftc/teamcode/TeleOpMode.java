@@ -87,6 +87,7 @@ public class TeleOpMode extends OpMode {
         DriveControl();
         TiltControl();
         PowerPercent();
+        LiftControl();
 
         telemetry.addData("Tilt", "%d", robot.GetTilt().getCurrentPosition());
         telemetry.addData("Lift", "%d", robot.GetLift().getCurrentPosition());
@@ -95,6 +96,7 @@ public class TeleOpMode extends OpMode {
         telemetry.addData("Right Position", "%d", robot.GetRight().getCurrentPosition());
 
         telemetry.addData("PowerPercentage", "%f", robot.GetPowerPercentage());
+        telemetry.addData("LiftPercentage", "%f", robot.GetPowerPercentage());
         // this should always be the last line so any telemetry that wes done in other
         // methods is displayed
         telemetry.update();
@@ -134,26 +136,43 @@ public class TeleOpMode extends OpMode {
 
         if (currentTiltPosition > 200) {
             if ((gamepad2.left_stick_y > 0) && (currentLiftPosition > MinimiumLiftHeight)) {
-                LiftPower = -0.5;
+                LiftPower = -0.5 * (robot.GetPowerPercentage());
             }
 
             if ((gamepad2.left_stick_y < 0) && (currentLiftPosition < MaximumLiftHeight)) {
-                LiftPower = 0.5;
+                LiftPower = 0.5 * (robot.GetPowerPercentage());
             }
         }
         else {
             if ((gamepad2.left_stick_y > 0)) {
-                LiftPower = -0.5;
+                LiftPower = -0.5 * (robot.GetPowerPercentage());
             }
 
             if ((gamepad2.left_stick_y < 0) && (currentLiftPosition < MaximumLiftHeight)) {
-                LiftPower = 0.5;
+                LiftPower = 0.5 * (robot.GetPowerPercentage());
             }
         }
 
         robot.GetLift().setPower(LiftPower);
     }
 
+    private void LiftPercent() {
+        double LiftPercentage = robot.GetLiftPowerPercentage();
+
+        if (gamepad2.y) {
+            LiftPercentage = 0.25;
+        }
+        if (gamepad2.b) {
+            LiftPercentage = 0.5;
+        }
+        if (gamepad2.a) {
+            LiftPercentage = 0.75;
+        }
+        if (gamepad2.x) {
+            LiftPercentage = 1;
+        }
+        robot.SetLiftPercentage(LiftPercentage);
+        }
 
     private void SlideControl()
     {
