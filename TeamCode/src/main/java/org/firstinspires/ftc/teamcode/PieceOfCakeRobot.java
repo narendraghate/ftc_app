@@ -41,29 +41,26 @@ public class PieceOfCakeRobot {
 
         hwMap = ahwMap;
 
-        crservo = hwMap.crservo.get("clawleftservo");
+        crservo = hwMap.crservo.get("clawleftservo"); //0
         SetClawL(crservo);
 
-        // uncomment the two lines belowonce you have the
-        // other servo hooked into slot 1 and named clawrightservo
-        // then go uncomment the code in the teleopmode.java class
-        crservo = hwMap.crservo.get("clawrightservo");
+        crservo = hwMap.crservo.get("clawrightservo"); //1
         SetClawR(crservo);
 
-        dcMotor = hwMap.dcMotor.get("left");
+        dcMotor = hwMap.dcMotor.get("left"); //0
         SetLeft(dcMotor);
 
-        dcMotor = hwMap.dcMotor.get("right");
+        dcMotor = hwMap.dcMotor.get("right"); //1
         SetRight(dcMotor);
 
-        dcMotor = hwMap.dcMotor.get("lift");
+        dcMotor = hwMap.dcMotor.get("lift"); //2
         SetLift(dcMotor);
 
-        dcMotor = hwMap.dcMotor.get("tilt");
+        dcMotor = hwMap.dcMotor.get("tilt"); //3
         SetTilt(dcMotor);
 
-        //dcMotor = hwMap.dcMotor.get("slide");
-        //SetSlide(dcMotor);
+        dcMotor = hwMap.dcMotor.get("slide");
+        SetSlide(dcMotor);
 
         //colorSensor = hwMap.colorSensor.get("colorsensor");
         //Setcolorsensor(colorSensor);
