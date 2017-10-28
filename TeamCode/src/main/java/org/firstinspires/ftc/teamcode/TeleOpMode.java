@@ -49,8 +49,6 @@ import static android.R.attr.left;
  * of the FTC Driver Station. When an selection is made from the menu, the corresponding OpMode
  * class is instantiated on the Robot Controller and executed.
  *
- * It includes all the skeletal structure that all linear OpModes contain.
- *
  * Use Android Studios to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
@@ -102,23 +100,30 @@ public class TeleOpMode extends OpMode {
 
         telemetry.addData("PowerPercentage", "%f", robot.GetPowerPercentage());
         telemetry.addData("LiftPercentage", "%f", robot.GetLiftPowerPercentage());
-        telemetry.addData("Saftey", "%d", robot.IsSafetyOff());
+        if (robot.IsSafetyOff()) {
+            telemetry.addData("Safety", "Off");
+        } else {
+            telemetry.addData("Safety", "On");
+        }
+
         // this should always be the last line so any telemetry that wes done in other
         // methods is displayed
         telemetry.update();
     }
 
+    // Code written by William
     private void CheckSafetyMode() {
-        if (gamepad1.guide) {
-            robot.SetSafetyOff(true);
-        }
-        if (gamepad1.back) {
-            robot.SetSafetyOff(false);
+        if (gamepad1.left_bumper) {
+            if (robot.IsSafetyOff()) {
+                robot.SetSafetyOff(false);
+            } else {
+                robot.SetSafetyOff(true);
+            }
         }
     }
 
-    private void ProcessClaw()
-    {
+    // Code written by Narendra
+    private void ProcessClaw() {
         double leftClawPower = 0.0;
         double rightClawPower = 0.0;
         double power = 0.0;
@@ -137,20 +142,18 @@ public class TeleOpMode extends OpMode {
         robot.GetClawR().setPower(rightClawPower);
     }
 
-    private void LiftControl()
-    {
+    // Code written by Alex
+    private void LiftControl() {
         double LiftPower = 0.0;
         int currentLiftPosition = robot.GetLift().getCurrentPosition();
         int currentTiltPosition = robot.GetTilt().getCurrentPosition();
-        if (robot.IsSafetyOff()){
-            if(gamepad2.left_stick_y > 0){
+        if (robot.IsSafetyOff()) {
+            if (gamepad2.left_stick_y > 0) {
                 LiftPower = -(robot.GetLiftPowerPercentage());
-            }
-            else {
+            } else {
                 LiftPower = (robot.GetLiftPowerPercentage());
             }
-        }
-        else {
+        } else {
             if (currentTiltPosition > NumberToTellWeAreInTilt) {
                 if ((gamepad2.left_stick_y > 0) && (currentLiftPosition > MinimiumLiftHeight)) {
                     LiftPower = -(robot.GetLiftPowerPercentage());
@@ -172,6 +175,7 @@ public class TeleOpMode extends OpMode {
         robot.GetLift().setPower(LiftPower);
     }
 
+    // Code written by Narendra
     private void LiftPercent() {
         double LiftPercentage = robot.GetLiftPowerPercentage();
 
@@ -190,38 +194,37 @@ public class TeleOpMode extends OpMode {
         robot.SetLiftPercentage(LiftPercentage);
     }
 
-    private void SlideControl()
-    {
+    // Code written by Narendra
+    private void SlideControl() {
         double SlidePower = 0.0;
-
 
         SlidePower = gamepad1.right_stick_x * robot.GetPowerPercentage();
         SlidePower = Range.clip(SlidePower, -1, 1);
 
         robot.GetSlide().setPower(SlidePower);
-
     }
 
-    private void PowerPercent()
-    {
+    // Code written by William
+    private void PowerPercent() {
         double PowerPercentage = robot.GetPowerPercentage();
 
-        if (gamepad1.y){
+        if (gamepad1.y) {
             PowerPercentage = 0.25;
         }
-        if (gamepad1.b){
+        if (gamepad1.b) {
             PowerPercentage = 0.5;
         }
-        if (gamepad1.a){
+        if (gamepad1.a) {
             PowerPercentage = 0.75;
         }
-        if (gamepad1.x){
+        if (gamepad1.x) {
             PowerPercentage = 1;
         }
 
         robot.SetPowerPercentage(PowerPercentage);
     }
 
+    // Code written by Alex
     private void DriveControl(){
         float xValue = gamepad1.left_stick_x;
         float yValue = -gamepad1.left_stick_y;
@@ -239,6 +242,7 @@ public class TeleOpMode extends OpMode {
         robot.GetRight().setPower(rightPower);
     }
 
+    // Code written by Alex
     private void TiltControl() {
         double TiltPower = 0.0;
         long currentLiftPosition = robot.GetLift().getCurrentPosition();
