@@ -49,7 +49,6 @@ import static android.R.attr.left;
  * of the FTC Driver Station. When an selection is made from the menu, the corresponding OpMode
  * class is instantiated on the Robot Controller and executed.
  *
- * This particular OpMode just executes a basic Tank Drive Teleop for a two wheeled robot
  * It includes all the skeletal structure that all linear OpModes contain.
  *
  * Use Android Studios to Copy this Class, and Paste it into your team's code folder with a new name.
@@ -62,7 +61,9 @@ public class TeleOpMode extends OpMode {
     private PieceOfCakeRobot robot = new PieceOfCakeRobot();
     static final int MaximumLiftHeight = 6040;
     static final int MinimiumLiftHeight = 5275;
-    static final int MinimiumLiftHeight2 = 3275;
+    static final int MinimiumTiltLiftHeight = 3275;
+    static final int NumberToTellWeAreInTilt = 200;
+    static final int MaximumTiltBackPosition = -100;
 
     @Override
     public void init(){
@@ -135,19 +136,13 @@ public class TeleOpMode extends OpMode {
         robot.GetClawR().setPower(rightClawPower);
     }
 
-    private void ProcessMovement()
-    {
-        // eventually we want to move all the code related to the movement of the robot into this
-        // method and call it from the main loop
-    }
-
     private void LiftControl()
     {
         double LiftPower = 0.0;
         int currentLiftPosition = robot.GetLift().getCurrentPosition();
         int currentTiltPosition = robot.GetTilt().getCurrentPosition();
 
-        if (currentTiltPosition > 200) {
+        if (currentTiltPosition > NumberToTellWeAreInTilt) {
             if ((gamepad2.left_stick_y > 0) && (currentLiftPosition > MinimiumLiftHeight)) {
                 LiftPower = -0.5 * (robot.GetLiftPowerPercentage());
             }
@@ -242,11 +237,11 @@ public class TeleOpMode extends OpMode {
         long currentLiftPosition = robot.GetLift().getCurrentPosition();
         long currentTiltPosition = robot.GetTilt().getCurrentPosition();
 
-        if ((currentLiftPosition >= MinimiumLiftHeight2) && (currentLiftPosition <= MaximumLiftHeight)) {
+        if ((currentLiftPosition >= MinimiumTiltLiftHeight) && (currentLiftPosition <= MaximumLiftHeight)) {
             if (gamepad2.dpad_left) {
                 TiltPower = robot.GetLiftPowerPercentage();
             }
-            if ((gamepad2.dpad_right) && (currentTiltPosition > -100)){
+            if ((gamepad2.dpad_right) && (currentTiltPosition > MaximumTiltBackPosition)){
                 TiltPower = -robot.GetLiftPowerPercentage();
             }
         }
