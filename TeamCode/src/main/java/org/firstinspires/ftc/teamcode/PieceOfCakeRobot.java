@@ -21,7 +21,7 @@ public class PieceOfCakeRobot {
     private DcMotor Slide = null;
     private DcMotor Tilt = null;
     private ColorSensor ColorSensor = null;
-
+    private boolean SafetyOff = false;
     private HardwareMap hwMap = null;
 
     private double PowerPercentage = 1;
@@ -37,7 +37,7 @@ public class PieceOfCakeRobot {
     public void init(HardwareMap ahwMap) {
         CRServo crservo = null;
         DcMotor dcMotor = null;
-        ColorSensor colorSensor =null;
+        ColorSensor colorSensor = null;
 
         hwMap = ahwMap;
 
@@ -66,9 +66,6 @@ public class PieceOfCakeRobot {
         //Setcolorsensor(colorSensor);
 
 
-
-
-
     }
 
     public CRServo GetClawL() {
@@ -79,40 +76,83 @@ public class PieceOfCakeRobot {
         return ClawR;
     }
 
-    public DcMotor GetLeft()  {
+    public DcMotor GetLeft() {
         return Left;
     }
 
-    public DcMotor GetRight()  {
+    public DcMotor GetRight() {
         return Right;
     }
 
-    public DcMotor GetLift()  {
+    public DcMotor GetLift() {
         return Lift;
     }
 
-    public DcMotor GetSlide()  {
+    public DcMotor GetSlide() {
         return Slide;
     }
 
-    public DcMotor GetTilt() {return Tilt;}
+    public DcMotor GetTilt() {
+        return Tilt;
+    }
 
     public ColorSensor GetColorSensor() {
         return ColorSensor;
     }
 
-    public Double GetPowerPercentage(){return  PowerPercentage;}
+    public Double GetPowerPercentage() {
+        return PowerPercentage;
+    }
 
-    public Double GetLiftPowerPercentage() {return LiftPercentage;}
+    public Double GetLiftPowerPercentage() {
+        return LiftPercentage;
+    }
 
-    private void SetClawR(CRServo crservo) { ClawR = crservo; }
-    private void SetClawL(CRServo crservo) { ClawL = crservo; }
-    private void SetLeft(DcMotor dcMotor) { Left = dcMotor; }
-    private void SetRight(DcMotor dcMotor) { Right = dcMotor; }
-    private void SetLift(DcMotor dcMotor) { Lift = dcMotor; }
-    private void SetSlide(DcMotor dcMotor) { Slide = dcMotor; }
-    private void SetTilt(DcMotor dcMotor) {Tilt = dcMotor;}
-    private void SetColorSensor(ColorSensor colorSensor) { ColorSensor = colorSensor; }
-    public void SetPowerPercentage(Double powerPercentage){ PowerPercentage = powerPercentage;}
-    public void SetLiftPercentage(Double liftPercentage){LiftPercentage = liftPercentage;}
+    public boolean IsSafetyOff() {
+        return SafetyOff;
+    }
+
+    private void SetClawR(CRServo crservo) {
+        ClawR = crservo;
+    }
+
+    private void SetClawL(CRServo crservo) {
+        ClawL = crservo;
+    }
+
+    private void SetLeft(DcMotor dcMotor) {
+        Left = dcMotor;
+    }
+
+    private void SetRight(DcMotor dcMotor) {
+        Right = dcMotor;
+    }
+
+    private void SetLift(DcMotor dcMotor) {
+        Lift = dcMotor;
+    }
+
+    private void SetSlide(DcMotor dcMotor) {
+        Slide = dcMotor;
+    }
+
+    private void SetTilt(DcMotor dcMotor) {
+        Tilt = dcMotor;
+    }
+
+    private void SetColorSensor(ColorSensor colorSensor) {
+        ColorSensor = colorSensor;
+    }
+
+    public void SetPowerPercentage(Double powerPercentage) {
+        PowerPercentage = powerPercentage;
+    }
+
+    public void SetLiftPercentage(Double liftPercentage) {
+        LiftPercentage = liftPercentage;
+    }
+
+    public void SetSafetyOff(boolean safetyOff) {
+        SafetyOff = safetyOff;
+    }
 }

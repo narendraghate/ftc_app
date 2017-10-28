@@ -92,7 +92,7 @@ public class TeleOpMode extends OpMode {
         PowerPercent();
         LiftPercent();
         SlideControl();
-        ResetEncoders();
+        CheckSafetyMode();
         
         telemetry.addData("Tilt", "%d", robot.GetTilt().getCurrentPosition());
         telemetry.addData("Lift", "%d", robot.GetLift().getCurrentPosition());
@@ -102,17 +102,18 @@ public class TeleOpMode extends OpMode {
 
         telemetry.addData("PowerPercentage", "%f", robot.GetPowerPercentage());
         telemetry.addData("LiftPercentage", "%f", robot.GetLiftPowerPercentage());
+        telemetry.addData("Saftey", "%d", robot.IsSafetyOff());
         // this should always be the last line so any telemetry that wes done in other
         // methods is displayed
         telemetry.update();
     }
 
-    private void ResetEncoders(){
-        if (gamepad1.guide){
-            robot.GetTilt().setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            robot.GetLift().setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            robot.GetLeft().setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            robot.GetRight().setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    private void CheckSafetyMode() {
+        if (gamepad1.guide) {
+            robot.SetSafetyOff(true);
+        }
+        if (gamepad1.back) {
+            robot.SetSafetyOff(false);
         }
     }
 
@@ -141,26 +142,33 @@ public class TeleOpMode extends OpMode {
         double LiftPower = 0.0;
         int currentLiftPosition = robot.GetLift().getCurrentPosition();
         int currentTiltPosition = robot.GetTilt().getCurrentPosition();
-
-        if (currentTiltPosition > NumberToTellWeAreInTilt) {
-            if ((gamepad2.left_stick_y > 0) && (currentLiftPosition > MinimiumLiftHeight)) {
-                LiftPower = -0.5 * (robot.GetLiftPowerPercentage());
+        if (robot.IsSafetyOff()){
+            if(gamepad2.left_stick_y > 0){
+                LiftPower = -(robot.GetLiftPowerPercentage());
             }
-
-            if ((gamepad2.left_stick_y < 0) && (currentLiftPosition < MaximumLiftHeight)) {
-                LiftPower = 0.5 * (robot.GetLiftPowerPercentage());
+            else {
+                LiftPower = (robot.GetLiftPowerPercentage());
             }
         }
         else {
-            if ((gamepad2.left_stick_y > 0)) {
-                LiftPower = -0.5 * (robot.GetLiftPowerPercentage());
-            }
+            if (currentTiltPosition > NumberToTellWeAreInTilt) {
+                if ((gamepad2.left_stick_y > 0) && (currentLiftPosition > MinimiumLiftHeight)) {
+                    LiftPower = -(robot.GetLiftPowerPercentage());
+                }
 
-            if ((gamepad2.left_stick_y < 0) && (currentLiftPosition < MaximumLiftHeight)) {
-                LiftPower = 0.5 * (robot.GetLiftPowerPercentage());
+                if ((gamepad2.left_stick_y < 0) && (currentLiftPosition < MaximumLiftHeight)) {
+                    LiftPower = (robot.GetLiftPowerPercentage());
+                }
+            } else {
+                if ((gamepad2.left_stick_y > 0)) {
+                    LiftPower = -(robot.GetLiftPowerPercentage());
+                }
+
+                if ((gamepad2.left_stick_y < 0) && (currentLiftPosition < MaximumLiftHeight)) {
+                    LiftPower = (robot.GetLiftPowerPercentage());
+                }
             }
         }
-
         robot.GetLift().setPower(LiftPower);
     }
 
@@ -231,21 +239,28 @@ public class TeleOpMode extends OpMode {
         robot.GetRight().setPower(rightPower);
     }
 
-    private void TiltControl()
-    {
+    private void TiltControl() {
         double TiltPower = 0.0;
         long currentLiftPosition = robot.GetLift().getCurrentPosition();
         long currentTiltPosition = robot.GetTilt().getCurrentPosition();
 
-        if ((currentLiftPosition >= MinimiumTiltLiftHeight) && (currentLiftPosition <= MaximumLiftHeight)) {
+        if (robot.IsSafetyOff()) {
             if (gamepad2.dpad_left) {
                 TiltPower = robot.GetLiftPowerPercentage();
             }
-            if ((gamepad2.dpad_right) && (currentTiltPosition > MaximumTiltBackPosition)){
+            if (gamepad2.dpad_right) {
                 TiltPower = -robot.GetLiftPowerPercentage();
             }
+        } else{
+            if ((currentLiftPosition >= MinimiumTiltLiftHeight) && (currentLiftPosition <= MaximumLiftHeight)) {
+                if (gamepad2.dpad_left) {
+                    TiltPower = robot.GetLiftPowerPercentage();
+                }
+                if ((gamepad2.dpad_right) && (currentTiltPosition > MaximumTiltBackPosition)) {
+                    TiltPower = -robot.GetLiftPowerPercentage();
+                }
+            }
         }
-
         robot.GetTilt().setPower(TiltPower);
     }
 }
