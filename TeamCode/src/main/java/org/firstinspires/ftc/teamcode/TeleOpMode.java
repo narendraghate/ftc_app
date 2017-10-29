@@ -113,12 +113,12 @@ public class TeleOpMode extends OpMode {
 
     // Code written by William
     private void CheckSafetyMode() {
-        if (gamepad1.left_bumper) {
-            if (robot.IsSafetyOff()) {
-                robot.SetSafetyOff(false);
-            } else {
-                robot.SetSafetyOff(true);
-            }
+        if (gamepad1.dpad_left) {
+            robot.SetSafetyOff(false);
+        }
+
+        if (gamepad1.dpad_right) {
+            robot.SetSafetyOff(true);
         }
     }
 
@@ -147,10 +147,13 @@ public class TeleOpMode extends OpMode {
         double LiftPower = 0.0;
         int currentLiftPosition = robot.GetLift().getCurrentPosition();
         int currentTiltPosition = robot.GetTilt().getCurrentPosition();
+
         if (robot.IsSafetyOff()) {
             if (gamepad2.left_stick_y > 0) {
                 LiftPower = -(robot.GetLiftPowerPercentage());
-            } else {
+            }
+
+            if (gamepad2.left_stick_y < 0) {
                 LiftPower = (robot.GetLiftPowerPercentage());
             }
         } else {
@@ -172,6 +175,7 @@ public class TeleOpMode extends OpMode {
                 }
             }
         }
+
         robot.GetLift().setPower(LiftPower);
     }
 
@@ -191,6 +195,7 @@ public class TeleOpMode extends OpMode {
         if (gamepad2.x) {
             LiftPercentage = 1;
         }
+
         robot.SetLiftPercentage(LiftPercentage);
     }
 
@@ -252,6 +257,7 @@ public class TeleOpMode extends OpMode {
             if (gamepad2.dpad_left) {
                 TiltPower = robot.GetLiftPowerPercentage();
             }
+
             if (gamepad2.dpad_right) {
                 TiltPower = -robot.GetLiftPowerPercentage();
             }
@@ -265,6 +271,7 @@ public class TeleOpMode extends OpMode {
                 }
             }
         }
+
         robot.GetTilt().setPower(TiltPower);
     }
 }

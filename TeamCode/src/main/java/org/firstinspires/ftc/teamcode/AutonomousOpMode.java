@@ -40,6 +40,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 /**
  * This file contains an example of an iterative (Non-Linear) "OpMode".
@@ -58,77 +59,83 @@ import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
 @Autonomous(name="Autonomous Mode", group="Robot Opmode")
 public class AutonomousOpMode extends LinearOpMode
 {
+// height of 5388
+    // tilt of 3322
+    PieceOfCakeRobot robot   = new PieceOfCakeRobot();
+    int LiftHeight = 5388;
+    int TiltHeight = 3322;
+    int DriveDistance = 400;
 
-    /* Declare OpMode members. */
-    HardwarePushbot robot   = new HardwarePushbot();   // Use a Pushbot's hardware
-    /*
-    private ElapsedTime runtime = new ElapsedTime();
-    CompassSensor compass;
-
-    final static double     MOTOR_POWER   = 0.2; // scale from 0 to 1
-    static final long       HOLD_TIME_MS  = 3000;
-    static final double     CAL_TIME_SEC  = 20;
-    */
     @Override
     public void runOpMode() {
-
-        /* Initialize the drive system variables.
-         * The init() method of the hardware class does all the work here
-         */
-        //robot.init(hardwareMap);
-
-        // get a reference to our Compass Sensor object.
-        //compass = hardwareMap.get(CompassSensor.class, "compass");
-
-        // Send telemetry message to signify robot waiting;
-        telemetry.addData("Status", "Ready to cal");    //
-        telemetry.update();
-
         RobotConfiguration robotConfiguration = new RobotConfiguration(gamepad1, telemetry);
 
+        robot.init(hardwareMap);
+
+        robot.GetLift().setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.GetLift().setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        robot.GetTilt().setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.GetTilt().setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        robot.GetRight().setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.GetRight().setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        robot.GetLeft().setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.GetLeft().setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.GetLeft().setDirection(DcMotor.Direction.REVERSE);
+        idle();
+
         robotConfiguration.ShowMenu();
+
+        telemetry.addData("Waiting", "");
+        telemetry.update();
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
-        // Set the compass to calibration mode
-        //compass.setMode(CompassSensor.CompassMode.CALIBRATION_MODE);
-        //telemetry.addData("Compass", "Compass in calibration mode");
-        //telemetry.update();
+        telemetry.addData("Starting", "now");
+        telemetry.update();
 
-        sleep(2000);  // Just do a sleep while we switch modes
+        robot.GetLeft().setTargetPosition(DriveDistance);
+        robot.GetRight().setTargetPosition(DriveDistance);
 
-        // Start the robot rotating clockwise
-        //telemetry.addData("Compass", "Calibration mode. Turning the robot...");
-        //telemetry.update();
-        //robot.leftDrive.setPower(MOTOR_POWER);
-        //robot.rightDrive.setPower(-MOTOR_POWER);
+        robot.GetLeft().setPower(0.25);
+        robot.GetRight().setPower(0.25);
 
-        // run until time expires OR the driver presses STOP;
-        //runtime.reset();
-        //while (opModeIsActive() && (runtime.time() < CAL_TIME_SEC)) {
-        //    idle();
-        //}
+        robot.GetLift().setTargetPosition(LiftHeight);
+        robot.GetLift().setPower(1);
 
-        // Stop all motors and turn off claibration
-        //robot.leftDrive.setPower(0);
-        ///robot.rightDrive.setPower(0);
-        //compass.setMode(CompassSensor.CompassMode.MEASUREMENT_MODE);
-        //telemetry.addData("Compass", "Returning to measurement mode");
-        //telemetry.update();
+        while (robot.GetLift().isBusy())
+        {
+            telemetry.addData("Lift Position", "%d", robot.GetLift().getCurrentPosition());
+            telemetry.update();
+        }
 
-        //sleep(HOLD_TIME_MS);  // Just do a sleep while we switch modes
+        robot.GetTilt().setTargetPosition(TiltHeight);
+        robot.GetTilt().setPower(.25);
+        while (robot.GetTilt().isBusy())
+        {
+            telemetry.addData("Tilt Postion", "%d", robot.GetTilt().getCurrentPosition());
+            telemetry.update();
+        }
 
-        // Report whether the Calibration was successful or not.
-        //if (compass.calibrationFailed())
-        //    telemetry.addData("Compass", "Calibrate Failed. Try Again!");
-        //else
-        //    telemetry.addData("Compass", "Calibrate Passed.");
-        //telemetry.update();
+        sleep(1000);
+        robot.GetTilt().setTargetPosition(0);
+        while (robot.GetTilt().isBusy())
+        {
+            telemetry.addData("Tilt Postion", "%d", robot.GetTilt().getCurrentPosition());
+            telemetry.update();
+        }
+
+        robot.GetLift().setTargetPosition(0);
+        while (robot.GetLift().isBusy())
+        {
+            telemetry.addData("Lift Position", "%d", robot.GetLift().getCurrentPosition());
+            telemetry.update();
+        }
 
         telemetry.addData("Status","Finished");
         telemetry.update();
-
-        sleep(1000);
     }
 }

@@ -47,19 +47,13 @@ public class RobotConfiguration {
                 _allianceColor = AllianceColor.Red;
             }
 
+            if (_gamepad.a) {
+                break;
+            }
 
-            _telemetry.addData("Menu", "x = Blue, b = Red,");
+            _telemetry.addData("Menu", "x = Blue, b = Red, a = Lock in");
             _telemetry.addData("Alliance color is", "%s", _allianceColor);
             _telemetry.update();
         } while (true);
-
-
-
-
-
-
     }
-
-
-
 }
