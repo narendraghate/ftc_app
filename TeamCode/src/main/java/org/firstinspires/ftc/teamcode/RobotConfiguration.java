@@ -18,7 +18,7 @@ public class RobotConfiguration {
     private Gamepad _gamepad;
     private Telemetry _telemetry;
     private AllianceColor _allianceColor;
-
+    private PieceOfCakeRobot _robot;
 
     public enum AllianceColor
     {
@@ -26,11 +26,12 @@ public class RobotConfiguration {
         Red
     }
 
-    public RobotConfiguration(Gamepad gamepad, Telemetry telemetry)
+    public RobotConfiguration(PieceOfCakeRobot robot, Gamepad gamepad, Telemetry telemetry)
     {
         _gamepad = gamepad;
         _telemetry = telemetry;
         _allianceColor = AllianceColor.Blue;
+        _robot = robot;
     }
 
     public AllianceColor getAllianceColor() {
@@ -52,6 +53,7 @@ public class RobotConfiguration {
             }
 
             _telemetry.addData("Menu", "x = Blue, b = Red, a = Lock in");
+            _telemetry.addData("Color", "Red = %d, Green = %d, Blue = %d", _robot.GetColorSensor().red(), _robot.GetColorSensor().green(), _robot.GetColorSensor().blue());
             _telemetry.addData("Alliance color is", "%s", _allianceColor);
             _telemetry.update();
         } while (true);

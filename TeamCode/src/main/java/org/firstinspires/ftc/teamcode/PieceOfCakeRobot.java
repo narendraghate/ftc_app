@@ -62,10 +62,8 @@ public class PieceOfCakeRobot {
         dcMotor = hwMap.dcMotor.get("slide");
         SetSlide(dcMotor);
 
-        //colorSensor = hwMap.colorSensor.get("colorsensor");
-        //Setcolorsensor(colorSensor);
-
-
+        colorSensor = hwMap.colorSensor.get("colorsensor");
+        SetColorSensor(colorSensor);
     }
 
     public CRServo GetClawL() {

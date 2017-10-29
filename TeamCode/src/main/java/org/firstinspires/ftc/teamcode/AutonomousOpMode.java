@@ -59,18 +59,18 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 @Autonomous(name="Autonomous Mode", group="Robot Opmode")
 public class AutonomousOpMode extends LinearOpMode
 {
-// height of 5388
-    // tilt of 3322
     PieceOfCakeRobot robot   = new PieceOfCakeRobot();
-    int LiftHeight = 5388;
-    int TiltHeight = 3322;
+    int LiftHeightPart1 = 3388;
+    int LiftHeightPart2 = 5388;
+    int TiltHeight = 3200;
+    int TiltBack = 1250;
     int DriveDistance = 400;
 
     @Override
     public void runOpMode() {
-        RobotConfiguration robotConfiguration = new RobotConfiguration(gamepad1, telemetry);
-
         robot.init(hardwareMap);
+
+        RobotConfiguration robotConfiguration = new RobotConfiguration(robot, gamepad1, telemetry);
 
         robot.GetLift().setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.GetLift().setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -103,7 +103,7 @@ public class AutonomousOpMode extends LinearOpMode
         robot.GetLeft().setPower(0.25);
         robot.GetRight().setPower(0.25);
 
-        robot.GetLift().setTargetPosition(LiftHeight);
+        robot.GetLift().setTargetPosition(LiftHeightPart1);
         robot.GetLift().setPower(1);
 
         while (robot.GetLift().isBusy())
@@ -112,24 +112,32 @@ public class AutonomousOpMode extends LinearOpMode
             telemetry.update();
         }
 
+        robot.GetLift().setTargetPosition(LiftHeightPart2);
         robot.GetTilt().setTargetPosition(TiltHeight);
-        robot.GetTilt().setPower(.25);
-        while (robot.GetTilt().isBusy())
+        robot.GetTilt().setPower(.5);
+        while (robot.GetTilt().isBusy() || robot.GetLift().isBusy())
         {
             telemetry.addData("Tilt Postion", "%d", robot.GetTilt().getCurrentPosition());
             telemetry.update();
         }
 
         sleep(1000);
-        robot.GetTilt().setTargetPosition(0);
+        robot.GetClawL().setPower(-.25);
+        sleep(500);
+        robot.GetClawL().setPower(.25);
+        sleep(500);
+        robot.GetClawL().setPower(0);
+
+        robot.GetTilt().setTargetPosition(TiltBack);
         while (robot.GetTilt().isBusy())
         {
             telemetry.addData("Tilt Postion", "%d", robot.GetTilt().getCurrentPosition());
             telemetry.update();
         }
 
+        robot.GetTilt().setTargetPosition(0);
         robot.GetLift().setTargetPosition(0);
-        while (robot.GetLift().isBusy())
+        while (robot.GetLift().isBusy() || robot.GetTilt().isBusy())
         {
             telemetry.addData("Lift Position", "%d", robot.GetLift().getCurrentPosition());
             telemetry.update();
