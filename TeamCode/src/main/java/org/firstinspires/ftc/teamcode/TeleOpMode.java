@@ -58,8 +58,7 @@ public class TeleOpMode extends OpMode {
 
     private PieceOfCakeRobot robot = new PieceOfCakeRobot();
     static final int MaximumLiftHeight = 6040;
-    static final int MinimiumLiftHeight = 5275;
-    static final int MinimiumTiltLiftHeight = 3275;
+    static final int MinimiumTiltLiftHeight = 5325;
     static final int NumberToTellWeAreInTilt = 200;
     static final int MaximumTiltBackPosition = -100;
 
@@ -153,12 +152,12 @@ public class TeleOpMode extends OpMode {
                 LiftPower = -(robot.GetLiftPowerPercentage());
             }
 
-            if (gamepad2.left_stick_y < 0) {
+            if ((gamepad2.left_stick_y < 0) && (currentLiftPosition < MaximumLiftHeight)) {
                 LiftPower = (robot.GetLiftPowerPercentage());
             }
         } else {
             if (currentTiltPosition > NumberToTellWeAreInTilt) {
-                if ((gamepad2.left_stick_y > 0) && (currentLiftPosition > MinimiumLiftHeight)) {
+                if ((gamepad2.left_stick_y > 0) && (currentLiftPosition > MinimiumTiltLiftHeight)) {
                     LiftPower = -(robot.GetLiftPowerPercentage());
                 }
 
@@ -255,19 +254,19 @@ public class TeleOpMode extends OpMode {
 
         if (robot.IsSafetyOff()) {
             if (gamepad2.dpad_left) {
-                TiltPower = robot.GetLiftPowerPercentage();
+                TiltPower = 0.25;
             }
 
             if (gamepad2.dpad_right) {
-                TiltPower = -robot.GetLiftPowerPercentage();
+                TiltPower = -0.25;
             }
         } else{
             if ((currentLiftPosition >= MinimiumTiltLiftHeight) && (currentLiftPosition <= MaximumLiftHeight)) {
                 if (gamepad2.dpad_left) {
-                    TiltPower = robot.GetLiftPowerPercentage();
+                    TiltPower = 0.25;
                 }
                 if ((gamepad2.dpad_right) && (currentTiltPosition > MaximumTiltBackPosition)) {
-                    TiltPower = -robot.GetLiftPowerPercentage();
+                    TiltPower = -0.25;
                 }
             }
         }

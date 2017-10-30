@@ -128,6 +128,13 @@ public class AutonomousOpMode extends LinearOpMode
         sleep(500);
         robot.GetClawL().setPower(0);
 
+        sleep(1000);
+        robot.GetClawR().setPower(.25);
+        sleep(500);
+        robot.GetClawR().setPower(-.25);
+        sleep(500);
+        robot.GetClawR().setPower(0);
+
         robot.GetTilt().setTargetPosition(TiltBack);
         while (robot.GetTilt().isBusy())
         {
