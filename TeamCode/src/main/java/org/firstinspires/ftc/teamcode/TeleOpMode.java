@@ -141,12 +141,15 @@ public class TeleOpMode extends OpMode {
         robot.GetClawR().setPower(rightClawPower);
     }
 
-    // Code written by Alex
+    /*
+        LiftControl method checks for safety (Min/Max checks) so that the lift doesn't run off the track
+     */
     private void LiftControl() {
+        // Sets initial power
         double LiftPower = 0.0;
         int currentLiftPosition = robot.GetLift().getCurrentPosition();
         int currentTiltPosition = robot.GetTilt().getCurrentPosition();
-
+        // Checks to see if SafetyOff = true
         if (robot.IsSafetyOff()) {
             if (gamepad2.left_stick_y > 0) {
                 LiftPower = -(robot.GetLiftPowerPercentage());
@@ -228,7 +231,9 @@ public class TeleOpMode extends OpMode {
         robot.SetPowerPercentage(PowerPercentage);
     }
 
-    // Code written by Alex
+    /*
+        Powers robot for TeleOp arcade drive and clips power values
+     */
     private void DriveControl(){
         float xValue = gamepad1.left_stick_x;
         float yValue = -gamepad1.left_stick_y;
@@ -246,13 +251,18 @@ public class TeleOpMode extends OpMode {
         robot.GetRight().setPower(rightPower);
     }
 
-    // Code written by Alex
+    /*
+        TiltControl makes sure the tilt doesn't work if the lift would hit the robot, but also adds
+        the option to disregard the restrictions
+     */
     private void TiltControl() {
         double TiltPower = 0.0;
         long currentLiftPosition = robot.GetLift().getCurrentPosition();
         long currentTiltPosition = robot.GetTilt().getCurrentPosition();
 
+        // Checks to see if SafetyOff = true
         if (robot.IsSafetyOff()) {
+            //If SafetyOff = true
             if (gamepad2.dpad_left) {
                 TiltPower = 0.25;
             }
@@ -261,6 +271,7 @@ public class TeleOpMode extends OpMode {
                 TiltPower = -0.25;
             }
         } else{
+            //If SafetyOff = False
             if ((currentLiftPosition >= MinimiumTiltLiftHeight) && (currentLiftPosition <= MaximumLiftHeight)) {
                 if (gamepad2.dpad_left) {
                     TiltPower = 0.25;
