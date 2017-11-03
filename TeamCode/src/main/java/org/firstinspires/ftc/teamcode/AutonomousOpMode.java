@@ -72,6 +72,7 @@ public class AutonomousOpMode extends LinearOpMode
 
         RobotConfiguration robotConfiguration = new RobotConfiguration(robot, gamepad1, telemetry);
 
+        // We are initializing the motors.
         robot.GetLift().setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.GetLift().setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
@@ -86,6 +87,7 @@ public class AutonomousOpMode extends LinearOpMode
         robot.GetLeft().setDirection(DcMotor.Direction.REVERSE);
         idle();
 
+        // Show the menu in the robot configuration to set the alliance color.
         robotConfiguration.ShowMenu();
 
         telemetry.addData("Waiting", "");
@@ -97,44 +99,51 @@ public class AutonomousOpMode extends LinearOpMode
         telemetry.addData("Starting", "now");
         telemetry.update();
 
+        // Moving the robot forward.
         robot.GetLeft().setTargetPosition(DriveDistance);
         robot.GetRight().setTargetPosition(DriveDistance);
 
+        // Setting the Power of the motors to 0.25.
         robot.GetLeft().setPower(0.25);
         robot.GetRight().setPower(0.25);
 
+        // Activate the Lift to go to a certian postion while the left and right motors are moving.
         robot.GetLift().setTargetPosition(LiftHeightPart1);
         robot.GetLift().setPower(1);
 
+        // Wait to reach the lift postion and add the telemetry while that is happening.
         while (robot.GetLift().isBusy())
         {
             telemetry.addData("Lift Position", "%d", robot.GetLift().getCurrentPosition());
             telemetry.update();
         }
 
+        // Setting the second lift height and starting the tilt.
         robot.GetLift().setTargetPosition(LiftHeightPart2);
         robot.GetTilt().setTargetPosition(TiltHeight);
         robot.GetTilt().setPower(.5);
+
+        // Activating the tilt and the lift and the same time
         while (robot.GetTilt().isBusy() || robot.GetLift().isBusy())
         {
             telemetry.addData("Tilt Postion", "%d", robot.GetTilt().getCurrentPosition());
             telemetry.update();
         }
 
-        sleep(1000);
+        // Opening and closing the claws. The sleep allows the claw to actually open and close.
         robot.GetClawL().setPower(-.25);
         sleep(500);
         robot.GetClawL().setPower(.25);
         sleep(500);
         robot.GetClawL().setPower(0);
 
-        sleep(1000);
         robot.GetClawR().setPower(.25);
         sleep(500);
         robot.GetClawR().setPower(-.25);
         sleep(500);
         robot.GetClawR().setPower(0);
 
+        // Start tilting the robot back.
         robot.GetTilt().setTargetPosition(TiltBack);
         while (robot.GetTilt().isBusy())
         {
@@ -142,6 +151,7 @@ public class AutonomousOpMode extends LinearOpMode
             telemetry.update();
         }
 
+        // Tilting the robot back while making the lift go down all the way.
         robot.GetTilt().setTargetPosition(0);
         robot.GetLift().setTargetPosition(0);
         while (robot.GetLift().isBusy() || robot.GetTilt().isBusy())
@@ -154,3 +164,4 @@ public class AutonomousOpMode extends LinearOpMode
         telemetry.update();
     }
 }
+// Done!
