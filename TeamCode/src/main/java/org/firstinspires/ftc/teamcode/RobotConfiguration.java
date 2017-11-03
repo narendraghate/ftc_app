@@ -27,7 +27,9 @@ public class RobotConfiguration {
         Blue,
         Red
     }
-    /* shows what the variables are equal to
+     /*
+     shows what the variables are equal to
+      */
     public RobotConfiguration(PieceOfCakeRobot robot, Gamepad gamepad, Telemetry telemetry)
     {
         _gamepad = gamepad;
@@ -35,7 +37,9 @@ public class RobotConfiguration {
         _allianceColor = AllianceColor.Blue;
         _robot = robot;
     }
-
+    /*
+    tell the computer/prints out on the screen your choice
+     */
     public AllianceColor getAllianceColor() {
         return _allianceColor;
     }
