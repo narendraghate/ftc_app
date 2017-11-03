@@ -66,6 +66,7 @@ public class PieceOfCakeRobot {
         SetColorSensor(colorSensor);
     }
 
+        // sets the .get for all variables
     public CRServo GetClawL() {
         return ClawL;
     }
@@ -110,6 +111,7 @@ public class PieceOfCakeRobot {
         return SafetyOff;
     }
 
+        // sets the .set for all variable
     private void SetClawR(CRServo crservo) {
         ClawR = crservo;
     }

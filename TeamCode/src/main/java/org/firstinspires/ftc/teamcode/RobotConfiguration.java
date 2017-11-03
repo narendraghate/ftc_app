@@ -14,7 +14,9 @@ import static android.os.SystemClock.sleep;
  */
 
 public class RobotConfiguration {
-
+    /*
+    sets variables for the class
+     */
     private Gamepad _gamepad;
     private Telemetry _telemetry;
     private AllianceColor _allianceColor;
@@ -25,7 +27,7 @@ public class RobotConfiguration {
         Blue,
         Red
     }
-
+    /* shows what the variables are equal to
     public RobotConfiguration(PieceOfCakeRobot robot, Gamepad gamepad, Telemetry telemetry)
     {
         _gamepad = gamepad;
@@ -37,6 +39,11 @@ public class RobotConfiguration {
     public AllianceColor getAllianceColor() {
         return _allianceColor;
     }
+
+        /*
+        if x is pressed it sets the alliancecolor to blue, if b is pressed it sets alliancecolor
+        to red, if a is pressed it breaks
+         */
 
     public void ShowMenu() {
         do {

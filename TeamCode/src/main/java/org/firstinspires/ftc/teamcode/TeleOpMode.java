@@ -110,7 +110,9 @@ public class TeleOpMode extends OpMode {
         telemetry.update();
     }
 
-    // Code written by William
+    /*
+    Makes the D-pad left turn the safety on, and the D-pad right changes the safety off
+     */
     private void CheckSafetyMode() {
         if (gamepad1.dpad_left) {
             robot.SetSafetyOff(false);
@@ -211,7 +213,9 @@ public class TeleOpMode extends OpMode {
         robot.GetSlide().setPower(SlidePower);
     }
 
-    // Code written by William
+    /*
+        Gives you the option of choosing your power setting for the robot drive control/ TeleOp arcade drive
+     */
     private void PowerPercent() {
         double PowerPercentage = robot.GetPowerPercentage();
 
