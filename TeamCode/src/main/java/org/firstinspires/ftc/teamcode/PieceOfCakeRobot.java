@@ -23,6 +23,7 @@ public class PieceOfCakeRobot {
     private ColorSensor ColorSensor = null;
     private boolean SafetyOff = false;
     private HardwareMap hwMap = null;
+    private boolean JewelControl = false;
 
     private double PowerPercentage = 1;
 
@@ -110,6 +111,9 @@ public class PieceOfCakeRobot {
     public boolean IsSafetyOff() {
         return SafetyOff;
     }
+    public boolean WhatJewel() {
+        return JewelControl;
+    }
 
         // sets the .set for all variable
     private void SetClawR(CRServo crservo) {
@@ -154,5 +158,8 @@ public class PieceOfCakeRobot {
 
     public void SetSafetyOff(boolean safetyOff) {
         SafetyOff = safetyOff;
+    }
+    public void ColorJewel(boolean jewelControl) {
+        JewelControl = jewelControl;
     }
 }
