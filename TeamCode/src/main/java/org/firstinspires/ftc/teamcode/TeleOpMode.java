@@ -57,13 +57,14 @@ import static android.R.attr.left;
 public class TeleOpMode extends OpMode {
 
     private PieceOfCakeRobot robot = new PieceOfCakeRobot();
-    static final int MaximumLiftHeight = 6040;
+    static final int MaximumLiftHeight = 6340;
     static final int MinimiumTiltLiftHeight = 5325;
     static final int NumberToTellWeAreInTilt = 200;
     static final int MaximumTiltBackPosition = -100;
 
     @Override
     public void init(){
+        // Alex: What is happening here?
         robot.init(hardwareMap);
 
         robot.GetTilt().setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -152,20 +153,24 @@ public class TeleOpMode extends OpMode {
         int currentLiftPosition = robot.GetLift().getCurrentPosition();
         int currentTiltPosition = robot.GetTilt().getCurrentPosition();
         // Checks to see if SafetyOff = true
+        // Alex: why?
         if (robot.IsSafetyOff()) {
             if (gamepad2.left_stick_y > 0) {
                 LiftPower = -(robot.GetLiftPowerPercentage());
             }
 
-            if ((gamepad2.left_stick_y < 0) && (currentLiftPosition < MaximumLiftHeight)) {
+            if (gamepad2.left_stick_y < 0) {
                 LiftPower = (robot.GetLiftPowerPercentage());
             }
         } else {
+            // Alex: What is happening here?
             if (currentTiltPosition > NumberToTellWeAreInTilt) {
+                // Alex: What is happening here?
                 if ((gamepad2.left_stick_y > 0) && (currentLiftPosition > MinimiumTiltLiftHeight)) {
                     LiftPower = -(robot.GetLiftPowerPercentage());
                 }
 
+                // Alex: What is happening here?
                 if ((gamepad2.left_stick_y < 0) && (currentLiftPosition < MaximumLiftHeight)) {
                     LiftPower = (robot.GetLiftPowerPercentage());
                 }
@@ -267,15 +272,17 @@ public class TeleOpMode extends OpMode {
         // Checks to see if SafetyOff = true
         if (robot.IsSafetyOff()) {
             //If SafetyOff = true
+            // Alex: What is happening here?
             if (gamepad2.dpad_left) {
                 TiltPower = 0.25;
             }
 
             if (gamepad2.dpad_right) {
-                TiltPower = -0.25;
+                TiltPower = -0.5;
             }
         } else{
             //If SafetyOff = False
+            // Alex: What is happening here?
             if ((currentLiftPosition >= MinimiumTiltLiftHeight) && (currentLiftPosition <= MaximumLiftHeight)) {
                 if (gamepad2.dpad_left) {
                     TiltPower = 0.25;
