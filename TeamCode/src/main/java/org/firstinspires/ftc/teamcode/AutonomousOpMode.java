@@ -34,6 +34,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.CompassSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -64,10 +65,12 @@ public class AutonomousOpMode extends LinearOpMode
     int LiftHeightPart2 = 5388;
     int TiltHeight = 3200;
     int TiltBack = 1250;
-    int DriveDistance = 400;
+    int DriveDistance = 0;
 
     @Override
     public void runOpMode() {
+        boolean OpenLeftClaw = false;
+        boolean OpenRightClaw = false;
         robot.init(hardwareMap);
 
         RobotConfiguration robotConfiguration = new RobotConfiguration(robot, gamepad1, telemetry);
@@ -131,18 +134,35 @@ public class AutonomousOpMode extends LinearOpMode
         }
 
         // Opening and closing the claws. The sleep allows the claw to actually open and close.
-        robot.GetClawL().setPower(-.25);
-        sleep(500);
-        robot.GetClawL().setPower(.25);
-        sleep(500);
-        robot.GetClawL().setPower(0);
+        if (robotConfiguration.getAllianceColor()== RobotConfiguration.AllianceColor.Blue) {
+            if (robot.GetColorSensor().red() > robot.GetColorSensor().blue()) {
+            OpenLeftClaw = true;
+            }else {
+                OpenRightClaw = true;
+            }
+        }else if (robotConfiguration.getAllianceColor()== RobotConfiguration.AllianceColor.Red){
+            if (robot.GetColorSensor().red() > robot.GetColorSensor().blue()) {
+            OpenRightClaw = true;
+            }else {
+                OpenLeftClaw = true;
+            }
+        }
 
-        robot.GetClawR().setPower(.25);
-        sleep(500);
-        robot.GetClawR().setPower(-.25);
-        sleep(500);
-        robot.GetClawR().setPower(0);
 
+            if  (OpenLeftClaw) {
+                robot.GetClawL().setPower(-.25);
+                sleep(500);
+                robot.GetClawL().setPower(.25);
+                sleep(500);
+                robot.GetClawL().setPower(0);
+            }
+            if (OpenRightClaw) {
+                robot.GetClawR().setPower(.25);
+                sleep(500);
+                robot.GetClawR().setPower(-.25);
+                sleep(500);
+                robot.GetClawR().setPower(0);
+            }
         // Start tilting the robot back.
         robot.GetTilt().setTargetPosition(TiltBack);
         while (robot.GetTilt().isBusy())
