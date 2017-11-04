@@ -57,10 +57,12 @@ import static android.R.attr.left;
 public class TeleOpMode extends OpMode {
 
     private PieceOfCakeRobot robot = new PieceOfCakeRobot();
-    static final int MaximumLiftHeight = 6340;
-    static final int MinimiumTiltLiftHeight = 5325;
+    static final int MaximumLiftHeight = 6076;
+    static final int MinimiumTiltLiftHeight = 5419;
     static final int NumberToTellWeAreInTilt = 200;
     static final int MaximumTiltBackPosition = -100;
+    // Bottom limit for lift
+    static final int MinimiumLiftHeight = 1000;
 
     @Override
     public void init(){
@@ -100,6 +102,8 @@ public class TeleOpMode extends OpMode {
 
         telemetry.addData("PowerPercentage", "%f", robot.GetPowerPercentage());
         telemetry.addData("LiftPercentage", "%f", robot.GetLiftPowerPercentage());
+        telemetry.addData("Gamepad2 LeftStick Position", "%f", gamepad2.left_stick_y);
+        telemetry.addData("Minimum Lift Height", "%d", MinimiumLiftHeight);
         if (robot.IsSafetyOff()) {
             telemetry.addData("Safety", "Off");
         } else {
@@ -176,7 +180,7 @@ public class TeleOpMode extends OpMode {
                 }
             } else {
                 //Not in tilt
-                if ((gamepad2.left_stick_y > 0)) {
+                if ((gamepad2.left_stick_y > 0) && (currentLiftPosition > MinimiumLiftHeight)) {
                     LiftPower = -(robot.GetLiftPowerPercentage());
                 }
                 // Makes the robot only go to a certain height
