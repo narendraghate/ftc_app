@@ -64,7 +64,7 @@ public class TeleOpMode extends OpMode {
 
     @Override
     public void init(){
-        // Alex: What is happening here?
+        //Reset motor encoders
         robot.init(hardwareMap);
 
         robot.GetTilt().setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -153,7 +153,7 @@ public class TeleOpMode extends OpMode {
         int currentLiftPosition = robot.GetLift().getCurrentPosition();
         int currentTiltPosition = robot.GetTilt().getCurrentPosition();
         // Checks to see if SafetyOff = true
-        // Alex: why?
+        // We can disable the boundaries of maximum lift height and tilt checks
         if (robot.IsSafetyOff()) {
             if (gamepad2.left_stick_y > 0) {
                 LiftPower = -(robot.GetLiftPowerPercentage());
@@ -163,22 +163,23 @@ public class TeleOpMode extends OpMode {
                 LiftPower = (robot.GetLiftPowerPercentage());
             }
         } else {
-            // Alex: What is happening here?
+            // If the tilt is more than the number to tell we are in tilt,
             if (currentTiltPosition > NumberToTellWeAreInTilt) {
-                // Alex: What is happening here?
+                // The robot can't go down too far because we have to be at a certain lift height in order to tilt
                 if ((gamepad2.left_stick_y > 0) && (currentLiftPosition > MinimiumTiltLiftHeight)) {
                     LiftPower = -(robot.GetLiftPowerPercentage());
                 }
 
-                // Alex: What is happening here?
+                // Makes the robot only go to a certain height
                 if ((gamepad2.left_stick_y < 0) && (currentLiftPosition < MaximumLiftHeight)) {
                     LiftPower = (robot.GetLiftPowerPercentage());
                 }
             } else {
+                //Not in tilt
                 if ((gamepad2.left_stick_y > 0)) {
                     LiftPower = -(robot.GetLiftPowerPercentage());
                 }
-
+                // Makes the robot only go to a certain height
                 if ((gamepad2.left_stick_y < 0) && (currentLiftPosition < MaximumLiftHeight)) {
                     LiftPower = (robot.GetLiftPowerPercentage());
                 }
@@ -271,8 +272,8 @@ public class TeleOpMode extends OpMode {
 
         // Checks to see if SafetyOff = true
         if (robot.IsSafetyOff()) {
-            //If SafetyOff = true
-            // Alex: What is happening here?
+            //Able to break the robot
+            //The gamepad can control the tilt
             if (gamepad2.dpad_left) {
                 TiltPower = 0.25;
             }
@@ -281,14 +282,14 @@ public class TeleOpMode extends OpMode {
                 TiltPower = -0.5;
             }
         } else{
-            //If SafetyOff = False
-            // Alex: What is happening here?
+            // Tilt can only work between max tilt height and min tilt height
             if ((currentLiftPosition >= MinimiumTiltLiftHeight) && (currentLiftPosition <= MaximumLiftHeight)) {
                 if (gamepad2.dpad_left) {
-                    TiltPower = 0.25;
+                    TiltPower = 0.5;
                 }
+                //Makes the robot unable to tilt back too far
                 if ((gamepad2.dpad_right) && (currentTiltPosition > MaximumTiltBackPosition)) {
-                    TiltPower = -0.25;
+                    TiltPower = -0.5;
                 }
             }
         }
