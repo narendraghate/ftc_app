@@ -57,12 +57,7 @@ import static android.R.attr.left;
 public class TeleOpMode extends OpMode {
 
     private PieceOfCakeRobot robot = new PieceOfCakeRobot();
-    static final int MaximumLiftHeight = 6076;
-    static final int MinimiumTiltLiftHeight = 5419;
     static final int NumberToTellWeAreInTilt = 200;
-    static final int MaximumTiltBackPosition = -100;
-    // Bottom limit for lift
-    static final int MinimiumLiftHeight = 1000;
 
     @Override
     public void init(){
@@ -103,7 +98,7 @@ public class TeleOpMode extends OpMode {
         telemetry.addData("PowerPercentage", "%f", robot.GetPowerPercentage());
         telemetry.addData("LiftPercentage", "%f", robot.GetLiftPowerPercentage());
         telemetry.addData("Gamepad2 LeftStick Position", "%f", gamepad2.left_stick_y);
-        telemetry.addData("Minimum Lift Height", "%d", MinimiumLiftHeight);
+        telemetry.addData("Minimum Lift Height", "%d", robot.GetMinLiftHeight());
         if (robot.IsSafetyOff()) {
             telemetry.addData("Safety", "Off");
         } else {
@@ -170,21 +165,21 @@ public class TeleOpMode extends OpMode {
             // If the tilt is more than the number to tell we are in tilt,
             if (currentTiltPosition > NumberToTellWeAreInTilt) {
                 // The robot can't go down too far because we have to be at a certain lift height in order to tilt
-                if ((gamepad2.left_stick_y > 0) && (currentLiftPosition > MinimiumTiltLiftHeight)) {
+                if ((gamepad2.left_stick_y > 0) && (currentLiftPosition > robot.GetMinLiftTiltHeight())) {
                     LiftPower = -(robot.GetLiftPowerPercentage());
                 }
 
                 // Makes the robot only go to a certain height
-                if ((gamepad2.left_stick_y < 0) && (currentLiftPosition < MaximumLiftHeight)) {
+                if ((gamepad2.left_stick_y < 0) && (currentLiftPosition < robot.GetMaxLiftHeight())) {
                     LiftPower = (robot.GetLiftPowerPercentage());
                 }
             } else {
                 //Not in tilt
-                if ((gamepad2.left_stick_y > 0) && (currentLiftPosition > MinimiumLiftHeight)) {
+                if ((gamepad2.left_stick_y > 0) && (currentLiftPosition > robot.GetMinLiftHeight())) {
                     LiftPower = -(robot.GetLiftPowerPercentage());
                 }
                 // Makes the robot only go to a certain height
-                if ((gamepad2.left_stick_y < 0) && (currentLiftPosition < MaximumLiftHeight)) {
+                if ((gamepad2.left_stick_y < 0) && (currentLiftPosition < robot.GetMaxLiftHeight())) {
                     LiftPower = (robot.GetLiftPowerPercentage());
                 }
             }
@@ -202,6 +197,7 @@ public class TeleOpMode extends OpMode {
         }
         if (gamepad2.b) {
             LiftPercentage = 0.5;
+
         }
         if (gamepad2.a) {
             LiftPercentage = 0.75;
@@ -287,12 +283,12 @@ public class TeleOpMode extends OpMode {
             }
         } else{
             // Tilt can only work between max tilt height and min tilt height
-            if ((currentLiftPosition >= MinimiumTiltLiftHeight) && (currentLiftPosition <= MaximumLiftHeight)) {
+            if ((currentLiftPosition >= robot.GetMinLiftTiltHeight()) && (currentLiftPosition <= robot.GetMaxLiftHeight())) {
                 if (gamepad2.dpad_left) {
                     TiltPower = 0.5;
                 }
                 //Makes the robot unable to tilt back too far
-                if ((gamepad2.dpad_right) && (currentTiltPosition > MaximumTiltBackPosition)) {
+                if (gamepad2.dpad_right)  {
                     TiltPower = -0.5;
                 }
             }
