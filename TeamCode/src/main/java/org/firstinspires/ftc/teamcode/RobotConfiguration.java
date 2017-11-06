@@ -9,9 +9,6 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 import static android.os.SystemClock.sleep;
 
-/**
- * Created by Shishir on 9/21/2017.
- */
 
 public class RobotConfiguration {
     /*
@@ -44,11 +41,10 @@ public class RobotConfiguration {
         return _allianceColor;
     }
 
-        /*
-        if x is pressed it sets the alliancecolor to blue, if b is pressed it sets alliancecolor
-        to red, if a is pressed it breaks
-         */
-
+    /*
+    if x is pressed it sets the alliancecolor to blue, if b is pressed it sets alliancecolor
+    to red, if a is pressed it breaks
+     */
     public void ShowMenu() {
         do {
             if (_gamepad.x) {

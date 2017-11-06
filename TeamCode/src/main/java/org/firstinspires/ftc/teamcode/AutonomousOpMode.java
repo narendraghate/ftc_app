@@ -62,7 +62,7 @@ public class AutonomousOpMode extends LinearOpMode
 {
     PieceOfCakeRobot robot   = new PieceOfCakeRobot();
     int LiftHeightPart1 = 3388;
-    int LiftHeightPart2 = 5388;
+    int LiftHeightPart2 = 5588;
     int TiltHeight = 3070;
     int TiltBack = 1250;
     int DriveDistance = 400;
@@ -136,40 +136,43 @@ public class AutonomousOpMode extends LinearOpMode
         // Opening and closing the claws. The sleep allows the claw to actually open and close.
         if (robotConfiguration.getAllianceColor()== RobotConfiguration.AllianceColor.Blue) {
             if (robot.GetColorSensor().red() > 30) {
-            OpenLeftClaw = true;
+                OpenLeftClaw = true;
             }else {
                 OpenRightClaw = true;
             }
         }else if (robotConfiguration.getAllianceColor()== RobotConfiguration.AllianceColor.Red){
             if (robot.GetColorSensor().red() > 30) {
-            OpenRightClaw = true;
+                OpenRightClaw = true;
             }else {
                 OpenLeftClaw = true;
             }
         }
-            //Blue
-            // R = 22-21
-            // G = 14-13
-            // B = 12-11
 
-            //Red
-            // R = 25-24
-            // G = 13-12
-            // B = 12-11
-            if  (OpenLeftClaw) {
-                robot.GetClawL().setPower(-1);
-                sleep(3000);
-                robot.GetClawL().setPower(1);
-                sleep(3000);
-                robot.GetClawL().setPower(0);
-            }
-            if (OpenRightClaw) {
-                robot.GetClawR().setPower(1);
-                sleep(3000);
-                robot.GetClawR().setPower(-1);
-                sleep(3000);
-                robot.GetClawR().setPower(0);
-            }
+        //Blue
+        // R = 22-21
+        // G = 14-13
+        // B = 12-11
+
+        //Red
+        // R = 25-24
+        // G = 13-12
+        // B = 12-11
+        if  (OpenLeftClaw) {
+            robot.GetClawL().setPower(-.5);
+            sleep(3000);
+            robot.GetClawL().setPower(.5);
+            sleep(3000);
+            robot.GetClawL().setPower(0);
+        }
+
+        if (OpenRightClaw) {
+            robot.GetClawR().setPower(.5);
+            sleep(3000);
+            robot.GetClawR().setPower(-5);
+            sleep(3000);
+            robot.GetClawR().setPower(0);
+        }
+
         // Start tilting the robot back.
         robot.GetTilt().setTargetPosition(TiltBack);
         while (robot.GetTilt().isBusy())
