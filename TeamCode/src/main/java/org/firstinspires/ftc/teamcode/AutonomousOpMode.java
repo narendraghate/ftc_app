@@ -110,11 +110,11 @@ public class AutonomousOpMode extends LinearOpMode
         robot.GetLeft().setPower(0.25);
         robot.GetRight().setPower(0.25);
 
-        // Activate the Lift to go to a certian postion while the left and right motors are moving.
+        // Activate the Lift to go to a certain position while the left and right motors are moving.
         robot.GetLift().setTargetPosition(LiftHeightPart1);
         robot.GetLift().setPower(1);
 
-        // Wait to reach the lift postion and add the telemetry while that is happening.
+        // Wait to reach the lift position and add the telemetry while that is happening.
         while (robot.GetLift().isBusy())
         {
             telemetry.addData("Lift Position", "%d", robot.GetLift().getCurrentPosition());
@@ -129,7 +129,7 @@ public class AutonomousOpMode extends LinearOpMode
         // Activating the tilt and the lift and the same time
         while (robot.GetTilt().isBusy() || robot.GetLift().isBusy())
         {
-            telemetry.addData("Tilt Postion", "%d", robot.GetTilt().getCurrentPosition());
+            telemetry.addData("Tilt Position", "%d", robot.GetTilt().getCurrentPosition());
             telemetry.update();
         }
 
@@ -177,7 +177,7 @@ public class AutonomousOpMode extends LinearOpMode
         robot.GetTilt().setTargetPosition(TiltBack);
         while (robot.GetTilt().isBusy())
         {
-            telemetry.addData("Tilt Postion", "%d", robot.GetTilt().getCurrentPosition());
+            telemetry.addData("Tilt Position", "%d", robot.GetTilt().getCurrentPosition());
             telemetry.update();
         }
 
