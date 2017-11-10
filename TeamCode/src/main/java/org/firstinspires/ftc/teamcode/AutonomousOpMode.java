@@ -63,9 +63,10 @@ public class AutonomousOpMode extends LinearOpMode
     PieceOfCakeRobot robot   = new PieceOfCakeRobot();
     int LiftHeightPart1 = 3388;
     int LiftHeightPart2 = 5588;
-    int TiltHeight = 3070;
+    int TiltHeight = 2850;
     int TiltBack = 1250;
-    int DriveDistance = 400;
+    int DriveDistance = 700;
+    int RedColorValue = 50;
 
     @Override
     public void runOpMode() {
@@ -135,13 +136,13 @@ public class AutonomousOpMode extends LinearOpMode
 
         // Opening and closing the claws. The sleep allows the claw to actually open and close.
         if (robotConfiguration.getAllianceColor()== RobotConfiguration.AllianceColor.Blue) {
-            if (robot.GetColorSensor().red() > 30) {
+            if (robot.GetColorSensor().red() > RedColorValue) {
                 OpenLeftClaw = true;
             }else {
                 OpenRightClaw = true;
             }
         }else if (robotConfiguration.getAllianceColor()== RobotConfiguration.AllianceColor.Red){
-            if (robot.GetColorSensor().red() > 30) {
+            if (robot.GetColorSensor().red() > RedColorValue) {
                 OpenRightClaw = true;
             }else {
                 OpenLeftClaw = true;
@@ -158,17 +159,17 @@ public class AutonomousOpMode extends LinearOpMode
         // G = 13-12
         // B = 12-11
         if  (OpenLeftClaw) {
-            robot.GetClawL().setPower(-.5);
+            robot.GetClawL().setPower(-.9);
             sleep(3000);
-            robot.GetClawL().setPower(.5);
+            robot.GetClawL().setPower(.9);
             sleep(3000);
             robot.GetClawL().setPower(0);
         }
 
         if (OpenRightClaw) {
-            robot.GetClawR().setPower(.5);
+            robot.GetClawR().setPower(.9);
             sleep(3000);
-            robot.GetClawR().setPower(-5);
+            robot.GetClawR().setPower(-.9);
             sleep(3000);
             robot.GetClawR().setPower(0);
         }
