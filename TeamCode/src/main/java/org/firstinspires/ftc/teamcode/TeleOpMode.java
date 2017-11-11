@@ -165,21 +165,21 @@ public class TeleOpMode extends OpMode {
             // If the tilt is more than the number to tell we are in tilt,
             if (currentTiltPosition > NumberToTellWeAreInTilt) {
                 // The robot can't go down too far because we have to be at a certain lift height in order to tilt
-                if ((gamepad2.left_stick_y > 0) && (currentLiftPosition > robot.GetMinLiftTiltHeight())) {
+                if (gamepad2.left_stick_y > 0)  {
                     LiftPower = -(robot.GetLiftPowerPercentage());
                 }
 
                 // Makes the robot only go to a certain height
-                if ((gamepad2.left_stick_y < 0) && (currentLiftPosition < robot.GetMaxLiftHeight())) {
+                if (gamepad2.left_stick_y < 0)  {
                     LiftPower = (robot.GetLiftPowerPercentage());
                 }
             } else {
                 //Not in tilt
-                if ((gamepad2.left_stick_y > 0) && (currentLiftPosition > robot.GetMinLiftHeight())) {
+                if (gamepad2.left_stick_y > 0) {
                     LiftPower = -(robot.GetLiftPowerPercentage());
                 }
                 // Makes the robot only go to a certain height
-                if ((gamepad2.left_stick_y < 0) && (currentLiftPosition < robot.GetMaxLiftHeight())) {
+                if (gamepad2.left_stick_y < 0) {
                     LiftPower = (robot.GetLiftPowerPercentage());
                 }
             }
