@@ -123,7 +123,7 @@ public class TeleOpMode extends OpMode {
         }
     }
 
-    // Code written by Narendra
+    // Sets power for claws when the bumpers are pressed
     private void ProcessClaw() {
         double leftClawPower = 0.0;
         double rightClawPower = 0.0;
