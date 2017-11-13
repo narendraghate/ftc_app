@@ -62,11 +62,10 @@ public class AutonomousOpMode extends LinearOpMode
 {
     PieceOfCakeRobot robot   = new PieceOfCakeRobot();
     int LiftHeightPart1 = 3388;
-    int LiftHeightPart2 = 5588;
+    int LiftHeightPart2 = 5788;
     int TiltHeight = 2850;
     int TiltBack = 1250;
-    int DriveDistance = 700;
-    int RedColorValue = 50;
+    int DriveDistance = 400;
 
     @Override
     public void runOpMode() {
@@ -131,18 +130,19 @@ public class AutonomousOpMode extends LinearOpMode
         while (robot.GetTilt().isBusy() || robot.GetLift().isBusy())
         {
             telemetry.addData("Tilt Position", "%d", robot.GetTilt().getCurrentPosition());
+            telemetry.addData("Lift Position", "%d", robot.GetLift().getCurrentPosition());
             telemetry.update();
         }
 
         // Opening and closing the claws. The sleep allows the claw to actually open and close.
         if (robotConfiguration.getAllianceColor()== RobotConfiguration.AllianceColor.Blue) {
-            if (robot.GetColorSensor().red() > RedColorValue) {
+            if (robot.GetLeftColorSensor().red() > robot.GetRightColorSensor().red()) {
                 OpenLeftClaw = true;
             }else {
                 OpenRightClaw = true;
             }
         }else if (robotConfiguration.getAllianceColor()== RobotConfiguration.AllianceColor.Red){
-            if (robot.GetColorSensor().red() > RedColorValue) {
+            if (robot.GetLeftColorSensor().red() > robot.GetRightColorSensor().red()) {
                 OpenRightClaw = true;
             }else {
                 OpenLeftClaw = true;
@@ -191,6 +191,19 @@ public class AutonomousOpMode extends LinearOpMode
             telemetry.update();
         }
 
+        // turn left takes 1089
+        // turn right takes -1120
+        /*
+        robot.GetLeft().setTargetPosition(1489);
+        robot.GetRight().setTargetPosition(-720);
+
+        while (robot.GetLeft().isBusy() || robot.GetRight().isBusy())
+        {
+            telemetry.addData("Left Position", "%d", robot.GetLeft().getCurrentPosition());
+            telemetry.addData("Right Position", "%d", robot.GetRight().getCurrentPosition());
+            telemetry.update();
+        }
+        */
         telemetry.addData("Status","Finished");
         telemetry.update();
     }

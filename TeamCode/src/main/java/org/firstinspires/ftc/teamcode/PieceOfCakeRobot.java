@@ -20,7 +20,8 @@ public class PieceOfCakeRobot {
     private DcMotor Lift = null;
     private DcMotor Slide = null;
     private DcMotor Tilt = null;
-    private ColorSensor ColorSensor = null;
+    private ColorSensor LeftColorSensor = null;
+    private ColorSensor RightColorSensor = null;
     private boolean SafetyOff = false;
     private HardwareMap hwMap = null;
     private boolean JewelControl = false;
@@ -65,8 +66,11 @@ public class PieceOfCakeRobot {
         dcMotor = hwMap.dcMotor.get("slide");
         SetSlide(dcMotor);
 
-        colorSensor = hwMap.colorSensor.get("colorsensor");
-        SetColorSensor(colorSensor);
+        colorSensor = hwMap.colorSensor.get("leftcolorsensor");
+        SetLeftColorSensor(colorSensor);
+
+        colorSensor = hwMap.colorSensor.get("rightcolorsensor");
+        SetRightColorSensor(colorSensor);
 
 
     }
@@ -100,9 +104,11 @@ public class PieceOfCakeRobot {
         return Tilt;
     }
 
-    public ColorSensor GetColorSensor() {
-        return ColorSensor;
+    public ColorSensor GetLeftColorSensor() {
+        return LeftColorSensor;
     }
+
+    public ColorSensor GetRightColorSensor() { return RightColorSensor;}
 
     public Double GetPowerPercentage() {
         return PowerPercentage;
@@ -151,9 +157,11 @@ public class PieceOfCakeRobot {
         Tilt = dcMotor;
     }
 
-    private void SetColorSensor(ColorSensor colorSensor) {
-        ColorSensor = colorSensor;
+    private void SetLeftColorSensor(ColorSensor colorSensor) {
+        LeftColorSensor = colorSensor;
     }
+
+    private void SetRightColorSensor(ColorSensor colorSensor) { RightColorSensor = colorSensor; }
 
     public void SetPowerPercentage(Double powerPercentage) {
         PowerPercentage = powerPercentage;

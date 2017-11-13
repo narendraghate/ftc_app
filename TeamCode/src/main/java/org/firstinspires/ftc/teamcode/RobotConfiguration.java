@@ -60,7 +60,8 @@ public class RobotConfiguration {
             }
 
             _telemetry.addData("Menu", "x = Blue, b = Red, a = Lock in");
-            _telemetry.addData("Color", "Red = %d, Green = %d, Blue = %d", _robot.GetColorSensor().red(), _robot.GetColorSensor().green(), _robot.GetColorSensor().blue());
+            _telemetry.addData("Left Color", "Red = %d, Green = %d, Blue = %d", _robot.GetLeftColorSensor().red(), _robot.GetLeftColorSensor().green(), _robot.GetLeftColorSensor().blue());
+            _telemetry.addData("Right Color", "Red = %d, Green = %d, Blue = %d", _robot.GetRightColorSensor().red(), _robot.GetRightColorSensor().green(), _robot.GetRightColorSensor().blue());
             _telemetry.addData("Alliance color is", "%s", _allianceColor);
             _telemetry.update();
         } while (true);
