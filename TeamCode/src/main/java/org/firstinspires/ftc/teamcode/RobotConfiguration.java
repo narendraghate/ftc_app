@@ -18,11 +18,18 @@ public class RobotConfiguration {
     private Telemetry _telemetry;
     private AllianceColor _allianceColor;
     private PieceOfCakeRobot _robot;
+    private TurnDirection _turnDirection;
 
     public enum AllianceColor
     {
         Blue,
         Red
+    }
+
+    public enum TurnDirection
+    {
+        Left,
+        Right
     }
      /*
      shows what the variables are equal to
@@ -33,6 +40,7 @@ public class RobotConfiguration {
         _telemetry = telemetry;
         _allianceColor = AllianceColor.Blue;
         _robot = robot;
+        _turnDirection = TurnDirection.Left;
     }
     /*
     tell the computer/prints out on the screen your choice
@@ -40,6 +48,8 @@ public class RobotConfiguration {
     public AllianceColor getAllianceColor() {
         return _allianceColor;
     }
+
+    public TurnDirection getTurnDirection() { return _turnDirection; }
 
     /*
     if x is pressed it sets the alliancecolor to blue, if b is pressed it sets alliancecolor
@@ -55,14 +65,28 @@ public class RobotConfiguration {
                 _allianceColor = AllianceColor.Red;
             }
 
+            if (_gamepad.dpad_left) {
+                _turnDirection = TurnDirection.Left;
+            }
+
+            if (_gamepad.dpad_right) {
+                _turnDirection = TurnDirection.Right;
+            }
+
             if (_gamepad.a) {
                 break;
             }
 
-            _telemetry.addData("Menu", "x = Blue, b = Red, a = Lock in");
+            _telemetry.addData("Menu", "x = Blue, b = Red, dpl = turn left, dpr = turn right");
+            _telemetry.addData("Menu", "a = Lock in");
             _telemetry.addData("Left Color", "Red = %d, Green = %d, Blue = %d", _robot.GetLeftColorSensor().red(), _robot.GetLeftColorSensor().green(), _robot.GetLeftColorSensor().blue());
             _telemetry.addData("Right Color", "Red = %d, Green = %d, Blue = %d", _robot.GetRightColorSensor().red(), _robot.GetRightColorSensor().green(), _robot.GetRightColorSensor().blue());
             _telemetry.addData("Alliance color is", "%s", _allianceColor);
+            if (_turnDirection == TurnDirection.Left) {
+                _telemetry.addData("Turning Left", "when facing the wall");
+            } else {
+                _telemetry.addData("Turning Right", "when facing the wall");
+            }
             _telemetry.update();
         } while (true);
     }
