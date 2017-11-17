@@ -193,14 +193,14 @@ public class AutonomousOpMode extends LinearOpMode
 
         // turn left takes 1089
         // turn right takes -1120
-        if (robotConfiguration.getTurnDirection() == RobotConfiguration.TurnDirection.Left) {
-            // turn right when facing the wall
-            robot.GetLeft().setTargetPosition(-720);
-            robot.GetRight().setTargetPosition(1489);
-        } else {
+        if (robotConfiguration.getTurnDirection() == RobotConfiguration.TurnDirection.Right) {
             // turn left when facing the wall
-            robot.GetLeft().setTargetPosition(1489);
-            robot.GetRight().setTargetPosition(-720);
+            robot.GetLeft().setTargetPosition(-920);
+            robot.GetRight().setTargetPosition(1689);
+        } else {
+            // turn right when facing the wall
+            robot.GetLeft().setTargetPosition(1689);
+            robot.GetRight().setTargetPosition(-920);
         }
 
         // waiting for the turn to finish
@@ -213,12 +213,13 @@ public class AutonomousOpMode extends LinearOpMode
 
         // sleep so we can get off balancing stone
         sleep(500);
-        if (robotConfiguration.getTurnDirection() == RobotConfiguration.TurnDirection.Left) {
             robot.GetLeft().setTargetPosition(880);
-            robot.GetRight().setTargetPosition(3089);
+        if (robotConfiguration.getTurnDirection() == RobotConfiguration.TurnDirection.Right) {
+            robot.GetLeft().setTargetPosition(580);
+            robot.GetRight().setTargetPosition(3889);
         } else {
-           robot.GetLeft().setTargetPosition(3089);
-           robot.GetRight().setTargetPosition(880);
+           robot.GetLeft().setTargetPosition(3889);
+           robot.GetRight().setTargetPosition(580);
         }
 
         // waiting for the robot to go forward
