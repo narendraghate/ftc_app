@@ -134,7 +134,6 @@ public class AutonomousOpMode extends LinearOpMode
             telemetry.update();
         }
 
-        // Opening and closing the claws. The sleep allows the claw to actually open and close.
         if (robotConfiguration.getAllianceColor()== RobotConfiguration.AllianceColor.Blue) {
             if (robot.GetLeftColorSensor().red() > robot.GetRightColorSensor().red()) {
                 OpenLeftClaw = true;
@@ -149,15 +148,7 @@ public class AutonomousOpMode extends LinearOpMode
             }
         }
 
-        //Blue
-        // R = 22-21
-        // G = 14-13
-        // B = 12-11
-
-        //Red
-        // R = 25-24
-        // G = 13-12
-        // B = 12-11
+        // Opening and closing the claws. The sleep allows the claw to actually open and close.
         if  (OpenLeftClaw) {
             robot.GetClawL().setPower(-.9);
             sleep(3000);
@@ -191,42 +182,59 @@ public class AutonomousOpMode extends LinearOpMode
             telemetry.update();
         }
 
-        // turn left takes 1089
-        // turn right takes -1120
-        if (robotConfiguration.getTurnDirection() == RobotConfiguration.TurnDirection.Right) {
-            // turn left when facing the wall
-            robot.GetLeft().setTargetPosition(-920);
-            robot.GetRight().setTargetPosition(1689);
-        } else {
-            // turn right when facing the wall
-            robot.GetLeft().setTargetPosition(1689);
-            robot.GetRight().setTargetPosition(-920);
-        }
+        // Try and go to a safe zone
+        if (robotConfiguration.getTurnDirection() != RobotConfiguration.TurnDirection.None) {
+            // turn left takes 1089
+            // turn right takes -1120
+            if ((robotConfiguration.getTurnDirection() == RobotConfiguration.TurnDirection.Right) ||
+                    (robotConfiguration.getTurnDirection() == RobotConfiguration.TurnDirection.FarRight)) {
+                robot.GetLeft().setTargetPosition(-920);
+                robot.GetRight().setTargetPosition(1689);
+            } else {
+                robot.GetLeft().setTargetPosition(1689);
+                robot.GetRight().setTargetPosition(-920);
+            }
 
-        // waiting for the turn to finish
-        while (robot.GetLeft().isBusy() || robot.GetRight().isBusy())
-        {
-            telemetry.addData("Left Position", "%d", robot.GetLeft().getCurrentPosition());
-            telemetry.addData("Right Position", "%d", robot.GetRight().getCurrentPosition());
-            telemetry.update();
-        }
+            // waiting for the turn to finish
+            while (robot.GetLeft().isBusy() || robot.GetRight().isBusy()) {
+                telemetry.addData("Left Position", "%d", robot.GetLeft().getCurrentPosition());
+                telemetry.addData("Right Position", "%d", robot.GetRight().getCurrentPosition());
+                telemetry.update();
+            }
 
-        // sleep so we can get off balancing stone
-        sleep(500);
-        if (robotConfiguration.getTurnDirection() == RobotConfiguration.TurnDirection.Right) {
-            robot.GetLeft().setTargetPosition(580);
-            robot.GetRight().setTargetPosition(3889);
-        } else {
-           robot.GetLeft().setTargetPosition(3889);
-           robot.GetRight().setTargetPosition(580);
-        }
+            // sleep so we can get off balancing stone
+            sleep(500);
+            if ((robotConfiguration.getTurnDirection() == RobotConfiguration.TurnDirection.Right) ||
+                    (robotConfiguration.getTurnDirection() == RobotConfiguration.TurnDirection.FarRight)) {
+                robot.GetLeft().setTargetPosition(580);
+                robot.GetRight().setTargetPosition(3889);
+            } else {
+                robot.GetLeft().setTargetPosition(3889);
+                robot.GetRight().setTargetPosition(580);
+            }
 
-        // waiting for the robot to go forward
-        while (robot.GetLeft().isBusy() || robot.GetRight().isBusy())
-        {
-            telemetry.addData("Left Position", "%d", robot.GetLeft().getCurrentPosition());
-            telemetry.addData("Right Position", "%d", robot.GetRight().getCurrentPosition());
-            telemetry.update();
+            // waiting for the robot to go forward
+            while (robot.GetLeft().isBusy() || robot.GetRight().isBusy()) {
+                telemetry.addData("Left Position", "%d", robot.GetLeft().getCurrentPosition());
+                telemetry.addData("Right Position", "%d", robot.GetRight().getCurrentPosition());
+                telemetry.update();
+            }
+
+            // The back ones are further away so drive farther
+            if (robotConfiguration.getTurnDirection() == RobotConfiguration.TurnDirection.FarRight) {
+                robot.GetLeft().setTargetPosition(980);
+                robot.GetRight().setTargetPosition(4289);
+            } else if (robotConfiguration.getTurnDirection() == RobotConfiguration.TurnDirection.FarLeft) {
+                robot.GetLeft().setTargetPosition(4289);
+                robot.GetRight().setTargetPosition(980);
+            }
+
+            // waiting for the robot to go forward
+            while (robot.GetLeft().isBusy() || robot.GetRight().isBusy()) {
+                telemetry.addData("Left Position", "%d", robot.GetLeft().getCurrentPosition());
+                telemetry.addData("Right Position", "%d", robot.GetRight().getCurrentPosition());
+                telemetry.update();
+            }
         }
 
         telemetry.addData("Status","Finished");
