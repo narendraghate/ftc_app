@@ -65,7 +65,7 @@ public class AutonomousOpMode extends LinearOpMode
     int LiftHeightPart2 = 5788;
     int TiltHeight = 2850;
     int TiltBack = 1250;
-    int DriveDistance = 400;
+    int DriveDistance = 200;
 
     @Override
     public void runOpMode() {
@@ -213,7 +213,6 @@ public class AutonomousOpMode extends LinearOpMode
 
         // sleep so we can get off balancing stone
         sleep(500);
-            robot.GetLeft().setTargetPosition(880);
         if (robotConfiguration.getTurnDirection() == RobotConfiguration.TurnDirection.Right) {
             robot.GetLeft().setTargetPosition(580);
             robot.GetRight().setTargetPosition(3889);
