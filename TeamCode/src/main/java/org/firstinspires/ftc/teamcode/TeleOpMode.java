@@ -87,7 +87,6 @@ public class TeleOpMode extends OpMode {
         PowerPercent();
         LiftPercent();
         SlideControl();
-        CheckSafetyMode();
         
         telemetry.addData("Tilt", "%d", robot.GetTilt().getCurrentPosition());
         telemetry.addData("Lift", "%d", robot.GetLift().getCurrentPosition());
@@ -97,29 +96,12 @@ public class TeleOpMode extends OpMode {
 
         telemetry.addData("PowerPercentage", "%f", robot.GetPowerPercentage());
         telemetry.addData("LiftPercentage", "%f", robot.GetLiftPowerPercentage());
-        if (robot.IsSafetyOff()) {
-            telemetry.addData("Safety", "Off");
-        } else {
-            telemetry.addData("Safety", "On");
-        }
 
         // this should always be the last line so any telemetry that wes done in other
         // methods is displayed
         telemetry.update();
     }
 
-    /*
-    Makes the D-pad left turn the safety on, and the D-pad right changes the safety off
-     */
-    private void CheckSafetyMode() {
-        if (gamepad1.dpad_left) {
-            robot.SetSafetyOff(false);
-        }
-
-        if (gamepad1.dpad_right) {
-            robot.SetSafetyOff(true);
-        }
-    }
 
     // Code written by Narendra
     private void ProcessClaw() {
@@ -141,17 +123,13 @@ public class TeleOpMode extends OpMode {
         robot.GetClawR().setPower(rightClawPower);
     }
 
-    /*
-        LiftControl method checks for safety (Min/Max checks) so that the lift doesn't run off the track
-     */
+
     private void LiftControl() {
         // Sets initial power
         double LiftPower = 0.0;
         int currentLiftPosition = robot.GetLift().getCurrentPosition();
         int currentTiltPosition = robot.GetTilt().getCurrentPosition();
-        // Checks to see if SafetyOff = true
         // We can disable the boundaries of maximum lift height and tilt checks
-        if (robot.IsSafetyOff()) {
             if (gamepad2.left_stick_y > 0) {
                 LiftPower = -(robot.GetLiftPowerPercentage());
             }
@@ -159,7 +137,7 @@ public class TeleOpMode extends OpMode {
             if (gamepad2.left_stick_y < 0) {
                 LiftPower = (robot.GetLiftPowerPercentage());
             }
-        } else {
+          {
             // If the tilt is more than the number to tell we are in tilt,
             if (currentTiltPosition > NumberToTellWeAreInTilt) {
                 // The robot can't go down too far because we have to be at a certain lift height in order to tilt
@@ -209,7 +187,7 @@ public class TeleOpMode extends OpMode {
 
     // Code written by Narendra
     private void SlideControl() {
-        double SlidePower = 0.0;
+        double SlidePower;
 
         SlidePower = gamepad1.right_stick_x * robot.GetPowerPercentage();
         SlidePower = Range.clip(SlidePower, -1, 1);
@@ -268,30 +246,18 @@ public class TeleOpMode extends OpMode {
         long currentLiftPosition = robot.GetLift().getCurrentPosition();
         long currentTiltPosition = robot.GetTilt().getCurrentPosition();
 
-        // Checks to see if SafetyOff = true
-        if (robot.IsSafetyOff()) {
-            //Able to break the robot
+        {
             //The gamepad can control the tilt
             if (gamepad2.dpad_left) {
-                TiltPower = 0.25;
+                TiltPower = 0.5;
             }
 
             if (gamepad2.dpad_right) {
                 TiltPower = -0.5;
             }
-        } else{
-            // Tilt can only work between max tilt height and min tilt height
-            if (currentLiftPosition >= robot.GetMinLiftTiltHeight()) {
-                if (gamepad2.dpad_left) {
-                    TiltPower = 0.5;
-                }
-                //Makes the robot unable to tilt back too far
-                if (gamepad2.dpad_right)  {
-                    TiltPower = -0.5;
-                }
-            }
-        }
 
-        robot.GetTilt().setPower(TiltPower);
+
+            robot.GetTilt().setPower(TiltPower);
+        }
     }
 }
