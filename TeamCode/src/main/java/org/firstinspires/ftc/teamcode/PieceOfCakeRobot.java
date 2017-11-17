@@ -22,7 +22,6 @@ public class PieceOfCakeRobot {
     private DcMotor Tilt = null;
     private ColorSensor LeftColorSensor = null;
     private ColorSensor RightColorSensor = null;
-    private boolean SafetyOff = false;
     private HardwareMap hwMap = null;
     private boolean JewelControl = false;
     private int MaxLiftHeight = 6076;
@@ -118,9 +117,6 @@ public class PieceOfCakeRobot {
         return LiftPercentage;
     }
 
-    public boolean IsSafetyOff() {
-        return SafetyOff;
-    }
 
     public int GetMaxLiftHeight() { return MaxLiftHeight; }
 
@@ -171,9 +167,6 @@ public class PieceOfCakeRobot {
         LiftPercentage = liftPercentage;
     }
 
-    public void SetSafetyOff(boolean safetyOff) {
-        SafetyOff = safetyOff;
-    }
     public void ColorJewel(boolean jewelControl) {
         JewelControl = jewelControl;
     }
