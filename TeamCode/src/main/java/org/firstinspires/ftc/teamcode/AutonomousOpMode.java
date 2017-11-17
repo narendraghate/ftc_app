@@ -193,17 +193,42 @@ public class AutonomousOpMode extends LinearOpMode
 
         // turn left takes 1089
         // turn right takes -1120
-        /*
-        robot.GetLeft().setTargetPosition(1489);
-        robot.GetRight().setTargetPosition(-720);
+        if (robotConfiguration.getTurnDirection() == RobotConfiguration.TurnDirection.Left) {
+            // turn right when facing the wall
+            robot.GetLeft().setTargetPosition(-720);
+            robot.GetRight().setTargetPosition(1489);
+        } else {
+            // turn left when facing the wall
+            robot.GetLeft().setTargetPosition(1489);
+            robot.GetRight().setTargetPosition(-720);
+        }
 
+        // waiting for the turn to finish
         while (robot.GetLeft().isBusy() || robot.GetRight().isBusy())
         {
             telemetry.addData("Left Position", "%d", robot.GetLeft().getCurrentPosition());
             telemetry.addData("Right Position", "%d", robot.GetRight().getCurrentPosition());
             telemetry.update();
         }
-        */
+
+        // sleep so we can get off balancing stone
+        sleep(500);
+        if (robotConfiguration.getTurnDirection() == RobotConfiguration.TurnDirection.Left) {
+            robot.GetLeft().setTargetPosition(880);
+            robot.GetRight().setTargetPosition(3089);
+        } else {
+           robot.GetLeft().setTargetPosition(3089);
+           robot.GetRight().setTargetPosition(880);
+        }
+
+        // waiting for the robot to go forward
+        while (robot.GetLeft().isBusy() || robot.GetRight().isBusy())
+        {
+            telemetry.addData("Left Position", "%d", robot.GetLeft().getCurrentPosition());
+            telemetry.addData("Right Position", "%d", robot.GetRight().getCurrentPosition());
+            telemetry.update();
+        }
+
         telemetry.addData("Status","Finished");
         telemetry.update();
     }
