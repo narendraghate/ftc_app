@@ -65,7 +65,7 @@ public class AutonomousOpMode extends LinearOpMode
     int LiftHeightPart2 = 5788;
     int TiltHeight = 2850;
     int TiltBack = 1250;
-    int DriveDistance = 200;
+    int DriveDistance = 150;
 
     @Override
     public void runOpMode() {
@@ -151,17 +151,17 @@ public class AutonomousOpMode extends LinearOpMode
         // Opening and closing the claws. The sleep allows the claw to actually open and close.
         if  (OpenLeftClaw) {
             robot.GetClawL().setPower(-.9);
-            sleep(3000);
+            sleep(4000);
             robot.GetClawL().setPower(.9);
-            sleep(3000);
+            sleep(4200);
             robot.GetClawL().setPower(0);
         }
 
         if (OpenRightClaw) {
             robot.GetClawR().setPower(.9);
-            sleep(3000);
+            sleep(4000);
             robot.GetClawR().setPower(-.9);
-            sleep(3000);
+            sleep(4200);
             robot.GetClawR().setPower(0);
         }
 
@@ -222,11 +222,11 @@ public class AutonomousOpMode extends LinearOpMode
 
             // The back ones are further away so drive farther
             if (robotConfiguration.getTurnDirection() == RobotConfiguration.TurnDirection.FarRight) {
-                robot.GetLeft().setTargetPosition(980);
-                robot.GetRight().setTargetPosition(4289);
+                robot.GetLeft().setTargetPosition(1280);
+                robot.GetRight().setTargetPosition(4589);
             } else if (robotConfiguration.getTurnDirection() == RobotConfiguration.TurnDirection.FarLeft) {
-                robot.GetLeft().setTargetPosition(4289);
-                robot.GetRight().setTargetPosition(980);
+                robot.GetLeft().setTargetPosition(4589);
+                robot.GetRight().setTargetPosition(1280);
             }
 
             // waiting for the robot to go forward
