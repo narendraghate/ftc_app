@@ -92,10 +92,10 @@ public class RobotConfiguration {
                 break;
             }
 
-            _telemetry.addData("Menu", "x = Blue, b = Red, dpl = turn left, dpr = turn right");
-            _telemetry.addData("Menu", "a = Lock in");
-            _telemetry.addData("Left Color", "Red = %d, Green = %d, Blue = %d", _robot.GetLeftColorSensor().red(), _robot.GetLeftColorSensor().green(), _robot.GetLeftColorSensor().blue());
-            _telemetry.addData("Right Color", "Red = %d, Green = %d, Blue = %d", _robot.GetRightColorSensor().red(), _robot.GetRightColorSensor().green(), _robot.GetRightColorSensor().blue());
+            _telemetry.addData("Menu", "x = Blue, b = Red");
+            _telemetry.addData("Menu", "dpl = turn left, dpu = turn far left");
+            _telemetry.addData("Menu", "dpr = turn right, dpd = turn far right");
+            _telemetry.addData("Menu", "y = no turn, a = Lock in");
             _telemetry.addData("Alliance color is", "%s", _allianceColor);
             if (_turnDirection == TurnDirection.Left) {
                 _telemetry.addData("As a driver in the robot I will turn", "left and go to the middle.");
