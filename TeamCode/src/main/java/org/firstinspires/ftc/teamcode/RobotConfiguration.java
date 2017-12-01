@@ -28,8 +28,11 @@ public class RobotConfiguration {
 
     public enum TurnDirection
     {
+        None,
         Left,
-        Right
+        FarLeft,
+        Right,
+        FarRight,
     }
      /*
      shows what the variables are equal to
@@ -40,7 +43,7 @@ public class RobotConfiguration {
         _telemetry = telemetry;
         _allianceColor = AllianceColor.Blue;
         _robot = robot;
-        _turnDirection = TurnDirection.Left;
+        _turnDirection = TurnDirection.None;
     }
     /*
     tell the computer/prints out on the screen your choice
@@ -69,23 +72,41 @@ public class RobotConfiguration {
                 _turnDirection = TurnDirection.Left;
             }
 
+            if (_gamepad.dpad_up) {
+                _turnDirection = TurnDirection.FarLeft;
+            }
+
             if (_gamepad.dpad_right) {
                 _turnDirection = TurnDirection.Right;
+            }
+
+            if (_gamepad.dpad_down) {
+                _turnDirection = TurnDirection.FarRight;
+            }
+
+            if (_gamepad.y) {
+                _turnDirection = TurnDirection.None;
             }
 
             if (_gamepad.a) {
                 break;
             }
 
-            _telemetry.addData("Menu", "x = Blue, b = Red, dpl = turn left, dpr = turn right");
-            _telemetry.addData("Menu", "a = Lock in");
-            _telemetry.addData("Left Color", "Red = %d, Green = %d, Blue = %d", _robot.GetLeftColorSensor().red(), _robot.GetLeftColorSensor().green(), _robot.GetLeftColorSensor().blue());
-            _telemetry.addData("Right Color", "Red = %d, Green = %d, Blue = %d", _robot.GetRightColorSensor().red(), _robot.GetRightColorSensor().green(), _robot.GetRightColorSensor().blue());
+            _telemetry.addData("Menu", "x = Blue, b = Red");
+            _telemetry.addData("Menu", "dpl = turn left, dpu = turn far left");
+            _telemetry.addData("Menu", "dpr = turn right, dpd = turn far right");
+            _telemetry.addData("Menu", "y = no turn, a = Lock in");
             _telemetry.addData("Alliance color is", "%s", _allianceColor);
             if (_turnDirection == TurnDirection.Left) {
-                _telemetry.addData("Turning Left", "when facing the wall");
+                _telemetry.addData("As a driver in the robot I will turn", "left and go to the middle.");
+            } else if (_turnDirection == TurnDirection.Right) {
+                _telemetry.addData("As a driver in the robot I will turn", "right and go to the middle.");
+            } else if (_turnDirection == TurnDirection.FarLeft) {
+                _telemetry.addData("As a driver in the robot I will turn", "left and go to the far back.");
+            } else if (_turnDirection == TurnDirection.FarRight) {
+                _telemetry.addData("As a driver in the robot I will turn", "right and go to the far back.");
             } else {
-                _telemetry.addData("Turning Right", "when facing the wall");
+                _telemetry.addData("As a driver in the robot I will turn", "nowhere and just sit on my wheels.");
             }
             _telemetry.update();
         } while (true);

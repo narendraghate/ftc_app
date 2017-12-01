@@ -23,12 +23,7 @@ public class PieceOfCakeRobot {
     private ColorSensor LeftColorSensor = null;
     private ColorSensor RightColorSensor = null;
     private HardwareMap hwMap = null;
-    private boolean JewelControl = false;
-    private int MaxLiftHeight = 6076;
-    private int MinLiftHeight = -10;
-
     private double PowerPercentage = 1;
-
     private double LiftPercentage = 1;
 
     // Constructor
@@ -70,8 +65,6 @@ public class PieceOfCakeRobot {
 
         colorSensor = hwMap.colorSensor.get("rightcolorsensor");
         SetRightColorSensor(colorSensor);
-
-
     }
 
         // sets the .get for all variables
@@ -117,14 +110,6 @@ public class PieceOfCakeRobot {
         return LiftPercentage;
     }
 
-
-    public int GetMaxLiftHeight() { return MaxLiftHeight; }
-
-    public int GetMinLiftHeight() { return MinLiftHeight; }
-
-    public int GetMinLiftTiltHeight() { return MaxLiftHeight-657;}
-
-        // sets the .set for all variable
     private void SetClawR(CRServo crservo) {
         ClawR = crservo;
     }
@@ -166,13 +151,5 @@ public class PieceOfCakeRobot {
     public void SetLiftPercentage(Double liftPercentage) {
         LiftPercentage = liftPercentage;
     }
-
-    public void ColorJewel(boolean jewelControl) {
-        JewelControl = jewelControl;
-    }
-
-    public void SetMaxLiftHeight(int maxLiftHeight) {MaxLiftHeight = maxLiftHeight;}
-
-    public void SetMinLiftHeight(int minLiftHeight) {MinLiftHeight = minLiftHeight;}
 }
 

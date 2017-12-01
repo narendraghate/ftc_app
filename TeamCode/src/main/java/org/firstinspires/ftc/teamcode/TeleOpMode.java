@@ -57,7 +57,6 @@ import static android.R.attr.left;
 public class TeleOpMode extends OpMode {
 
     private PieceOfCakeRobot robot = new PieceOfCakeRobot();
-    static final int NumberToTellWeAreInTilt = 200;
 
     @Override
     public void init(){
@@ -85,8 +84,10 @@ public class TeleOpMode extends OpMode {
         DriveControl();
         TiltControl();
         PowerPercent();
-        LiftPercent();
+        //LiftPercent();
         SlideControl();
+        ZeroLift();
+
         
         telemetry.addData("Tilt", "%d", robot.GetTilt().getCurrentPosition());
         telemetry.addData("Lift", "%d", robot.GetLift().getCurrentPosition());
@@ -102,63 +103,55 @@ public class TeleOpMode extends OpMode {
         telemetry.update();
     }
 
+<<<<<<< HEAD
 
     // Code written by Naren.
+=======
+    // Code written by Narendra
+>>>>>>> origin/feature/pieceofcake
     private void ProcessClaw() {
-        double leftClawPower = 0.0;
-        double rightClawPower = 0.0;
-        double power = 0.0;
+        double leftClawPower = 0.0;//robot.GetClawL().getPower();
+        double rightClawPower = 0.0;//robot.GetClawR().getPower();
 
-        if (gamepad2.left_bumper) {
+        if (gamepad1.left_bumper || gamepad2.left_bumper) {
             leftClawPower = -0.5;
             rightClawPower = 0.5;
         }
 
-        if (gamepad2.right_bumper) {
+        if (gamepad1.right_bumper || gamepad2.right_bumper) {
             leftClawPower = 0.5;
             rightClawPower = -0.5;
+        }
+
+        if ((gamepad1.right_bumper && gamepad1.left_bumper) || (gamepad2.left_bumper && gamepad2.right_bumper)) {
+            leftClawPower = 0;
+            rightClawPower = 0;
         }
 
         robot.GetClawL().setPower(leftClawPower);
         robot.GetClawR().setPower(rightClawPower);
     }
 
-
     private void LiftControl() {
         // Sets initial power.
         double LiftPower = 0.0;
+<<<<<<< HEAD
         int currentLiftPosition = robot.GetLift().getCurrentPosition();
         int currentTiltPosition = robot.GetTilt().getCurrentPosition();
         // We can disable the boundaries of maximum lift height and tilt checks.
             if (gamepad2.left_stick_y > 0) {
                 LiftPower = -(robot.GetLiftPowerPercentage());
             }
+=======
 
-            if (gamepad2.left_stick_y < 0) {
-                LiftPower = (robot.GetLiftPowerPercentage());
-            }
-          {
-            // If the tilt is more than the number to tell we are in tilt,
-            if (currentTiltPosition > NumberToTellWeAreInTilt) {
-                // The robot can't go down too far because we have to be at a certain lift height in order to tilt
-                if (gamepad2.left_stick_y > 0) {
-                    LiftPower = -(robot.GetLiftPowerPercentage());
-                }
+        // We can disable the boundaries of maximum lift height and tilt checks
+        if (gamepad2.left_stick_y > 0) {
+            LiftPower = -0.25;
+        }
+>>>>>>> origin/feature/pieceofcake
 
-                // Makes the robot only go to a certain height
-                if (gamepad2.left_stick_y < 0) {
-                    LiftPower = (robot.GetLiftPowerPercentage());
-                }
-            } else {
-                //Not in tilt
-                if (gamepad2.left_stick_y > 0) {
-                    LiftPower = -(robot.GetLiftPowerPercentage());
-                }
-                // Makes the robot only go to a certain height
-                if (gamepad2.left_stick_y < 0) {
-                    LiftPower = (robot.GetLiftPowerPercentage());
-                }
-            }
+        if (gamepad2.left_stick_y < 0) {
+            LiftPower = 1.0;
         }
 
         robot.GetLift().setPower(LiftPower);
@@ -173,7 +166,6 @@ public class TeleOpMode extends OpMode {
         }
         if (gamepad2.b) {
             LiftPercentage = 0.5;
-
         }
         if (gamepad2.a) {
             LiftPercentage = 0.75;
@@ -242,22 +234,39 @@ public class TeleOpMode extends OpMode {
         the option to disregard the restrictions
      */
     private void TiltControl() {
-        double TiltPower = 0.0;
-        long currentLiftPosition = robot.GetLift().getCurrentPosition();
-        long currentTiltPosition = robot.GetTilt().getCurrentPosition();
+        if (robot.GetTilt().isBusy() == false) {
+            double tiltPower = 0.0;
 
-        {
             //The gamepad can control the tilt
             if (gamepad2.dpad_left) {
-                TiltPower = 0.5;
+                tiltPower = -0.25;
             }
 
             if (gamepad2.dpad_right) {
-                TiltPower = -0.5;
+                tiltPower = 0.25;
             }
 
+            robot.GetTilt().setPower(tiltPower);
+        }
+    }
 
-            robot.GetTilt().setPower(TiltPower);
+    private void ZeroLift() {
+        if (gamepad2.y || gamepad2.a) {
+            robot.GetTilt().setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.GetTilt().setPower(.25);
+            robot.GetTilt().setTargetPosition(-200);
+
+            while (robot.GetTilt().isBusy());
+
+            robot.GetTilt().setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        } else if (gamepad2.b) {
+            robot.GetTilt().setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.GetTilt().setPower(.25);
+            robot.GetTilt().setTargetPosition(-500);
+
+            while (robot.GetTilt().isBusy());
+
+            robot.GetTilt().setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         }
     }
 }

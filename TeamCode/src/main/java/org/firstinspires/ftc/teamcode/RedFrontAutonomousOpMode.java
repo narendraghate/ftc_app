@@ -57,9 +57,8 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
 
-@Autonomous(name="Autonomous Mode", group="Robot Opmode")
-@Disabled
-public class AutonomousOpMode extends LinearOpMode
+@Autonomous(name="Red Front Mode", group="Robot Opmode")
+public class RedFrontAutonomousOpMode extends LinearOpMode
 {
     PieceOfCakeRobot robot   = new PieceOfCakeRobot();
     int LiftHeightPart1 = 3388;
@@ -73,8 +72,6 @@ public class AutonomousOpMode extends LinearOpMode
         boolean OpenLeftClaw = false;
         boolean OpenRightClaw = false;
         robot.init(hardwareMap);
-
-        RobotConfiguration robotConfiguration = new RobotConfiguration(robot, gamepad1, telemetry);
 
         // We are initializing the motors.
         robot.GetLift().setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -90,9 +87,6 @@ public class AutonomousOpMode extends LinearOpMode
         robot.GetLeft().setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.GetLeft().setDirection(DcMotor.Direction.REVERSE);
         idle();
-
-        // Show the menu in the robot configuration to set the alliance color
-        robotConfiguration.ShowMenu();
 
         telemetry.addData("Waiting", "");
         telemetry.update();
@@ -135,18 +129,10 @@ public class AutonomousOpMode extends LinearOpMode
             telemetry.update();
         }
 
-        if (robotConfiguration.getAllianceColor()== RobotConfiguration.AllianceColor.Blue) {
-            if (robot.GetLeftColorSensor().red() > robot.GetRightColorSensor().red()) {
-                OpenLeftClaw = true;
-            }else {
-                OpenRightClaw = true;
-            }
-        }else if (robotConfiguration.getAllianceColor()== RobotConfiguration.AllianceColor.Red){
-            if (robot.GetLeftColorSensor().red() > robot.GetRightColorSensor().red()) {
-                OpenRightClaw = true;
-            }else {
-                OpenLeftClaw = true;
-            }
+        if (robot.GetLeftColorSensor().red() > robot.GetRightColorSensor().red()) {
+            OpenRightClaw = true;
+        }else {
+            OpenLeftClaw = true;
         }
 
         // Opening and closing the claws. The sleep allows the claw to actually open and close.
@@ -183,59 +169,28 @@ public class AutonomousOpMode extends LinearOpMode
             telemetry.update();
         }
 
-        // Try and go to a safe zone
-        if (robotConfiguration.getTurnDirection() != RobotConfiguration.TurnDirection.None) {
-            // turn left takes 1089
-            // turn right takes -1120
-            if ((robotConfiguration.getTurnDirection() == RobotConfiguration.TurnDirection.Right) ||
-                    (robotConfiguration.getTurnDirection() == RobotConfiguration.TurnDirection.FarRight)) {
-                robot.GetLeft().setTargetPosition(-920);
-                robot.GetRight().setTargetPosition(1689);
-            } else {
-                robot.GetLeft().setTargetPosition(1689);
-                robot.GetRight().setTargetPosition(-920);
-            }
+        // turn left takes 1089
+        // turn right takes -1120
+        robot.GetLeft().setTargetPosition(1689);
+        robot.GetRight().setTargetPosition(-920);
 
-            // waiting for the turn to finish
-            while (robot.GetLeft().isBusy() || robot.GetRight().isBusy()) {
-                telemetry.addData("Left Position", "%d", robot.GetLeft().getCurrentPosition());
-                telemetry.addData("Right Position", "%d", robot.GetRight().getCurrentPosition());
-                telemetry.update();
-            }
+        // waiting for the turn to finish
+        while (robot.GetLeft().isBusy() || robot.GetRight().isBusy()) {
+            telemetry.addData("Left Position", "%d", robot.GetLeft().getCurrentPosition());
+            telemetry.addData("Right Position", "%d", robot.GetRight().getCurrentPosition());
+            telemetry.update();
+        }
 
-            // sleep so we can get off balancing stone
-            sleep(500);
-            if ((robotConfiguration.getTurnDirection() == RobotConfiguration.TurnDirection.Right) ||
-                    (robotConfiguration.getTurnDirection() == RobotConfiguration.TurnDirection.FarRight)) {
-                robot.GetLeft().setTargetPosition(580);
-                robot.GetRight().setTargetPosition(3889);
-            } else {
-                robot.GetLeft().setTargetPosition(3889);
-                robot.GetRight().setTargetPosition(580);
-            }
+        // sleep so we can get off balancing stone
+        sleep(500);
+        robot.GetLeft().setTargetPosition(3889);
+        robot.GetRight().setTargetPosition(580);
 
-            // waiting for the robot to go forward
-            while (robot.GetLeft().isBusy() || robot.GetRight().isBusy()) {
-                telemetry.addData("Left Position", "%d", robot.GetLeft().getCurrentPosition());
-                telemetry.addData("Right Position", "%d", robot.GetRight().getCurrentPosition());
-                telemetry.update();
-            }
-
-            // The back ones are further away so drive farther
-            if (robotConfiguration.getTurnDirection() == RobotConfiguration.TurnDirection.FarRight) {
-                robot.GetLeft().setTargetPosition(1280);
-                robot.GetRight().setTargetPosition(4589);
-            } else if (robotConfiguration.getTurnDirection() == RobotConfiguration.TurnDirection.FarLeft) {
-                robot.GetLeft().setTargetPosition(4589);
-                robot.GetRight().setTargetPosition(1280);
-            }
-
-            // waiting for the robot to go forward
-            while (robot.GetLeft().isBusy() || robot.GetRight().isBusy()) {
-                telemetry.addData("Left Position", "%d", robot.GetLeft().getCurrentPosition());
-                telemetry.addData("Right Position", "%d", robot.GetRight().getCurrentPosition());
-                telemetry.update();
-            }
+        // waiting for the robot to go forward
+        while (robot.GetLeft().isBusy() || robot.GetRight().isBusy()) {
+            telemetry.addData("Left Position", "%d", robot.GetLeft().getCurrentPosition());
+            telemetry.addData("Right Position", "%d", robot.GetRight().getCurrentPosition());
+            telemetry.update();
         }
 
         telemetry.addData("Status","Finished");
