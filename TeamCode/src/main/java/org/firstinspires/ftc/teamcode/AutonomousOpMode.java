@@ -90,7 +90,7 @@ public class AutonomousOpMode extends LinearOpMode
         robot.GetLeft().setDirection(DcMotor.Direction.REVERSE);
         idle();
 
-        // Show the menu in the robot configuration to set the alliance color.
+        // Show the menu in the robot configuration to set the alliance color
         robotConfiguration.ShowMenu();
 
         telemetry.addData("Waiting", "");

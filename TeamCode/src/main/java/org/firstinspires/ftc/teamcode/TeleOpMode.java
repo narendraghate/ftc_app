@@ -103,7 +103,7 @@ public class TeleOpMode extends OpMode {
     }
 
 
-    // Code written by Narendra
+    // Code written by Naren.
     private void ProcessClaw() {
         double leftClawPower = 0.0;
         double rightClawPower = 0.0;
@@ -125,11 +125,11 @@ public class TeleOpMode extends OpMode {
 
 
     private void LiftControl() {
-        // Sets initial power
+        // Sets initial power.
         double LiftPower = 0.0;
         int currentLiftPosition = robot.GetLift().getCurrentPosition();
         int currentTiltPosition = robot.GetTilt().getCurrentPosition();
-        // We can disable the boundaries of maximum lift height and tilt checks
+        // We can disable the boundaries of maximum lift height and tilt checks.
             if (gamepad2.left_stick_y > 0) {
                 LiftPower = -(robot.GetLiftPowerPercentage());
             }
@@ -164,7 +164,7 @@ public class TeleOpMode extends OpMode {
         robot.GetLift().setPower(LiftPower);
     }
 
-    // Code written by Narendra
+    // Code written by Alex
     private void LiftPercent() {
         double LiftPercentage = robot.GetLiftPowerPercentage();
 
@@ -185,7 +185,7 @@ public class TeleOpMode extends OpMode {
         robot.SetLiftPercentage(LiftPercentage);
     }
 
-    // Code written by Narendra
+    // This code moves the slide motor.
     private void SlideControl() {
         double SlidePower;
 
@@ -218,7 +218,7 @@ public class TeleOpMode extends OpMode {
     }
 
     /*
-        Powers robot for TeleOp arcade drive and clips power values
+        Powers robot for TeleOp arcade drive and clips power values.
      */
     private void DriveControl(){
         float xValue = gamepad1.left_stick_x;
