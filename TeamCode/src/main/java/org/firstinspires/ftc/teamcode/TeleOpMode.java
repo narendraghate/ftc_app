@@ -103,12 +103,7 @@ public class TeleOpMode extends OpMode {
         telemetry.update();
     }
 
-<<<<<<< HEAD
-
-    // Code written by Naren.
-=======
     // Code written by Narendra
->>>>>>> origin/feature/pieceofcake
     private void ProcessClaw() {
         double leftClawPower = 0.0;//robot.GetClawL().getPower();
         double rightClawPower = 0.0;//robot.GetClawR().getPower();
@@ -135,20 +130,11 @@ public class TeleOpMode extends OpMode {
     private void LiftControl() {
         // Sets initial power.
         double LiftPower = 0.0;
-<<<<<<< HEAD
-        int currentLiftPosition = robot.GetLift().getCurrentPosition();
-        int currentTiltPosition = robot.GetTilt().getCurrentPosition();
-        // We can disable the boundaries of maximum lift height and tilt checks.
-            if (gamepad2.left_stick_y > 0) {
-                LiftPower = -(robot.GetLiftPowerPercentage());
-            }
-=======
 
         // We can disable the boundaries of maximum lift height and tilt checks
         if (gamepad2.left_stick_y > 0) {
             LiftPower = -0.25;
         }
->>>>>>> origin/feature/pieceofcake
 
         if (gamepad2.left_stick_y < 0) {
             LiftPower = 1.0;
