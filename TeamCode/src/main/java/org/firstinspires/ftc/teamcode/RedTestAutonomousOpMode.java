@@ -57,42 +57,25 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
 
-@Autonomous(name="Red Back Mode", group="Robot Opmode")
-public class RedBackAutonomousOpMode extends BaseAutonomousOpMode
+@Autonomous(name="Red Test Mode", group="Robot Opmode")
+@Disabled
+public class RedTestAutonomousOpMode extends BaseAutonomousOpMode
 {
     @Override
     public void runOpMode() {
 
         InitRobot();
 
+        while (!isStarted()) {
+            telemetry.addData("Left Color", "%d", robot.GetLeftColorSensor().red());
+            telemetry.addData("Right Color", "%d", robot.GetRightColorSensor().red());
+            telemetry.update();
+        }
+
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
-        telemetry.addData("Starting", "now");
-        telemetry.update();
-
-        TiltForJewel();
-
-        // Moving the robot forward.
-        MoveIntoJewelPosition();
-
         KnockJewel(AllianceColor.Red);
-
-        TiltBackForJewel();
-        // Try and go to a safe zone
-        // 810
-        TurnLeft();
-
-        // sleep so we can get off balancing stone
-        sleep(500);
-
-        // move robot torwards center spot
-        MoveRobot(1250);
-
-        // turn a little bit
-        MoveRobot(450, -350);
-
-        MoveRobot(900);
 
         telemetry.addData("Status","Finished");
         telemetry.update();

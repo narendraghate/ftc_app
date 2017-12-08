@@ -58,38 +58,12 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
  */
 
 @Autonomous(name="Blue Front Mode", group="Robot Opmode")
-public class BlueFrontAutonomousOpMode extends LinearOpMode
+public class BlueFrontAutonomousOpMode extends BaseAutonomousOpMode
 {
-    PieceOfCakeRobot robot   = new PieceOfCakeRobot();
-    int LiftHeightPart1 = 3388;
-    int LiftHeightPart2 = 5788;
-    int TiltHeight = 2850;
-    int TiltBack = 1250;
-    int DriveDistance = 150;
-
     @Override
     public void runOpMode() {
-        boolean OpenLeftClaw = false;
-        boolean OpenRightClaw = false;
-        robot.init(hardwareMap);
 
-        // We are initializing the motors.
-        robot.GetLift().setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot.GetLift().setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-        robot.GetTilt().setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot.GetTilt().setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-        robot.GetRight().setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot.GetRight().setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-        robot.GetLeft().setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot.GetLeft().setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.GetLeft().setDirection(DcMotor.Direction.REVERSE);
-        idle();
-
-        telemetry.addData("Waiting", "");
-        telemetry.update();
+        InitRobot();
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
@@ -97,100 +71,28 @@ public class BlueFrontAutonomousOpMode extends LinearOpMode
         telemetry.addData("Starting", "now");
         telemetry.update();
 
+        TiltForJewel();
+
         // Moving the robot forward.
-        robot.GetLeft().setTargetPosition(DriveDistance);
-        robot.GetRight().setTargetPosition(DriveDistance);
+        MoveIntoJewelPosition();
 
-        // Setting the Power of the motors to 0.25.
-        robot.GetLeft().setPower(0.25);
-        robot.GetRight().setPower(0.25);
+        KnockJewel(AllianceColor.Blue);
 
-        // Activate the Lift to go to a certain position while the left and right motors are moving.
-        robot.GetLift().setTargetPosition(LiftHeightPart1);
-        robot.GetLift().setPower(1);
-
-        // Wait to reach the lift position and add the telemetry while that is happening.
-        while (robot.GetLift().isBusy())
-        {
-            telemetry.addData("Lift Position", "%d", robot.GetLift().getCurrentPosition());
-            telemetry.update();
-        }
-
-        // Setting the second lift height and starting the tilt.
-        robot.GetLift().setTargetPosition(LiftHeightPart2);
-        robot.GetTilt().setTargetPosition(TiltHeight);
-        robot.GetTilt().setPower(.5);
-
-        // Activating the tilt and the lift and the same time
-        while (robot.GetTilt().isBusy() || robot.GetLift().isBusy())
-        {
-            telemetry.addData("Tilt Position", "%d", robot.GetTilt().getCurrentPosition());
-            telemetry.addData("Lift Position", "%d", robot.GetLift().getCurrentPosition());
-            telemetry.update();
-        }
-
-        if (robot.GetLeftColorSensor().red() > robot.GetRightColorSensor().red()) {
-            OpenLeftClaw = true;
-        }else {
-            OpenRightClaw = true;
-        }
-
-        // Opening and closing the claws. The sleep allows the claw to actually open and close.
-        if  (OpenLeftClaw) {
-            robot.GetClawL().setPower(-.9);
-            sleep(4000);
-            robot.GetClawL().setPower(.9);
-            sleep(4200);
-            robot.GetClawL().setPower(0);
-        }
-
-        if (OpenRightClaw) {
-            robot.GetClawR().setPower(.9);
-            sleep(4000);
-            robot.GetClawR().setPower(-.9);
-            sleep(4200);
-            robot.GetClawR().setPower(0);
-        }
-
-        // Start tilting the robot back.
-        robot.GetTilt().setTargetPosition(TiltBack);
-        while (robot.GetTilt().isBusy())
-        {
-            telemetry.addData("Tilt Position", "%d", robot.GetTilt().getCurrentPosition());
-            telemetry.update();
-        }
-
-        // Tilting the robot back while making the lift go down all the way.
-        robot.GetTilt().setTargetPosition(0);
-        robot.GetLift().setTargetPosition(0);
-        while (robot.GetLift().isBusy() || robot.GetTilt().isBusy())
-        {
-            telemetry.addData("Lift Position", "%d", robot.GetLift().getCurrentPosition());
-            telemetry.update();
-        }
-
+        TiltBackForJewel();
         // Try and go to a safe zone
-        robot.GetLeft().setTargetPosition(-920);
-        robot.GetRight().setTargetPosition(1689);
-
-        // waiting for the turn to finish
-        while (robot.GetLeft().isBusy() || robot.GetRight().isBusy()) {
-            telemetry.addData("Left Position", "%d", robot.GetLeft().getCurrentPosition());
-            telemetry.addData("Right Position", "%d", robot.GetRight().getCurrentPosition());
-            telemetry.update();
-        }
+        // 810
+        TurnRight();
 
         // sleep so we can get off balancing stone
         sleep(500);
-        robot.GetLeft().setTargetPosition(580);
-        robot.GetRight().setTargetPosition(3889);
 
-        // waiting for the robot to go forward
-        while (robot.GetLeft().isBusy() || robot.GetRight().isBusy()) {
-            telemetry.addData("Left Position", "%d", robot.GetLeft().getCurrentPosition());
-            telemetry.addData("Right Position", "%d", robot.GetRight().getCurrentPosition());
-            telemetry.update();
-        }
+        // move robot torwards center spot
+        MoveRobot(900);
+
+        // turn a little bit
+        MoveRobot(-150, 200);
+
+        MoveRobot(500);
 
         telemetry.addData("Status","Finished");
         telemetry.update();
