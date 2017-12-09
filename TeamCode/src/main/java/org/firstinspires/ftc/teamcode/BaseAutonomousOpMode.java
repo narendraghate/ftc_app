@@ -173,27 +173,48 @@ abstract class BaseAutonomousOpMode extends LinearOpMode
     protected void TiltBackForJewel() {
         // Start tilting the robot back.
 
+        // 2850
+        // 5788
+
+        // Tilting the robot back while making the lift go down part way.
+        robot.GetTilt().setTargetPosition(2600);
+        robot.GetTilt().setPower(.25);
+        while (robot.GetTilt().isBusy())
+        {
+        }
+
+        robot.GetLift().setTargetPosition(5388);
+        while (robot.GetLift().isBusy())
+        {
+        }
+
+        robot.GetTilt().setTargetPosition(2350);
+        while (robot.GetTilt().isBusy())
+        {
+        }
+
+        robot.GetLift().setTargetPosition(4788);
+        while (robot.GetLift().isBusy())
+        {
+        }
+
         robot.GetTilt().setTargetPosition(1850);
         while (robot.GetTilt().isBusy())
         {
         }
 
-        robot.GetLift().setTargetPosition(4000);
+        robot.GetLift().setTargetPosition(3788);
         while (robot.GetLift().isBusy())
         {
         }
 
-        // Tilting the robot back while making the lift go down part way.
-        robot.GetTilt().setTargetPosition(1250);
-        robot.GetLift().setTargetPosition(3300);
-        while (robot.GetLift().isBusy() || robot.GetTilt().isBusy())
+        robot.GetTilt().setTargetPosition(0);
+        while (robot.GetTilt().isBusy())
         {
         }
 
-        // Tilting the robot back while making the lift go down all the way.
-        robot.GetTilt().setTargetPosition(0);
         robot.GetLift().setTargetPosition(0);
-        while (robot.GetLift().isBusy() || robot.GetTilt().isBusy())
+        while (robot.GetLift().isBusy())
         {
         }
     }
