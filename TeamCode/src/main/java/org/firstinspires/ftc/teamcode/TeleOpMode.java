@@ -109,13 +109,13 @@ public class TeleOpMode extends OpMode {
         double rightClawPower = 0.0;//robot.GetClawR().getPower();
 
         if (gamepad1.left_bumper || gamepad2.left_bumper) {
-            leftClawPower = -0.5;
-            rightClawPower = 0.5;
+            leftClawPower = -1;
+            rightClawPower = 1;
         }
 
         if (gamepad1.right_bumper || gamepad2.right_bumper) {
-            leftClawPower = 0.5;
-            rightClawPower = -0.5;
+            leftClawPower = 1;
+            rightClawPower = -1;
         }
 
         if ((gamepad1.right_bumper && gamepad1.left_bumper) || (gamepad2.left_bumper && gamepad2.right_bumper)) {
@@ -225,11 +225,11 @@ public class TeleOpMode extends OpMode {
 
             //The gamepad can control the tilt
             if (gamepad2.dpad_left) {
-                tiltPower = -0.25;
+                tiltPower = -0.4;
             }
 
             if (gamepad2.dpad_right) {
-                tiltPower = 0.25;
+                tiltPower = 0.4;
             }
 
             robot.GetTilt().setPower(tiltPower);
@@ -245,7 +245,7 @@ public class TeleOpMode extends OpMode {
             while (robot.GetTilt().isBusy());
 
             robot.GetTilt().setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        } else if (gamepad2.b) {
+        } else if (gamepad2.b || gamepad2.x) {
             robot.GetTilt().setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robot.GetTilt().setPower(.25);
             robot.GetTilt().setTargetPosition(-500);
