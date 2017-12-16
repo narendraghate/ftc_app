@@ -146,6 +146,9 @@ abstract class BaseAutonomousOpMode extends LinearOpMode
 
         }
 
+        telemetry.addData("LeftRed", "%d", LeftRed);
+        telemetry.addData("RightRed", "%d", RightRed);
+        
         if (allianceColor == AllianceColor.Blue) {
             if (LeftRed > RightRed) {
                 OpenLeftClaw = true;
@@ -153,7 +156,7 @@ abstract class BaseAutonomousOpMode extends LinearOpMode
             } else {
                 telemetry.addData("Opening Claw", "Right");
                 OpenRightClaw = true;
-                }
+            }
         } else {
             if (LeftRed > RightRed) {
                 OpenRightClaw = true;
@@ -161,10 +164,8 @@ abstract class BaseAutonomousOpMode extends LinearOpMode
             } else {
                 OpenLeftClaw = true;
                 telemetry.addData("Opening Claw", "Left");
-                }
             }
-
-
+        }
 
         telemetry.update();
         // Opening and closing the claws. The sleep allows the claw to actually open and close.
