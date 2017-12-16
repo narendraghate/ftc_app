@@ -129,27 +129,42 @@ abstract class BaseAutonomousOpMode extends LinearOpMode
     protected void KnockJewel(AllianceColor allianceColor) {
         boolean OpenLeftClaw = false;
         boolean OpenRightClaw = false;
+        int LeftRed = 0;
+        int RightRed = 0;
 
         telemetry.addData("Left Color", "%d", robot.GetLeftColorSensor().red());
         telemetry.addData("Right Color", "%d", robot.GetRightColorSensor().red());
 
-        if (allianceColor == AllianceColor.Blue) {
-            if (robot.GetLeftColorSensor().red() > robot.GetRightColorSensor().red()) {
-                OpenLeftClaw = true;
-                telemetry.addData("Opening Claw", "Left");
-            } else {
-                telemetry.addData("Opening Claw", "Right");
-                OpenRightClaw = true;
+        for (int x = 0; x<13; x++) {
+
+            if (robot.GetLeftColorSensor().red() > robot.GetRightColorSensor().red()){
+                LeftRed = (LeftRed + 1);
             }
-        } else {
-            if (robot.GetLeftColorSensor().red() > robot.GetRightColorSensor().red()) {
-                OpenRightClaw = true;
-                telemetry.addData("Opening Claw", "Right");
-            } else {
-                OpenLeftClaw = true;
-                telemetry.addData("Opening Claw", "Left");
+            else {
+                RightRed = (RightRed + 1);
             }
+
         }
+
+        if (allianceColor == AllianceColor.Blue) {
+            if (LeftRed > RightRed) {
+                OpenLeftClaw = true;
+                telemetry.addData("Opening Claw", "Left");
+            } else {
+                telemetry.addData("Opening Claw", "Right");
+                OpenRightClaw = true;
+                }
+        } else {
+            if (LeftRed > RightRed) {
+                OpenRightClaw = true;
+                telemetry.addData("Opening Claw", "Right");
+            } else {
+                OpenLeftClaw = true;
+                telemetry.addData("Opening Claw", "Left");
+                }
+            }
+
+
 
         telemetry.update();
         // Opening and closing the claws. The sleep allows the claw to actually open and close.
