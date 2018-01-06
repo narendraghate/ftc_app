@@ -13,8 +13,8 @@ import java.util.Set;
 */
 //Defining motors
 public class PieceOfCakeRobot {
-    private CRServo ClawL = null;
-    private CRServo ClawR = null;
+    private DcMotor ClawL = null;
+    private DcMotor ClawR = null;
     private DcMotor Left = null;
     private DcMotor Right = null;
     private DcMotor Lift = null;
@@ -33,17 +33,16 @@ public class PieceOfCakeRobot {
 
     //Hardware naming
     public void init(HardwareMap ahwMap) {
-        CRServo crservo = null;
         DcMotor dcMotor = null;
         ColorSensor colorSensor = null;
 
         hwMap = ahwMap;
 
-        crservo = hwMap.crservo.get("clawleftservo"); //0
-        SetClawL(crservo);
+        dcMotor = hwMap.dcMotor.get("clawleftmotor"); //0
+        SetClawL(dcMotor);
 
-        crservo = hwMap.crservo.get("clawrightservo"); //1
-        SetClawR(crservo);
+        dcMotor = hwMap.dcMotor.get("clawrightmotor"); //1
+        SetClawR(dcMotor);
 
         dcMotor = hwMap.dcMotor.get("left"); //0
         SetLeft(dcMotor);
@@ -68,11 +67,11 @@ public class PieceOfCakeRobot {
     }
 
         // sets the .get for all variables
-    public CRServo GetClawL() {
+    public DcMotor GetClawL() {
         return ClawL;
     }
 
-    public CRServo GetClawR() {
+    public DcMotor GetClawR() {
         return ClawR;
     }
 
@@ -110,12 +109,12 @@ public class PieceOfCakeRobot {
         return LiftPercentage;
     }
 
-    private void SetClawR(CRServo crservo) {
-        ClawR = crservo;
+    private void SetClawR(DcMotor motor) {
+        ClawR = motor;
     }
 
-    private void SetClawL(CRServo crservo) {
-        ClawL = crservo;
+    private void SetClawL(DcMotor motor) {
+        ClawL = motor;
     }
 
     private void SetLeft(DcMotor dcMotor) {

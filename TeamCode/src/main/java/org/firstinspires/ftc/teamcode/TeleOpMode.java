@@ -37,6 +37,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
@@ -60,6 +61,8 @@ public class TeleOpMode extends OpMode {
 
     @Override
     public void init(){
+        double currentPosition = 0.5;
+
         //Reset motor encoders
         robot.init(hardwareMap);
 
@@ -98,6 +101,11 @@ public class TeleOpMode extends OpMode {
         telemetry.addData("PowerPercentage", "%f", robot.GetPowerPercentage());
         telemetry.addData("LiftPercentage", "%f", robot.GetLiftPowerPercentage());
 
+        telemetry.addData("Left Color", "%d", robot.GetLeftColorSensor().red());
+        telemetry.addData("Right Color", "%d", robot.GetRightColorSensor().red());
+
+        telemetry.addData("Left Servo Position", "%f", robot.GetClawL().getPower());
+        telemetry.addData("Right Servo Position", "%f", robot.GetClawR().getPower());
         // this should always be the last line so any telemetry that wes done in other
         // methods is displayed
         telemetry.update();
@@ -105,26 +113,18 @@ public class TeleOpMode extends OpMode {
 
     // Code written by Narendra
     private void ProcessClaw() {
-        double leftClawPower = 0.0;//robot.GetClawL().getPower();
-        double rightClawPower = 0.0;//robot.GetClawR().getPower();
+        double currentPower = 0.0;
 
         if (gamepad1.left_bumper || gamepad2.left_bumper) {
-            leftClawPower = -1;
-            rightClawPower = 1;
+            currentPower = 1.0;
         }
 
         if (gamepad1.right_bumper || gamepad2.right_bumper) {
-            leftClawPower = 1;
-            rightClawPower = -1;
+            currentPower = -1.0;
         }
 
-        if ((gamepad1.right_bumper && gamepad1.left_bumper) || (gamepad2.left_bumper && gamepad2.right_bumper)) {
-            leftClawPower = 0;
-            rightClawPower = 0;
-        }
-
-        robot.GetClawL().setPower(leftClawPower);
-        robot.GetClawR().setPower(rightClawPower);
+        robot.GetClawL().setPower(currentPower);
+        robot.GetClawR().setPower(currentPower);
     }
 
     private void LiftControl() {
@@ -132,11 +132,11 @@ public class TeleOpMode extends OpMode {
         double LiftPower = 0.0;
 
         // We can disable the boundaries of maximum lift height and tilt checks
-        if (gamepad2.left_stick_y > 0) {
-            LiftPower = -0.25;
+        if ((gamepad2.left_stick_y > 0) || (gamepad2.left_trigger > 0) || (gamepad1.left_trigger > 0)) {
+            LiftPower = -0.5;
         }
 
-        if (gamepad2.left_stick_y < 0) {
+        if ((gamepad2.left_stick_y < 0) || (gamepad2.right_trigger > 0) || (gamepad1.right_trigger > 0)) {
             LiftPower = 1.0;
         }
 
@@ -224,11 +224,11 @@ public class TeleOpMode extends OpMode {
             double tiltPower = 0.0;
 
             //The gamepad can control the tilt
-            if (gamepad2.dpad_left) {
+            if ((gamepad2.dpad_left) || (gamepad2.right_stick_x < 0) || gamepad1.dpad_left) {
                 tiltPower = -0.4;
             }
 
-            if (gamepad2.dpad_right) {
+            if (((gamepad2.dpad_right) || (gamepad2.right_stick_x > 0) || (gamepad1.dpad_right) )){
                 tiltPower = 0.4;
             }
 

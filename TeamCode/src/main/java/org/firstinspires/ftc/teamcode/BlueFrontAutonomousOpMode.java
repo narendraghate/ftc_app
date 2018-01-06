@@ -73,26 +73,14 @@ public class BlueFrontAutonomousOpMode extends BaseAutonomousOpMode
 
         TiltForJewel();
 
-        // Moving the robot forward.
-        MoveIntoJewelPosition();
-
         KnockJewel(AllianceColor.Blue);
 
         TiltBackForJewel();
         // Try and go to a safe zone
-        // 810
-        TurnRight();
-
-        // sleep so we can get off balancing stone
-        sleep(500);
+        MoveToPosition(-1040, 1040);
 
         // move robot torwards center spot
-        MoveRobot(900);
-
-        // turn a little bit
-        MoveRobot(-150, 200);
-
-        MoveRobot(500);
+        MoveRobot(300);
 
         telemetry.addData("Status","Finished");
         telemetry.update();

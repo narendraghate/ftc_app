@@ -73,24 +73,17 @@ public class BlueBackAutonomousOpMode extends BaseAutonomousOpMode
 
         TiltForJewel();
 
-        // Moving the robot forward.
-        MoveIntoJewelPosition();
-
         KnockJewel(AllianceColor.Blue);
 
         TiltBackForJewel();
         // Try and go to a safe zone
-        // 810
-        TurnRight();
-
-        // sleep so we can get off balancing stone
-        sleep(500);
+        MoveToPosition(-1040, 1040);
 
         // move robot torwards center spot
-        MoveRobot(1250);
+        MoveRobot(1300);
 
-        // turn a little bit
-        MoveRobot(-350, 450);
+        // turn right
+        TurnRight();
 
         MoveRobot(900);
 
