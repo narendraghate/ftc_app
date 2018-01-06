@@ -202,7 +202,7 @@ abstract class BaseAutonomousOpMode extends LinearOpMode
     }
 
     protected void TurnLeft() {
-        MoveRobot(1040, -\1040);
+        MoveRobot(1040, -1040);
     }
 
     protected void MoveRobot(int distance) {
