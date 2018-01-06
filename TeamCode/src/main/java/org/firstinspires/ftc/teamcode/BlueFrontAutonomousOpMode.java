@@ -80,7 +80,7 @@ public class BlueFrontAutonomousOpMode extends BaseAutonomousOpMode
         MoveToPosition(-1040, 1040);
 
         // move robot torwards center spot
-        MoveRobot(300);
+        MoveRobot(2200);
 
         telemetry.addData("Status","Finished");
         telemetry.update();

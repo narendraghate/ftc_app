@@ -77,15 +77,10 @@ public class BlueBackAutonomousOpMode extends BaseAutonomousOpMode
 
         TiltBackForJewel();
         // Try and go to a safe zone
-        MoveToPosition(-1040, 1040);
+        MoveToPosition(-1100, 1100);
 
         // move robot torwards center spot
-        MoveRobot(1300);
-
-        // turn right
-        TurnRight();
-
-        MoveRobot(900);
+        MoveRobot(2400);
 
         telemetry.addData("Status","Finished");
         telemetry.update();
