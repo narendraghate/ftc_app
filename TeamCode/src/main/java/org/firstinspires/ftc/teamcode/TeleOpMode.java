@@ -86,12 +86,9 @@ public class TeleOpMode extends OpMode {
         LiftControl();
         DriveControl();
         TiltControl();
-        PowerPercent();
-        //LiftPercent();
         SlideControl();
-        ZeroLift();
+        ProcessButtons();
 
-        
         telemetry.addData("Tilt", "%d", robot.GetTilt().getCurrentPosition());
         telemetry.addData("Lift", "%d", robot.GetLift().getCurrentPosition());
 
@@ -99,13 +96,7 @@ public class TeleOpMode extends OpMode {
         telemetry.addData("Right Position", "%d", robot.GetRight().getCurrentPosition());
 
         telemetry.addData("PowerPercentage", "%f", robot.GetPowerPercentage());
-        telemetry.addData("LiftPercentage", "%f", robot.GetLiftPowerPercentage());
 
-        telemetry.addData("Left Color", "%d", robot.GetLeftColorSensor().red());
-        telemetry.addData("Right Color", "%d", robot.GetRightColorSensor().red());
-
-        telemetry.addData("Left Servo Position", "%f", robot.GetClawL().getPower());
-        telemetry.addData("Right Servo Position", "%f", robot.GetClawR().getPower());
         // this should always be the last line so any telemetry that wes done in other
         // methods is displayed
         telemetry.update();
@@ -132,35 +123,18 @@ public class TeleOpMode extends OpMode {
         double LiftPower = 0.0;
 
         // We can disable the boundaries of maximum lift height and tilt checks
-        if ((gamepad2.left_stick_y > 0) || (gamepad2.left_trigger > 0) || (gamepad1.left_trigger > 0)) {
-            LiftPower = -0.5;
+        if ((gamepad2.left_trigger > 0) || (gamepad1.left_trigger > 0)) {
+            LiftPower = -1.0;
         }
 
-        if ((gamepad2.left_stick_y < 0) || (gamepad2.right_trigger > 0) || (gamepad1.right_trigger > 0)) {
+        if ((gamepad2.right_trigger > 0) || (gamepad1.right_trigger > 0)) {
             LiftPower = 1.0;
         }
 
-        robot.GetLift().setPower(LiftPower);
-    }
-
-    // Code written by Alex
-    private void LiftPercent() {
-        double LiftPercentage = robot.GetLiftPowerPercentage();
-
-        if (gamepad2.y) {
-            LiftPercentage = 0.25;
+        if ((LiftPower != 0) || (robot.GetLift().getMode() == DcMotor.RunMode.RUN_WITHOUT_ENCODER)) {
+            robot.GetLift().setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            robot.GetLift().setPower(LiftPower);
         }
-        if (gamepad2.b) {
-            LiftPercentage = 0.5;
-        }
-        if (gamepad2.a) {
-            LiftPercentage = 0.75;
-        }
-        if (gamepad2.x) {
-            LiftPercentage = 1;
-        }
-
-        robot.SetLiftPercentage(LiftPercentage);
     }
 
     // This code moves the slide motor.
@@ -171,28 +145,6 @@ public class TeleOpMode extends OpMode {
         SlidePower = Range.clip(SlidePower, -1, 1);
 
         robot.GetSlide().setPower(SlidePower);
-    }
-
-    /*
-        Gives you the option of choosing your power setting for the robot drive control/ TeleOp arcade drive
-     */
-    private void PowerPercent() {
-        double PowerPercentage = robot.GetPowerPercentage();
-
-        if (gamepad1.y) {
-            PowerPercentage = 0.25;
-        }
-        if (gamepad1.b) {
-            PowerPercentage = 0.5;
-        }
-        if (gamepad1.a) {
-            PowerPercentage = 0.75;
-        }
-        if (gamepad1.x) {
-            PowerPercentage = 1;
-        }
-
-        robot.SetPowerPercentage(PowerPercentage);
     }
 
     /*
@@ -220,39 +172,36 @@ public class TeleOpMode extends OpMode {
         the option to disregard the restrictions
      */
     private void TiltControl() {
-        if (robot.GetTilt().isBusy() == false) {
-            double tiltPower = 0.0;
+        double tiltPower = 0.0;
 
-            //The gamepad can control the tilt
-            if ((gamepad2.dpad_left) || (gamepad2.right_stick_x < 0) || gamepad1.dpad_left) {
-                tiltPower = -0.4;
-            }
+        //The gamepad can control the tilt
+        if ( gamepad1.dpad_left) {
+            tiltPower = -0.4;
+        }
 
-            if (((gamepad2.dpad_right) || (gamepad2.right_stick_x > 0) || (gamepad1.dpad_right) )){
-                tiltPower = 0.4;
-            }
+        if (gamepad1.dpad_right) {
+            tiltPower = 0.4;
+        }
 
+        if ((tiltPower != 0) || (robot.GetTilt().getMode() == DcMotor.RunMode.RUN_WITHOUT_ENCODER)) {
+            robot.GetTilt().setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             robot.GetTilt().setPower(tiltPower);
         }
     }
 
-    private void ZeroLift() {
-        if (gamepad2.y || gamepad2.a) {
+    private void ProcessButtons() {
+        if (gamepad1.x) {
             robot.GetTilt().setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robot.GetTilt().setPower(.25);
-            robot.GetTilt().setTargetPosition(-200);
-
-            while (robot.GetTilt().isBusy());
-
-            robot.GetTilt().setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        } else if (gamepad2.b || gamepad2.x) {
+            robot.GetTilt().setTargetPosition(0);
+        } else if (gamepad1.b ) {
             robot.GetTilt().setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robot.GetTilt().setPower(.25);
             robot.GetTilt().setTargetPosition(-500);
-
-            while (robot.GetTilt().isBusy());
-
-            robot.GetTilt().setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        } else if (gamepad1.y){
+            robot.GetLift().setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.GetLift().setPower(1);
+            robot.GetLift().setTargetPosition(6000);
         }
     }
 }

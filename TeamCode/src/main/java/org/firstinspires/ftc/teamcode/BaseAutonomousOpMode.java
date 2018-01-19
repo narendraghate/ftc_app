@@ -61,7 +61,7 @@ abstract class BaseAutonomousOpMode extends LinearOpMode
 {
     protected PieceOfCakeRobot robot   = new PieceOfCakeRobot();
     int LiftHeightPart = 6000;
-    int TiltHeight = 3000;
+    protected int TiltHeight = 2700;
 
     public enum AllianceColor
     {
@@ -104,16 +104,27 @@ abstract class BaseAutonomousOpMode extends LinearOpMode
         robot.GetLift().setPower(0.5);
 
         // Wait to reach the lift position and add the telemetry while that is happening.
+        telemetry.addData("Tilt", "%d", robot.GetTilt().getCurrentPosition());
+        telemetry.addData("Lift", "%d", robot.GetLift().getCurrentPosition());
+        telemetry.update();
         while (robot.GetLift().isBusy())
         {
+            telemetry.addData("Tilt", "%d", robot.GetTilt().getCurrentPosition());
+            telemetry.addData("Lift", "%d", robot.GetLift().getCurrentPosition());
+            telemetry.update();
         }
 
         robot.GetTilt().setTargetPosition(TiltHeight);
-        robot.GetTilt().setPower(0.2);
-
+        robot.GetTilt().setPower(0.3);
         // Wait to reach the lift position and add the telemetry while that is happening.
+        telemetry.addData("Tilt", "%d", robot.GetTilt().getCurrentPosition());
+        telemetry.addData("Lift", "%d", robot.GetLift().getCurrentPosition());
+        telemetry.update();
         while (robot.GetTilt().isBusy())
         {
+            telemetry.addData("Tilt", "%d", robot.GetTilt().getCurrentPosition());
+            telemetry.addData("Lift", "%d", robot.GetLift().getCurrentPosition());
+            telemetry.update();
         }
     }
 
@@ -167,15 +178,27 @@ abstract class BaseAutonomousOpMode extends LinearOpMode
         }
     }
 
-    protected void TiltBackForJewel() {
-        robot.GetTilt().setTargetPosition(0);
+    protected void TiltBackForJewel(int position) {
+        robot.GetTilt().setTargetPosition(position);
+        robot.GetTilt().setPower(0.5);
+        telemetry.addData("Tilt", "%d", robot.GetTilt().getCurrentPosition());
+        telemetry.addData("Lift", "%d", robot.GetLift().getCurrentPosition());
+        telemetry.update();
         while (robot.GetTilt().isBusy())
         {
+            telemetry.addData("Tilt", "%d", robot.GetTilt().getCurrentPosition());
+            telemetry.addData("Lift", "%d", robot.GetLift().getCurrentPosition());
+            telemetry.update();
         }
+    }
 
-        robot.GetLift().setTargetPosition(0);
+    protected void MoveLiftToZero() {
+        robot.GetLift().setTargetPosition(10);
         while (robot.GetLift().isBusy())
         {
+            telemetry.addData("Tilt", "%d", robot.GetTilt().getCurrentPosition());
+            telemetry.addData("Lift", "%d", robot.GetLift().getCurrentPosition());
+            telemetry.update();
         }
     }
 
@@ -186,6 +209,9 @@ abstract class BaseAutonomousOpMode extends LinearOpMode
 
         // waiting for the turn to finish
         while (robot.GetLeft().isBusy() || robot.GetRight().isBusy()) {
+            telemetry.addData("Left Position", "%d", robot.GetLeft().getCurrentPosition());
+            telemetry.addData("Right Position", "%d", robot.GetRight().getCurrentPosition());
+            telemetry.update();
         }
     }
 

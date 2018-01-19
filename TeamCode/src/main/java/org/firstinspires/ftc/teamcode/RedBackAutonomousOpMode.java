@@ -75,12 +75,22 @@ public class RedBackAutonomousOpMode extends BaseAutonomousOpMode
 
         KnockJewel(AllianceColor.Red);
 
-        TiltBackForJewel();
-        // Try and go to a safe zone
-        MoveToPosition(1100, -1100);
+        if (robot.GetTilt().getTargetPosition() > 2500) {
+            TiltBackForJewel(TiltHeight - 700);
+            // Try and go to a safe zone
+            MoveToPosition(1100, -1100);
 
-        // move robot torwards center spot
-        MoveRobot(2400);
+            TiltBackForJewel(0);
+
+            MoveLiftToZero();
+
+            // move robot torwards center spot
+            MoveRobot(2400);
+
+            robot.GetSlide().setPower(-0.25);
+            sleep(4000);
+            robot.GetSlide().setPower(0);
+        }
 
         telemetry.addData("Status","Finished");
         telemetry.update();
