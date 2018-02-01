@@ -71,22 +71,14 @@ public class RedFrontAutonomousOpMode extends BaseAutonomousOpMode
         telemetry.addData("Starting", "now");
         telemetry.update();
 
-        TiltForJewel();
+        LiftTiltKnockTiltLift(AllianceColor.Red);
 
-        KnockJewel(AllianceColor.Red);
+        MoveToPosition(1200, -1200);
 
-        if (robot.GetTilt().getTargetPosition() > 2500) {
-            TiltBackForJewel(TiltHeight - 700);
-            // Try and go to a safe zone
-            MoveToPosition(1100, -1100);
+        sleep(1000);
+        // move robot torwards center spot
+        MoveRobot(2200);
 
-            TiltBackForJewel(0);
-
-            MoveLiftToZero();
-
-            // move robot torwards center spot
-            MoveRobot(2200);
-        }
         telemetry.addData("Status","Finished");
         telemetry.update();
     }

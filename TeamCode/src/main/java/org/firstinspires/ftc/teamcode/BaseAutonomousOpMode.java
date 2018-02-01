@@ -89,13 +89,30 @@ abstract class BaseAutonomousOpMode extends LinearOpMode
         robot.GetLeft().setDirection(DcMotor.Direction.REVERSE);
 
         // Setting the Power of the motors to 0.25.
-        robot.GetLeft().setPower(0.25);
-        robot.GetRight().setPower(0.25);
+        robot.GetLeft().setPower(0.15);
+        robot.GetRight().setPower(0.15);
 
         idle();
 
         telemetry.addData("Waiting", "");
         telemetry.update();
+    }
+
+    protected void LiftForJewel() {
+        // Activate the Lift to go to a certain position while the left and right motors are moving.
+        robot.GetLift().setTargetPosition(LiftHeightPart);
+        robot.GetLift().setPower(0.5);
+
+        // Wait to reach the lift position and add the telemetry while that is happening.
+        telemetry.addData("Tilt", "%d", robot.GetTilt().getCurrentPosition());
+        telemetry.addData("Lift", "%d", robot.GetLift().getCurrentPosition());
+        telemetry.update();
+        while (robot.GetLift().isBusy())
+        {
+            telemetry.addData("Tilt", "%d", robot.GetTilt().getCurrentPosition());
+            telemetry.addData("Lift", "%d", robot.GetLift().getCurrentPosition());
+            telemetry.update();
+        }
     }
 
     protected void TiltForJewel(){
@@ -126,6 +143,8 @@ abstract class BaseAutonomousOpMode extends LinearOpMode
             telemetry.addData("Lift", "%d", robot.GetLift().getCurrentPosition());
             telemetry.update();
         }
+
+        sleep(2000);
     }
 
     protected void KnockJewel(AllianceColor allianceColor) {
@@ -178,7 +197,38 @@ abstract class BaseAutonomousOpMode extends LinearOpMode
         }
     }
 
-    protected void TiltBackForJewel(int position) {
+    protected void LiftTiltKnockTiltLift(AllianceColor allianceColor) {
+        LiftForJewel();
+
+        TiltForwardForJewelUsingTime(1000);
+
+        sleep(2000);
+
+        KnockJewel(allianceColor);
+
+        TiltBackForJewelUsingTime(3500);
+        // Try and go to a safe zone
+        MoveLiftToPosition(1000);
+
+    }
+
+    protected void TiltBackForJewelUsingTime(int milliseconds)
+    {
+        robot.GetTilt().setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        robot.GetTilt().setPower(-0.5);
+        sleep(milliseconds);
+        robot.GetTilt().setPower(0.0);
+    }
+
+    protected void TiltForwardForJewelUsingTime(int milliseconds)
+    {
+        robot.GetTilt().setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        robot.GetTilt().setPower(0.5);
+        sleep(milliseconds);
+        robot.GetTilt().setPower(0.0);
+    }
+
+    protected void TiltBackForJewelByPosition(int position) {
         robot.GetTilt().setTargetPosition(position);
         robot.GetTilt().setPower(0.5);
         telemetry.addData("Tilt", "%d", robot.GetTilt().getCurrentPosition());
@@ -192,14 +242,15 @@ abstract class BaseAutonomousOpMode extends LinearOpMode
         }
     }
 
-    protected void MoveLiftToZero() {
-        robot.GetLift().setTargetPosition(10);
+    protected void MoveLiftToPosition(int position) {
+        robot.GetLift().setTargetPosition(position);
         while (robot.GetLift().isBusy())
         {
             telemetry.addData("Tilt", "%d", robot.GetTilt().getCurrentPosition());
             telemetry.addData("Lift", "%d", robot.GetLift().getCurrentPosition());
             telemetry.update();
         }
+
     }
 
     protected void MoveRobot(int leftDistance, int rightDistance){
