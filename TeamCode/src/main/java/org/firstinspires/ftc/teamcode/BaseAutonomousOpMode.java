@@ -206,7 +206,7 @@ abstract class BaseAutonomousOpMode extends LinearOpMode
 
         KnockJewel(allianceColor);
 
-        TiltBackForJewelUsingTime(3500);
+        TiltBackForJewelUsingTime(3350);
         // Try and go to a safe zone
         MoveLiftToPosition(1000);
 

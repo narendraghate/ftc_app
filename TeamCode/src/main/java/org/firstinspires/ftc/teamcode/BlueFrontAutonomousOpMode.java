@@ -79,6 +79,10 @@ public class BlueFrontAutonomousOpMode extends BaseAutonomousOpMode
         // move robot torwards center spot
         MoveRobot(2200);
 
+        robot.GetSlide().setPower(-0.25);
+        sleep(2000);
+        robot.GetSlide().setPower(0);
+
         telemetry.addData("Status","Finished");
         telemetry.update();
     }
