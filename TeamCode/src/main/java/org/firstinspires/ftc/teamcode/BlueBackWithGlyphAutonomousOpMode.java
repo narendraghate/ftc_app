@@ -57,9 +57,8 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
 
-@Disabled
-@Autonomous(name="Red Back Mode", group="Robot Opmode")
-public class RedBackAutonomousOpMode extends BaseAutonomousOpMode
+@Autonomous(name="Blue Back Glyph Mode", group="Robot Opmode")
+public class BlueBackWithGlyphAutonomousOpMode extends BaseAutonomousOpMode
 {
     @Override
     public void runOpMode() {
@@ -72,17 +71,21 @@ public class RedBackAutonomousOpMode extends BaseAutonomousOpMode
         telemetry.addData("Starting", "now");
         telemetry.update();
 
-        LiftTiltKnockTiltLift(AllianceColor.Red);
+        DropArmKnockLiftArmReposition(AllianceColor.Blue);
 
-        MoveToPosition(1200, -1200);
-
-        sleep(1000);
         // move robot torwards center spot
         MoveRobot(2400);
 
-        robot.GetSlide().setPower(-0.25);
-        sleep(4000);
-        robot.GetSlide().setPower(0);
+        // turn
+        MoveToPosition(-1200, 1200);
+
+        // move foward
+
+        // turn
+
+        // drop glyph by opening claws
+
+        // push it in
 
         telemetry.addData("Status","Finished");
         telemetry.update();

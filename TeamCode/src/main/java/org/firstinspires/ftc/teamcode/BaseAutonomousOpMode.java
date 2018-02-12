@@ -209,7 +209,23 @@ abstract class BaseAutonomousOpMode extends LinearOpMode
         TiltBackForJewelUsingTime(3350);
         // Try and go to a safe zone
         MoveLiftToPosition(1000);
+    }
 
+    protected void DropArmKnockLiftArmReposition(AllianceColor allianceColor) {
+        // drop arm
+        // make sure you drop the right arm depending on which side we are on
+
+        // measure color
+
+        // knock off jewel by twisting
+        MoveToPosition(-100, 100);
+
+        // lift arm
+
+        sleep(2000);
+
+        // twist back
+        MoveToPosition(0, 0);
     }
 
     protected void TiltBackForJewelUsingTime(int milliseconds)
