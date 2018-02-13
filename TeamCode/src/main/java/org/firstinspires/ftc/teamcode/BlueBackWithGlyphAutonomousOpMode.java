@@ -73,19 +73,24 @@ public class BlueBackWithGlyphAutonomousOpMode extends BaseAutonomousOpMode
 
         DropArmKnockLiftArmReposition(AllianceColor.Blue);
 
-        // move robot torwards center spot
+        // move robot forward off plate
         MoveRobot(2400);
 
-        // turn
-        MoveToPosition(-1200, 1200);
+        // turn right
+        MoveRobot(-1200, 1200);
 
         // move foward
+        MoveRobot(1000);
 
-        // turn
+        // turn left
+        MoveRobot(1200, -1200);
 
         // drop glyph by opening claws
 
         // push it in
+        MoveRobot(1000);
+
+        MoveRobot(2400, -2400);
 
         telemetry.addData("Status","Finished");
         telemetry.update();
