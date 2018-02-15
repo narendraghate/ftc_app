@@ -62,15 +62,38 @@ public class BlueFrontWithGlyphAutonomousOpMode extends BaseAutonomousOpMode
         DropArmKnockLiftArmReposition(AllianceColor.Blue);
 
         // move robot forward off plate
-        MoveRobot(2400);
+        MoveRobot(2400); // change this number based on if we go too far before turning
+
+        ChangeWheelPowerLevel(0.25);
 
         // turn left
-        MoveRobot(-1200, 1200);
+        MoveRobot(1100, -1100);
 
         // drop glyph by opening claws
+        OpenClaw(100);
+
+        sleep(500);
 
         // push it in
-        MoveRobot(1000);
+        MoveRobot(1000);  // change this number if we don't push it in far enough
+
+        // backup
+        MoveRobot(-1100); // change this number based on the above number
+
+        // open claw more
+        OpenClaw(200);
+
+        // turn 180
+        MoveRobot(-2200, 2200);
+
+        // move towards pile
+        MoveRobot(1000); // change this number if don't move far enough into the pile
+
+        // close claw
+        CloseClaw(500);
+
+        // backup to safe zone
+        MoveRobot(-2100); // change this number if we don't move back far enough to the safe zone
 
         telemetry.addData("Status","Finished");
         telemetry.update();

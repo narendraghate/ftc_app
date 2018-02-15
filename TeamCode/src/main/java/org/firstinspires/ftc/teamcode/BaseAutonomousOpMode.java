@@ -89,13 +89,17 @@ abstract class BaseAutonomousOpMode extends LinearOpMode
         robot.GetLeft().setDirection(DcMotor.Direction.REVERSE);
 
         // Setting the Power of the motors to 0.25.
-        robot.GetLeft().setPower(0.15);
-        robot.GetRight().setPower(0.15);
+        ChangeWheelPowerLevel(0.15);
 
         idle();
 
         telemetry.addData("Waiting", "");
         telemetry.update();
+    }
+
+    protected void ChangeWheelPowerLevel(double wheelPowerLevel){
+        robot.GetLeft().setPower(wheelPowerLevel);
+        robot.GetRight().setPower(wheelPowerLevel);
     }
 
     protected void LiftForJewel() {
@@ -218,7 +222,7 @@ abstract class BaseAutonomousOpMode extends LinearOpMode
         // measure color
 
         // knock off jewel by twisting
-        MoveToPosition(-100, 100);
+        MoveToPosition(-400, 400);
 
         // lift arm
 
@@ -226,6 +230,30 @@ abstract class BaseAutonomousOpMode extends LinearOpMode
 
         // twist back
         MoveToPosition(0, 0);
+    }
+
+    protected void OpenClaw(long openForHowLongInMilliseconds) {
+        int currentPower = -1;
+
+        robot.GetClawL().setPower(currentPower);
+        robot.GetClawR().setPower(currentPower);
+
+        sleep(openForHowLongInMilliseconds);
+
+        robot.GetClawL().setPower(0);
+        robot.GetClawR().setPower(0);
+    }
+
+    protected void CloseClaw(long openForHowLongInMilliseconds) {
+        int currentPower = 1;
+
+        robot.GetClawL().setPower(currentPower);
+        robot.GetClawR().setPower(currentPower);
+
+        sleep(openForHowLongInMilliseconds);
+
+        robot.GetClawL().setPower(0);
+        robot.GetClawR().setPower(0);
     }
 
     protected void TiltBackForJewelUsingTime(int milliseconds)
