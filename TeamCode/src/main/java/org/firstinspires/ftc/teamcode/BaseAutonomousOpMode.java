@@ -60,10 +60,8 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 abstract class BaseAutonomousOpMode extends LinearOpMode
 {
     protected PieceOfCakeRobot robot   = new PieceOfCakeRobot();
-    int LiftHeightPart1 = 3388;
-    int LiftHeightPart2 = 5788;
-    int TiltHeight = 2850;
-    int TiltBack = 1250;
+    int LiftHeightPart = 6000;
+    protected int TiltHeight = 2700;
 
     public enum AllianceColor
     {
@@ -91,8 +89,7 @@ abstract class BaseAutonomousOpMode extends LinearOpMode
         robot.GetLeft().setDirection(DcMotor.Direction.REVERSE);
 
         // Setting the Power of the motors to 0.25.
-        robot.GetLeft().setPower(0.25);
-        robot.GetRight().setPower(0.25);
+        ChangeWheelPowerLevel(0.15);
 
         idle();
 
@@ -100,41 +97,86 @@ abstract class BaseAutonomousOpMode extends LinearOpMode
         telemetry.update();
     }
 
-    protected void TiltForJewel(){
+    protected void ChangeWheelPowerLevel(double wheelPowerLevel){
+        robot.GetLeft().setPower(wheelPowerLevel);
+        robot.GetRight().setPower(wheelPowerLevel);
+    }
+
+    protected void LiftForJewel() {
         // Activate the Lift to go to a certain position while the left and right motors are moving.
-        robot.GetLift().setTargetPosition(LiftHeightPart1);
-        robot.GetLift().setPower(1);
+        robot.GetLift().setTargetPosition(LiftHeightPart);
+        robot.GetLift().setPower(0.5);
 
         // Wait to reach the lift position and add the telemetry while that is happening.
+        telemetry.addData("Tilt", "%d", robot.GetTilt().getCurrentPosition());
+        telemetry.addData("Lift", "%d", robot.GetLift().getCurrentPosition());
+        telemetry.update();
         while (robot.GetLift().isBusy())
         {
-            telemetry.addData("Lift Position", "%d", robot.GetLift().getCurrentPosition());
+            telemetry.addData("Tilt", "%d", robot.GetTilt().getCurrentPosition());
+            telemetry.addData("Lift", "%d", robot.GetLift().getCurrentPosition());
             telemetry.update();
         }
+    }
 
-        // Setting the second lift height and starting the tilt.
-        robot.GetLift().setTargetPosition(LiftHeightPart2);
-        robot.GetTilt().setTargetPosition(TiltHeight);
-        robot.GetTilt().setPower(.5);
+    protected void TiltForJewel(){
+        // Activate the Lift to go to a certain position while the left and right motors are moving.
+        robot.GetLift().setTargetPosition(LiftHeightPart);
+        robot.GetLift().setPower(0.5);
 
-        // Activating the tilt and the lift and the same time
-        while (robot.GetTilt().isBusy() || robot.GetLift().isBusy())
+        // Wait to reach the lift position and add the telemetry while that is happening.
+        telemetry.addData("Tilt", "%d", robot.GetTilt().getCurrentPosition());
+        telemetry.addData("Lift", "%d", robot.GetLift().getCurrentPosition());
+        telemetry.update();
+        while (robot.GetLift().isBusy())
         {
-            telemetry.addData("Tilt Position", "%d", robot.GetTilt().getCurrentPosition());
-            telemetry.addData("Lift Position", "%d", robot.GetLift().getCurrentPosition());
+            telemetry.addData("Tilt", "%d", robot.GetTilt().getCurrentPosition());
+            telemetry.addData("Lift", "%d", robot.GetLift().getCurrentPosition());
             telemetry.update();
         }
+
+        robot.GetTilt().setTargetPosition(TiltHeight);
+        robot.GetTilt().setPower(0.3);
+        // Wait to reach the lift position and add the telemetry while that is happening.
+        telemetry.addData("Tilt", "%d", robot.GetTilt().getCurrentPosition());
+        telemetry.addData("Lift", "%d", robot.GetLift().getCurrentPosition());
+        telemetry.update();
+        while (robot.GetTilt().isBusy())
+        {
+            telemetry.addData("Tilt", "%d", robot.GetTilt().getCurrentPosition());
+            telemetry.addData("Lift", "%d", robot.GetLift().getCurrentPosition());
+            telemetry.update();
+        }
+
+        sleep(2000);
     }
 
     protected void KnockJewel(AllianceColor allianceColor) {
         boolean OpenLeftClaw = false;
         boolean OpenRightClaw = false;
+        int LeftRed = 0;
+        int RightRed = 0;
 
         telemetry.addData("Left Color", "%d", robot.GetLeftColorSensor().red());
         telemetry.addData("Right Color", "%d", robot.GetRightColorSensor().red());
+        telemetry.update();
 
+        for (int x = 0; x<13; x++) {
+
+            if (robot.GetLeftColorSensor().red() > robot.GetRightColorSensor().red()){
+                LeftRed = (LeftRed + 1);
+            }
+            else {
+                RightRed = (RightRed + 1);
+            }
+
+        }
+
+        telemetry.addData("LeftRed", "%d", LeftRed);
+        telemetry.addData("RightRed", "%d", RightRed);
+        
         if (allianceColor == AllianceColor.Blue) {
-            if (robot.GetLeftColorSensor().red() > robot.GetRightColorSensor().red()) {
+            if (LeftRed > RightRed) {
                 OpenLeftClaw = true;
                 telemetry.addData("Opening Claw", "Left");
             } else {
@@ -142,7 +184,7 @@ abstract class BaseAutonomousOpMode extends LinearOpMode
                 OpenRightClaw = true;
             }
         } else {
-            if (robot.GetLeftColorSensor().red() > robot.GetRightColorSensor().red()) {
+            if (LeftRed > RightRed) {
                 OpenRightClaw = true;
                 telemetry.addData("Opening Claw", "Right");
             } else {
@@ -152,71 +194,107 @@ abstract class BaseAutonomousOpMode extends LinearOpMode
         }
 
         telemetry.update();
-        // Opening and closing the claws. The sleep allows the claw to actually open and close.
-        if (OpenLeftClaw) {
-            robot.GetClawL().setPower(-.9);
-            sleep(4000);
-            robot.GetClawL().setPower(.9);
-            sleep(4200);
-            robot.GetClawL().setPower(0);
-        }
-
         if (OpenRightClaw) {
-            robot.GetClawR().setPower(.9);
-            sleep(4000);
-            robot.GetClawR().setPower(-.9);
-            sleep(4200);
-            robot.GetClawR().setPower(0);
+            TurnSlightRight();
+        } else {
+            TurnSlightLeft();
         }
     }
 
-    protected void TiltBackForJewel() {
-        // Start tilting the robot back.
+    protected void LiftTiltKnockTiltLift(AllianceColor allianceColor) {
+        LiftForJewel();
 
-        // 2850
-        // 5788
+        TiltForwardForJewelUsingTime(1000);
 
-        // Tilting the robot back while making the lift go down part way.
-        robot.GetTilt().setTargetPosition(2600);
-        robot.GetTilt().setPower(.25);
+        sleep(2000);
+
+        KnockJewel(allianceColor);
+
+        TiltBackForJewelUsingTime(3350);
+        // Try and go to a safe zone
+        MoveLiftToPosition(1000);
+    }
+
+    protected void DropArmKnockLiftArmReposition(AllianceColor allianceColor) {
+        // drop arm
+        // make sure you drop the right arm depending on which side we are on
+
+        // measure color
+
+        // knock off jewel by twisting
+        MoveToPosition(-400, 400);
+
+        // lift arm
+
+        sleep(2000);
+
+        // twist back
+        MoveToPosition(0, 0);
+    }
+
+    protected void OpenClaw(long openForHowLongInMilliseconds) {
+        int currentPower = -1;
+
+        robot.GetClawL().setPower(currentPower);
+        robot.GetClawR().setPower(currentPower);
+
+        sleep(openForHowLongInMilliseconds);
+
+        robot.GetClawL().setPower(0);
+        robot.GetClawR().setPower(0);
+    }
+
+    protected void CloseClaw(long openForHowLongInMilliseconds) {
+        int currentPower = 1;
+
+        robot.GetClawL().setPower(currentPower);
+        robot.GetClawR().setPower(currentPower);
+
+        sleep(openForHowLongInMilliseconds);
+
+        robot.GetClawL().setPower(0);
+        robot.GetClawR().setPower(0);
+    }
+
+    protected void TiltBackForJewelUsingTime(int milliseconds)
+    {
+        robot.GetTilt().setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        robot.GetTilt().setPower(-0.5);
+        sleep(milliseconds);
+        robot.GetTilt().setPower(0.0);
+    }
+
+    protected void TiltForwardForJewelUsingTime(int milliseconds)
+    {
+        robot.GetTilt().setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        robot.GetTilt().setPower(0.5);
+        sleep(milliseconds);
+        robot.GetTilt().setPower(0.0);
+    }
+
+    protected void TiltBackForJewelByPosition(int position) {
+        robot.GetTilt().setTargetPosition(position);
+        robot.GetTilt().setPower(0.5);
+        telemetry.addData("Tilt", "%d", robot.GetTilt().getCurrentPosition());
+        telemetry.addData("Lift", "%d", robot.GetLift().getCurrentPosition());
+        telemetry.update();
         while (robot.GetTilt().isBusy())
         {
+            telemetry.addData("Tilt", "%d", robot.GetTilt().getCurrentPosition());
+            telemetry.addData("Lift", "%d", robot.GetLift().getCurrentPosition());
+            telemetry.update();
         }
+    }
 
-        robot.GetLift().setTargetPosition(5388);
+    protected void MoveLiftToPosition(int position) {
+        robot.GetLift().setTargetPosition(position);
         while (robot.GetLift().isBusy())
         {
+            telemetry.addData("Tilt", "%d", robot.GetTilt().getCurrentPosition());
+            telemetry.addData("Lift", "%d", robot.GetLift().getCurrentPosition());
+            telemetry.update();
         }
 
-        robot.GetTilt().setTargetPosition(2350);
-        while (robot.GetTilt().isBusy())
-        {
-        }
-
-        robot.GetLift().setTargetPosition(4788);
-        while (robot.GetLift().isBusy())
-        {
-        }
-
-        robot.GetTilt().setTargetPosition(1850);
-        while (robot.GetTilt().isBusy())
-        {
-        }
-
-        robot.GetLift().setTargetPosition(3788);
-        while (robot.GetLift().isBusy())
-        {
-        }
-
-        robot.GetTilt().setTargetPosition(0);
-        while (robot.GetTilt().isBusy())
-        {
-        }
-
-        robot.GetLift().setTargetPosition(0);
-        while (robot.GetLift().isBusy())
-        {
-        }
     }
 
     protected void MoveRobot(int leftDistance, int rightDistance){
@@ -232,18 +310,46 @@ abstract class BaseAutonomousOpMode extends LinearOpMode
         }
     }
 
-    protected void MoveIntoJewelPosition() { MoveRobot(150); }
+    protected void MoveClose(int leftDistance, int rightDistance){
+
+        robot.GetLeft().setTargetPosition(robot.GetLeft().getCurrentPosition() + leftDistance);
+        robot.GetRight().setTargetPosition(robot.GetRight().getCurrentPosition() + rightDistance);
+
+        // waiting for the turn to finish
+        while (robot.GetLeft().isBusy() || robot.GetRight().isBusy()) {
+            telemetry.addData("Left Position", "%d", robot.GetLeft().getCurrentPosition());
+            telemetry.addData("Right Position", "%d", robot.GetRight().getCurrentPosition());
+            telemetry.update();
+        }}
+
+    protected void TurnSlightRight() {
+        MoveToPosition(-300, 300);
+    }
+
+    protected void TurnSlightLeft() {
+        MoveToPosition(300, -300);
+    }
 
     protected void TurnRight() {
-        MoveRobot(-880, 880);
+        MoveRobot(-1040, 1040);
     }
 
     protected void TurnLeft() {
-        MoveRobot(880, -880);
+        MoveRobot(1040, -1040);
     }
 
     protected void MoveRobot(int distance) {
         MoveRobot(distance, distance);
+    }
+
+    protected void MoveToPosition(int leftPostion, int rightPosition) {
+
+        robot.GetLeft().setTargetPosition(leftPostion);
+        robot.GetRight().setTargetPosition(rightPosition);
+
+        // waiting for the turn to finish
+        while (robot.GetLeft().isBusy() || robot.GetRight().isBusy()) {
+        }
     }
 }
 // Done!

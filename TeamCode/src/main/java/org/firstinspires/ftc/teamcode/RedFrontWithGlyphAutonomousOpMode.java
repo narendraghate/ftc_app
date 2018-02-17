@@ -30,18 +30,6 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.ColorSensor;
-import com.qualcomm.robotcore.hardware.CompassSensor;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
-
-import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
-import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 /**
  * This file contains an example of an iterative (Non-Linear) "OpMode".
@@ -57,25 +45,55 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
 
-@Autonomous(name="Red Test Mode", group="Robot Opmode")
-@Disabled
-public class RedTestAutonomousOpMode extends BaseAutonomousOpMode
+@Autonomous(name="Red Front Glyph Mode", group="Robot Opmode")
+public class RedFrontWithGlyphAutonomousOpMode extends BaseAutonomousOpMode
 {
     @Override
     public void runOpMode() {
 
         InitRobot();
 
-        while (!isStarted()) {
-            telemetry.addData("Left Color", "%d", robot.GetLeftColorSensor().red());
-            telemetry.addData("Right Color", "%d", robot.GetRightColorSensor().red());
-            telemetry.update();
-        }
-
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
-        KnockJewel(AllianceColor.Red);
+        telemetry.addData("Starting", "now");
+        telemetry.update();
+
+        DropArmKnockLiftArmReposition(AllianceColor.Blue);
+
+        // move robot forward off plate
+        MoveRobot(2400); // change this number based on if we go too far before turning
+
+        ChangeWheelPowerLevel(0.25);
+
+        // turn right
+        MoveRobot(-1100, 1100);
+
+        // drop glyph by opening claws
+        OpenClaw(100);
+
+        sleep(500);
+
+        // push it in
+        MoveRobot(1000);  // change this number if we don't push it in far enough
+
+        // backup
+        MoveRobot(-1100); // change this number based on the above number
+
+        // open claw more
+        OpenClaw(200);
+
+        // turn 180
+        MoveRobot(-2200, 2200);
+
+        // move towards pile
+        MoveRobot(1000); // change this number if don't move far enough into the pile
+
+        // close claw
+        CloseClaw(500);
+
+        // backup to safe zone
+        MoveRobot(-2100); // change this number if we don't move back far enough to the safe zone
 
         telemetry.addData("Status","Finished");
         telemetry.update();

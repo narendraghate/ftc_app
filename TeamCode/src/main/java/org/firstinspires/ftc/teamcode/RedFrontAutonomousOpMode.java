@@ -57,6 +57,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
 
+@Disabled
 @Autonomous(name="Red Front Mode", group="Robot Opmode")
 public class RedFrontAutonomousOpMode extends BaseAutonomousOpMode
 {
@@ -71,28 +72,17 @@ public class RedFrontAutonomousOpMode extends BaseAutonomousOpMode
         telemetry.addData("Starting", "now");
         telemetry.update();
 
-        TiltForJewel();
+        LiftTiltKnockTiltLift(AllianceColor.Red);
 
-        // Moving the robot forward.
-        MoveIntoJewelPosition();
+        MoveToPosition(1200, -1200);
 
-        KnockJewel(AllianceColor.Red);
-
-        TiltBackForJewel();
-        // Try and go to a safe zone
-        // 810
-        TurnLeft();
-
-        // sleep so we can get off balancing stone
-        sleep(500);
-
+        sleep(1000);
         // move robot torwards center spot
-        MoveRobot(900);
+        MoveRobot(2200);
 
-        // turn a little bit
-        MoveRobot(200, -150);
-
-        MoveRobot(500);
+        robot.GetSlide().setPower(0.25);
+        sleep(2000);
+        robot.GetSlide().setPower(0);
 
         telemetry.addData("Status","Finished");
         telemetry.update();

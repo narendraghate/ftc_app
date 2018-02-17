@@ -57,9 +57,8 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
 
-@Autonomous(name="Test Tilt Mode", group="Robot Opmode")
-@Disabled
-public class TestTiltAutonomousOpMode extends BaseAutonomousOpMode
+@Autonomous(name="Blue Back Glyph Mode", group="Robot Opmode")
+public class BlueBackWithGlyphAutonomousOpMode extends BaseAutonomousOpMode
 {
     @Override
     public void runOpMode() {
@@ -69,11 +68,32 @@ public class TestTiltAutonomousOpMode extends BaseAutonomousOpMode
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
-        TiltForJewel();
+        telemetry.addData("Starting", "now");
+        telemetry.update();
 
-        KnockJewel(AllianceColor.Blue);
+        DropArmKnockLiftArmReposition(AllianceColor.Blue);
 
-        TiltBackForJewel();
+        // move robot forward off plate
+        MoveRobot(2400);
+
+        // turn right
+        MoveRobot(-1200, 1200);
+
+        // move foward
+        MoveRobot(1000);
+
+        // turn left
+        MoveRobot(1200, -1200);
+
+        // drop glyph by opening claws
+
+        // push it in
+        MoveRobot(1000);
+
+        MoveRobot(2400, -2400);
+
+        telemetry.addData("Status","Finished");
+        telemetry.update();
     }
 }
 // Done!
