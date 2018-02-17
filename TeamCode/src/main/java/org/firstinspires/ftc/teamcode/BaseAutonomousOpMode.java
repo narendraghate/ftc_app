@@ -310,6 +310,18 @@ abstract class BaseAutonomousOpMode extends LinearOpMode
         }
     }
 
+    protected void MoveClose(int leftDistance, int rightDistance){
+
+        robot.GetLeft().setTargetPosition(robot.GetLeft().getCurrentPosition() + leftDistance);
+        robot.GetRight().setTargetPosition(robot.GetRight().getCurrentPosition() + rightDistance);
+
+        // waiting for the turn to finish
+        while (robot.GetLeft().isBusy() || robot.GetRight().isBusy()) {
+            telemetry.addData("Left Position", "%d", robot.GetLeft().getCurrentPosition());
+            telemetry.addData("Right Position", "%d", robot.GetRight().getCurrentPosition());
+            telemetry.update();
+        }}
+
     protected void TurnSlightRight() {
         MoveToPosition(-300, 300);
     }
