@@ -310,17 +310,22 @@ abstract class BaseAutonomousOpMode extends LinearOpMode
         }
     }
 
-    protected void MoveClose(int leftDistance, int rightDistance){
+    protected void MoveClose(int distance, int withinADistance) {
 
-        robot.GetLeft().setTargetPosition(robot.GetLeft().getCurrentPosition() + leftDistance);
-        robot.GetRight().setTargetPosition(robot.GetRight().getCurrentPosition() + rightDistance);
+        robot.GetLeft().setTargetPosition(robot.GetLeft().getCurrentPosition() + distance);
+        robot.GetRight().setTargetPosition(robot.GetRight().getCurrentPosition() + distance);
 
         // waiting for the turn to finish
-        while (robot.GetLeft().isBusy() || robot.GetRight().isBusy()) {
+        int leftPosition = robot.GetLeft().getTargetPosition() - robot.GetLeft().getCurrentPosition();
+        int rightPosition = robot.GetRight().getTargetPosition() - robot.GetRight().getCurrentPosition();
+        while (leftPosition > withinADistance && rightPosition > withinADistance) {
             telemetry.addData("Left Position", "%d", robot.GetLeft().getCurrentPosition());
             telemetry.addData("Right Position", "%d", robot.GetRight().getCurrentPosition());
             telemetry.update();
-        }}
+        }
+        robot.GetLeft().setTargetPosition(robot.GetLeft().getCurrentPosition());
+        robot.GetRight().setTargetPosition(robot.GetRight().getCurrentPosition());
+    }
 
     protected void TurnSlightRight() {
         MoveToPosition(-300, 300);
