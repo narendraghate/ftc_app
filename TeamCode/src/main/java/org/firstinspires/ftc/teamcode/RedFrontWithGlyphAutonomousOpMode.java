@@ -59,8 +59,8 @@ public class RedFrontWithGlyphAutonomousOpMode extends BaseAutonomousOpMode
         telemetry.addData("Starting", "now");
         telemetry.update();
 
-        DropArmKnockLiftArmReposition(AllianceColor.Blue);
-
+        DropArmKnockLiftArmReposition(AllianceColor.Red);
+/*
         // move robot forward off plate
         MoveRobot(2400); // change this number based on if we go too far before turning
 
@@ -94,7 +94,7 @@ public class RedFrontWithGlyphAutonomousOpMode extends BaseAutonomousOpMode
 
         // backup to safe zone
         MoveRobot(-2100); // change this number if we don't move back far enough to the safe zone
-
+*/
         telemetry.addData("Status","Finished");
         telemetry.update();
     }

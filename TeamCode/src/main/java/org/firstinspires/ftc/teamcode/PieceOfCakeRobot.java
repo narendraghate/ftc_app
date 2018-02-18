@@ -20,10 +20,14 @@ public class PieceOfCakeRobot {
     private DcMotor Lift = null;
     private DcMotor Slide = null;
     private DcMotor Tilt = null;
-    private ColorSensor LeftColorSensor = null;
-    private ColorSensor RightColorSensor = null;
+    private ColorSensor LeftBackColorSensor = null;
+    private ColorSensor LeftFrontColorSensor = null;
+    private ColorSensor RightBackColorSensor = null;
+    private ColorSensor RightFrontColorSensor = null;
     private HardwareMap hwMap = null;
     private double PowerPercentage = 1;
+    private Servo LeftServo = null;
+    private Servo RightServo = null;
 
     // Constructor
     public PieceOfCakeRobot() {
@@ -58,11 +62,22 @@ public class PieceOfCakeRobot {
         dcMotor = hwMap.dcMotor.get("slide");
         SetSlide(dcMotor);
 
-        colorSensor = hwMap.colorSensor.get("leftcolorsensor");
-        SetLeftColorSensor(colorSensor);
+        colorSensor = hwMap.colorSensor.get("leftbackcolorsensor");
+        SetLeftBackColorSensor(colorSensor);
 
-        colorSensor = hwMap.colorSensor.get("rightcolorsensor");
-        SetRightColorSensor(colorSensor);
+        colorSensor = hwMap.colorSensor.get("leftfrontcolorsensor");
+        SetLeftFrontColorSensor(colorSensor);
+
+        colorSensor = hwMap.colorSensor.get("rightbackcolorsensor");
+        SetRightBackColorSensor(colorSensor);
+
+        colorSensor = hwMap.colorSensor.get("rightfrontcolorsensor");
+        SetRightFrontColorSensor(colorSensor);
+
+        SetLeftServo(hwMap.servo.get("leftservo"));
+
+        SetRightServo(hwMap.servo.get("rightservo"));
+        GetRightServo().setDirection(Servo.Direction.REVERSE);
     }
 
         // sets the .get for all variables
@@ -94,15 +109,25 @@ public class PieceOfCakeRobot {
         return Tilt;
     }
 
-    public ColorSensor GetLeftColorSensor() {
-        return LeftColorSensor;
+    public ColorSensor GetLeftBackColorSensor() {
+        return LeftBackColorSensor;
     }
 
-    public ColorSensor GetRightColorSensor() { return RightColorSensor;}
+    public ColorSensor GetLeftFrontColorSensor() { return LeftFrontColorSensor;}
+
+    public ColorSensor GetRightBackColorSensor() {
+        return RightBackColorSensor;
+    }
+
+    public ColorSensor GetRightFrontColorSensor() { return RightFrontColorSensor;}
 
     public Double GetPowerPercentage() {
         return PowerPercentage;
     }
+
+    public Servo GetLeftServo() { return LeftServo; }
+
+    public Servo GetRightServo() { return RightServo; }
 
     private void SetClawR(DcMotor motor) {
         ClawR = motor;
@@ -132,11 +157,19 @@ public class PieceOfCakeRobot {
         Tilt = dcMotor;
     }
 
-    private void SetLeftColorSensor(ColorSensor colorSensor) {
-        LeftColorSensor = colorSensor;
+    private void SetLeftBackColorSensor(ColorSensor colorSensor) {
+        LeftBackColorSensor = colorSensor;
     }
 
-    private void SetRightColorSensor(ColorSensor colorSensor) { RightColorSensor = colorSensor; }
+    private void SetLeftFrontColorSensor(ColorSensor colorSensor) { LeftFrontColorSensor = colorSensor; }
+
+    private void SetRightBackColorSensor(ColorSensor colorSensor) { RightBackColorSensor = colorSensor; }
+
+    private void SetRightFrontColorSensor(ColorSensor colorSensor) { RightFrontColorSensor = colorSensor; }
+
+    private void SetLeftServo(Servo leftServo) { LeftServo = leftServo; }
+
+    private void SetRightServo(Servo rightServo) { RightServo = rightServo; }
 
     public void SetPowerPercentage(Double powerPercentage) {
         PowerPercentage = powerPercentage;
