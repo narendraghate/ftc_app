@@ -211,7 +211,7 @@ abstract class BaseAutonomousOpMode extends LinearOpMode
     protected void DropArmKnockLiftArmReposition(AllianceColor allianceColor) {
         if (allianceColor == AllianceColor.Blue) {
             // drop arm
-            robot.GetLeftServo().setPosition(0.7);
+            robot.GetLeftServo().setPosition(1.0);
             sleep(2000);
             // check color
             if (isRedInFront(robot.GetLeftFrontColorSensor(), robot.GetLeftBackColorSensor())){
@@ -232,7 +232,7 @@ abstract class BaseAutonomousOpMode extends LinearOpMode
             }
         } else if (allianceColor == AllianceColor.Red){
             // drop arm
-            robot.GetRightServo().setPosition(0.7);
+            robot.GetRightServo().setPosition(1.0);
             sleep(2000);
             // check color
             if (isRedInFront(robot.GetRightFrontColorSensor(), robot.GetRightBackColorSensor()) == false){
