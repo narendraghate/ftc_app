@@ -31,6 +31,8 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
+import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
+
 /**
  * This file contains an example of an iterative (Non-Linear) "OpMode".
  * An OpMode is a 'program' that runs in either the autonomous or the teleop period of an FTC match.
@@ -59,15 +61,23 @@ public class BlueFrontWithGlyphAutonomousOpMode extends BaseAutonomousOpMode
         telemetry.addData("Starting", "now");
         telemetry.update();
 
+        LoadGlyphPosition();
+
         DropArmKnockLiftArmReposition(AllianceColor.Blue);
 
-        // move robot forward off plate
-        MoveRobot(2400); // change this number based on if we go too far before turning
+        if (GetGlyphPosition() == RelicRecoveryVuMark.LEFT) {
+            // move robot forward off plate
+            MoveRobot(2400); // change this number based on if we go too far before turning
+        } else if (GetGlyphPosition() == RelicRecoveryVuMark.RIGHT) {
+            MoveRobot(2200);
+        } else {
+            MoveRobot(2300);
+        }
 
-        ChangeWheelPowerLevel(0.25);
+        ChangeWheelPowerLevel(0.35);
 
         // turn left
-        MoveRobot(1100, -1100);
+        Rotate(90, 0.15);
 
         // drop glyph by opening claws
         OpenClaw(100);
@@ -75,25 +85,25 @@ public class BlueFrontWithGlyphAutonomousOpMode extends BaseAutonomousOpMode
         sleep(500);
 
         // push it in
-        MoveRobot(1000);  // change this number if we don't push it in far enough
+        MoveRobot(500);  // change this number if we don't push it in far enough
 
         // backup
-        MoveRobot(-1100); // change this number based on the above number
+        MoveRobot(-600); // change this number based on the above number
 
         // open claw more
-        OpenClaw(200);
+        OpenClaw(500);
 
         // turn 180
-        MoveRobot(-2200, 2200);
+        Rotate(-180, 0.15);
 
         // move towards pile
         MoveRobot(1000); // change this number if don't move far enough into the pile
 
         // close claw
-        CloseClaw(500);
+        CloseClaw(700);
 
         // backup to safe zone
-        MoveRobot(-2100); // change this number if we don't move back far enough to the safe zone
+        MoveRobot(-1000); // change this number if we don't move back far enough to the safe zone
 
         telemetry.addData("Status","Finished");
         telemetry.update();

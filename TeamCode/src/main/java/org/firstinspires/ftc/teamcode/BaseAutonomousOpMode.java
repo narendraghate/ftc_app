@@ -29,6 +29,7 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -41,7 +42,16 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
+import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
 /**
  * This file contains an example of an iterative (Non-Linear) "OpMode".
@@ -59,7 +69,16 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 abstract class BaseAutonomousOpMode extends LinearOpMode
 {
-    protected PieceOfCakeRobot robot   = new PieceOfCakeRobot();
+    protected PieceOfCakeRobot robot = new PieceOfCakeRobot();
+    private RelicRecoveryVuMark relicRecoveryVuMark = RelicRecoveryVuMark.CENTER;
+
+    private BNO055IMU imu;
+    private Orientation lastAngles = new Orientation();
+    private double globalAngle;
+    private double correction;
+    private double currentWheelPower = 0.15;
+
+    private VuforiaLocalizer vuforia;
 
     public enum AllianceColor
     {
@@ -74,34 +93,105 @@ abstract class BaseAutonomousOpMode extends LinearOpMode
 
         // We are initializing the motors.
         robot.GetRight().setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot.GetRight().setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.GetRight().setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         robot.GetSlide().setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.GetSlide().setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         robot.GetSlide().setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         robot.GetLeft().setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot.GetLeft().setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.GetLeft().setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         robot.GetLeft().setDirection(DcMotor.Direction.REVERSE);
 
-        // Setting the Power of the motors to 0.25.
+        // Setting the Power of the motors to 0.15.
         ChangeWheelPowerLevel(0.15);
 
-        idle();
+        InitGyro();
+        InitCamera();
 
-        telemetry.addData("Waiting", "");
+        telemetry.addData("Mode", "waiting for start");
+        telemetry.addData("imu calib status", imu.getCalibrationStatus().toString());
         telemetry.update();
+
+        idle();
+    }
+
+    private void InitGyro() {
+        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
+
+        parameters.mode                = BNO055IMU.SensorMode.IMU;
+        parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
+        parameters.accelUnit           = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+        parameters.loggingEnabled      = false;
+
+        // Retrieve and initialize the IMU. We expect the IMU to be attached to an I2C port
+        // on a Core Device Interface Module, configured to be a sensor of type "AdaFruit IMU",
+        // and named "imu".
+        imu = hardwareMap.get(BNO055IMU.class, "imu");
+
+        imu.initialize(parameters);
+
+        telemetry.addData("Mode", "calibrating...");
+        telemetry.update();
+
+        // make sure the imu gyro is calibrated before continuing.
+        while (!isStopRequested() && !imu.isGyroCalibrated())
+        {
+            sleep(50);
+            idle();
+        }
+
+        resetAngle();
+    }
+
+    private void InitCamera() {
+        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+        VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
+
+        parameters.vuforiaLicenseKey = "ASBTwVj/////AAAAGWrL5O30VElzgeaoDGIa2shP45ENRY3zwoEBXHkCDTtRmQYmDiFRtuuULnBl5g+fcXpsEiKBitgTN620Up1AKg+r0MpJepnoPfjvoo94oX2JgDNF2lS4AULsXyiEUR6Zq/ObTtIY1+/en1Qj2c28RUsp6+B4VaznIMKtwIGlhFQTpx4xn22I1SPxDpyCfzSC8+d6NDlBoUa8krwX5D+spdWWHZg+69JaFMVCQWCOktKHTyQVQrAicJkrDIQCq2onLAIehZzk+wXySRqix+O5Eftg9tDtjPKErgavsrbWg3/O+PkXYMfKXspNu/laVPJfXM95f3bgt7H6QIcHZiro/A6zsTeubBqNsUeVCMLTAxR6";
+        parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
+        this.vuforia = ClassFactory.createVuforiaLocalizer(parameters);
+    }
+
+    protected void LoadGlyphPosition() {
+        int counter = 0;
+        VuforiaTrackables relicTrackables = this.vuforia.loadTrackablesFromAsset("RelicVuMark");
+        VuforiaTrackable relicTemplate = relicTrackables.get(0);
+        relicTemplate.setName("relicVuMarkTemplate"); // can help in debugging; otherwise not necessary
+
+        relicTrackables.activate();
+        while (counter < 20)
+        {
+            RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
+
+            if (vuMark != RelicRecoveryVuMark.UNKNOWN)
+            {
+                relicRecoveryVuMark = vuMark;
+                break;
+            }
+
+            counter ++;
+            sleep(50);
+        }
+
+        relicTrackables.deactivate();
+    }
+
+    protected RelicRecoveryVuMark GetGlyphPosition() {
+        return relicRecoveryVuMark;
     }
 
     protected void ChangeWheelPowerLevel(double wheelPowerLevel){
-        robot.GetLeft().setPower(wheelPowerLevel);
-        robot.GetRight().setPower(wheelPowerLevel);
+        currentWheelPower = wheelPowerLevel;
     }
 
     protected boolean isRedInFront(ColorSensor frontColorSensor, ColorSensor backColorSensor) {
-       int FrontRed = 0;
-       int BackRed = 0;
+        int FrontRed = 0;
+        int BackRed = 0;
 
         for (int x = 0; x<11; x++) {
+
+            sleep(50);
 
             if (frontColorSensor.red() > backColorSensor.red()){
                 FrontRed = FrontRed + 1;
@@ -142,7 +232,7 @@ abstract class BaseAutonomousOpMode extends LinearOpMode
             }
         } else if (allianceColor == AllianceColor.Red){
             // drop arm
-            robot.GetRightServo().setPosition(0.65);
+            robot.GetRightServo().setPosition(0.7);
             sleep(2000);
             // check color
             if (isRedInFront(robot.GetRightFrontColorSensor(), robot.GetRightBackColorSensor()) == false){
@@ -190,34 +280,142 @@ abstract class BaseAutonomousOpMode extends LinearOpMode
 
     protected void MoveRobot(int leftDistance, int rightDistance){
 
+        robot.GetRight().setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.GetLeft().setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
         robot.GetLeft().setTargetPosition(robot.GetLeft().getCurrentPosition() + leftDistance);
         robot.GetRight().setTargetPosition(robot.GetRight().getCurrentPosition() + rightDistance);
 
+        robot.GetLeft().setPower(currentWheelPower);
+        robot.GetRight().setPower(currentWheelPower);
+
         // waiting for the turn to finish
-        while (robot.GetLeft().isBusy() || robot.GetRight().isBusy()) {
+        while (opModeIsActive() && (robot.GetLeft().isBusy() && robot.GetRight().isBusy())) {
+            correction = checkDirection();
+            robot.GetLeft().setPower(currentWheelPower + correction);
+
+            telemetry.addData("1 imu heading", lastAngles.firstAngle);
+            telemetry.addData("2 global heading", globalAngle);
+            telemetry.addData("3 correction", correction);
+            telemetry.addData("VuMark", "%s visible", relicRecoveryVuMark);
             telemetry.addData("Left Position", "%d", robot.GetLeft().getCurrentPosition());
             telemetry.addData("Right Position", "%d", robot.GetRight().getCurrentPosition());
             telemetry.addData("Slide Position", "%d", robot.GetSlide().getCurrentPosition());
             telemetry.update();
         }
+
+        robot.GetLeft().setPower(0);
+        robot.GetRight().setPower(0);
+
+        robot.GetRight().setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.GetLeft().setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
-    protected void MoveClose(int distance, int withinADistance) {
+    private double checkDirection()
+    {
+        // The gain value determines how sensitive the correction is to direction changes.
+        // You will have to experiment with your robot to get small smooth direction changes
+        // to stay on a straight line.
+        double correction, angle, gain = .10;
 
-        robot.GetLeft().setTargetPosition(robot.GetLeft().getCurrentPosition() + distance);
-        robot.GetRight().setTargetPosition(robot.GetRight().getCurrentPosition() + distance);
+        angle = getAngle();
 
-        // waiting for the turn to finish
-        int leftPosition = robot.GetLeft().getTargetPosition() - robot.GetLeft().getCurrentPosition();
-        int rightPosition = robot.GetRight().getTargetPosition() - robot.GetRight().getCurrentPosition();
-        while (leftPosition > withinADistance && rightPosition > withinADistance) {
-            telemetry.addData("Left Position", "%d", robot.GetLeft().getCurrentPosition());
-            telemetry.addData("Right Position", "%d", robot.GetRight().getCurrentPosition());
-            telemetry.addData("Slide Position", "%d", robot.GetSlide().getCurrentPosition());
-            telemetry.update();
+        if (angle == 0)
+            correction = 0;             // no adjustment.
+        else
+            correction = -angle;        // reverse sign of angle for correction.
+
+        correction = correction * gain;
+
+        return correction;
+    }
+
+    protected void Rotate(int degrees, double power)
+    {
+        double  leftPower, rightPower;
+        double angle;
+
+        // restart imu movement tracking.
+        resetAngle();
+
+        // getAngle() returns + when rotating counter clockwise (left) and - when rotating
+        // clockwise (right).
+
+        if (degrees < 0)
+        {   // turn right.
+            leftPower = -power;
+            rightPower = power;
         }
-        robot.GetLeft().setTargetPosition(robot.GetLeft().getCurrentPosition());
-        robot.GetRight().setTargetPosition(robot.GetRight().getCurrentPosition());
+        else if (degrees > 0)
+        {   // turn left.
+            leftPower = power;
+            rightPower = -power;
+        }
+        else return;
+
+        // set power to rotate.
+        robot.GetLeft().setPower(leftPower);
+        robot.GetRight().setPower(rightPower);
+
+        // rotate until turn is completed.
+        if (degrees < 0)
+        {
+            // On right turn we have to get off zero first.
+            while (opModeIsActive() && (angle = getAngle()) == 0) {
+                telemetry.addData("Zero Angle ", angle);
+                telemetry.update();
+            }
+
+            while (opModeIsActive() && (angle = getAngle()) > degrees) {
+                telemetry.addData("Right Angle ", angle);
+                telemetry.update();
+            }
+        }
+        else    // left turn.
+            while (opModeIsActive() && (angle = getAngle()) < degrees) {
+                telemetry.addData("Left Angle ", angle);
+                telemetry.update();
+            }
+
+        // turn the motors off.
+        robot.GetLeft().setPower(0);
+        robot.GetRight().setPower(0);
+
+        // wait for rotation to stop.
+        sleep(1000);
+
+        // reset angle tracking on new heading.
+        resetAngle();
+    }
+
+    private void resetAngle()
+    {
+        lastAngles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+
+        globalAngle = 0;
+    }
+
+    private double getAngle()
+    {
+        // We experimentally determined the Z axis is the axis we want to use for heading angle.
+        // We have to process the angle because the imu works in euler angles so the Z axis is
+        // returned as 0 to +180 or 0 to -180 rolling back to -179 or +179 when rotation passes
+        // 180 degrees. We detect this transition and track the total cumulative angle of rotation.
+
+        Orientation angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+
+        double deltaAngle = angles.firstAngle - lastAngles.firstAngle;
+
+        if (deltaAngle < -180)
+            deltaAngle += 360;
+        else if (deltaAngle > 180)
+            deltaAngle -= 360;
+
+        globalAngle += deltaAngle;
+
+        lastAngles = angles;
+
+        return globalAngle;
     }
 
     protected void TurnSlightRight() {
@@ -232,12 +430,24 @@ abstract class BaseAutonomousOpMode extends LinearOpMode
 
     protected void MoveToPosition(int leftPostion, int rightPosition) {
 
+        robot.GetRight().setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.GetLeft().setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
         robot.GetLeft().setTargetPosition(leftPostion);
         robot.GetRight().setTargetPosition(rightPosition);
 
+        robot.GetLeft().setPower(currentWheelPower);
+        robot.GetRight().setPower(currentWheelPower);
+
         // waiting for the turn to finish
-        while (robot.GetLeft().isBusy() || robot.GetRight().isBusy()) {
+        while (opModeIsActive() && (robot.GetLeft().isBusy() && robot.GetRight().isBusy())) {
         }
+
+        robot.GetLeft().setPower(0);
+        robot.GetRight().setPower(0);
+
+        robot.GetRight().setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.GetLeft().setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 }
 // Done!
