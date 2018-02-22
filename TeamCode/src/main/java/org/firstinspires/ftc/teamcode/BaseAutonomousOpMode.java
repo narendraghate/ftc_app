@@ -208,7 +208,7 @@ abstract class BaseAutonomousOpMode extends LinearOpMode
         }
     }
 
-    protected void DropArmKnockLiftArmReposition(AllianceColor allianceColor) {
+    protected void DropArmKnockLiftArmReposition(AllianceColor allianceColor, int distanceToMoveAfterWards) {
         if (allianceColor == AllianceColor.Blue) {
             // drop arm
             robot.GetLeftServo().setPosition(1.0);
@@ -216,7 +216,7 @@ abstract class BaseAutonomousOpMode extends LinearOpMode
             // check color
             if (isRedInFront(robot.GetLeftFrontColorSensor(), robot.GetLeftBackColorSensor())){
                 // move forward
-                MoveRobot(200);
+                MoveRobot(distanceToMoveAfterWards);
                 // raise arm
                 robot.GetLeftServo().setPosition(0);
                 sleep(1500);
@@ -228,7 +228,7 @@ abstract class BaseAutonomousOpMode extends LinearOpMode
                 sleep(1500);
                 // move forward
                 MoveToPosition(0,0);
-                MoveRobot(200);
+                MoveRobot(distanceToMoveAfterWards);
             }
         } else if (allianceColor == AllianceColor.Red){
             // drop arm
@@ -237,7 +237,7 @@ abstract class BaseAutonomousOpMode extends LinearOpMode
             // check color
             if (isRedInFront(robot.GetRightFrontColorSensor(), robot.GetRightBackColorSensor()) == false){
                 // move forward
-                MoveRobot(200);
+                MoveRobot(distanceToMoveAfterWards);
                 // raise arm
                 robot.GetRightServo().setPosition(0);
                 sleep(1000);
@@ -249,7 +249,7 @@ abstract class BaseAutonomousOpMode extends LinearOpMode
                 sleep(1000);
                 // move forward
                 MoveToPosition(0,0);
-                MoveRobot(200);
+                MoveRobot(distanceToMoveAfterWards);
             }
         }
     }

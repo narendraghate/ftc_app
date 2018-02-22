@@ -42,6 +42,7 @@ import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 
 /**
  * This file contains an example of an iterative (Non-Linear) "OpMode".
@@ -72,26 +73,26 @@ public class BlueBackWithGlyphAutonomousOpMode extends BaseAutonomousOpMode
         telemetry.addData("Starting", "now");
         telemetry.update();
 
-        DropArmKnockLiftArmReposition(AllianceColor.Blue);
+        DropArmKnockLiftArmReposition(AllianceColor.Blue, 1000);
 
-        // move robot forward off plate
-        MoveRobot(2400);
-
-        // turn right
-        MoveRobot(-1200, 1200);
-
-        // move foward
-        MoveRobot(1000);
-
-        // turn left
-        MoveRobot(1200, -1200);
+        if (GetGlyphPosition() == RelicRecoveryVuMark.LEFT) {
+            //SlideRobot(200); // change this number to match right position
+        } else if (GetGlyphPosition() == RelicRecoveryVuMark.RIGHT) {
+            //SlideRobot(400); // change this number to match right position
+        } else {
+            //SlideRobot(200); // change this number to match center position
+        }
 
         // drop glyph by opening claws
+        OpenClaw(100);
+
+        sleep(500);
 
         // push it in
-        MoveRobot(1000);
+        MoveRobot(500);  // change this number if we don't push it in far enough
 
-        MoveRobot(2400, -2400);
+        // backup
+        MoveRobot(-600); // change this number based on the above number
 
         telemetry.addData("Status","Finished");
         telemetry.update();
