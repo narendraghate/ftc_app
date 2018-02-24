@@ -75,24 +75,27 @@ public class BlueBackWithGlyphAutonomousOpMode extends BaseAutonomousOpMode
 
         DropArmKnockLiftArmReposition(AllianceColor.Blue, 1000);
 
-        if (GetGlyphPosition() == RelicRecoveryVuMark.LEFT) {
-            //SlideRobot(200); // change this number to match right position
-        } else if (GetGlyphPosition() == RelicRecoveryVuMark.RIGHT) {
-            //SlideRobot(400); // change this number to match right position
-        } else {
-            //SlideRobot(200); // change this number to match center position
-        }
 
         // drop glyph by opening claws
-        OpenClaw(100);
+        MoveRobot(800);
 
         sleep(500);
 
-        // push it in
-        MoveRobot(500);  // change this number if we don't push it in far enough
+        if (GetGlyphPosition() == RelicRecoveryVuMark.LEFT) {
+            SlideRobot(-100); // change this number to match left position
+        } else if (GetGlyphPosition() == RelicRecoveryVuMark.RIGHT) {
+            SlideRobot(-300); // change this number to match right position
+        } else {
+            SlideRobot(-500); // change this number to match center position
+        }
 
+        OpenClaw(100);
+        // push it in
+        MoveRobot(800);  // change this number if we don't push it in far enough
+
+        sleep(2000);
         // backup
-        MoveRobot(-600); // change this number based on the above number
+        MoveRobot(-300); // change this number based on the above number
 
         telemetry.addData("Status","Finished");
         telemetry.update();

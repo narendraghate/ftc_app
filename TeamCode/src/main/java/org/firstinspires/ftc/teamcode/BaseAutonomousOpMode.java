@@ -293,8 +293,8 @@ abstract class BaseAutonomousOpMode extends LinearOpMode
 
         // waiting for the turn to finish
         while (opModeIsActive() && (robot.GetLeft().isBusy() && robot.GetRight().isBusy())) {
-            correction = checkDirection();
-            robot.GetLeft().setPower(currentWheelPower + correction);
+            //correction = checkDirection();
+            //robot.GetLeft().setPower(currentWheelPower + correction);
 
             telemetry.addData("1 imu heading", lastAngles.firstAngle);
             telemetry.addData("2 global heading", globalAngle);
@@ -421,13 +421,29 @@ abstract class BaseAutonomousOpMode extends LinearOpMode
     }
 
     protected void TurnSlightRight() {
-        MoveToPosition(-300, 300);
+        MoveToPosition(-100, 100);
     }
 
-    protected void TurnSlightLeft() { MoveToPosition(300, -300); }
+    protected void TurnSlightLeft() { MoveToPosition(100, -100); }
 
     protected void MoveRobot(int distance) {
         MoveRobot(distance, distance);
+    }
+
+    protected void SlideRobot(int distance) {
+        robot.GetSlide().setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        robot.GetSlide().setTargetPosition(distance);
+
+        robot.GetSlide().setPower(currentWheelPower);
+
+        // waiting for the turn to finish
+        //while (opModeIsActive() && robot.GetSlide().isBusy()) {
+        //}
+
+        robot.GetSlide().setPower(0);
+
+        robot.GetSlide().setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
     protected void MoveToPosition(int leftPostion, int rightPosition) {

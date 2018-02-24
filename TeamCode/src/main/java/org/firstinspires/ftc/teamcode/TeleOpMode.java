@@ -68,6 +68,7 @@ public class TeleOpMode extends OpMode {
 
         robot.GetTilt().setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.GetTilt().setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        robot.GetTilt().setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         robot.GetLift().setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.GetLift().setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -78,6 +79,9 @@ public class TeleOpMode extends OpMode {
 
         robot.GetRight().setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.GetRight().setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        robot.GetLeftServo().setPosition(0);
+        robot.GetRightServo().setPosition(0);
     }
 
     @Override
