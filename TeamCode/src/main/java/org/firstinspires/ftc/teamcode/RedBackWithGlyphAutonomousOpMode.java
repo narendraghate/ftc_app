@@ -30,18 +30,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.ColorSensor;
-import com.qualcomm.robotcore.hardware.CompassSensor;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
 
-import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
-import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 
 /**
@@ -59,8 +48,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
  */
 
 
-@Autonomous(name="Blue Back Glyph Mode", group="Robot Opmode")
-public class BlueBackWithGlyphAutonomousOpMode extends BaseAutonomousOpMode
+@Autonomous(name="Red Back Glyph Mode", group="Robot Opmode")
+public class RedBackWithGlyphAutonomousOpMode extends BaseAutonomousOpMode
 {
     @Override
     public void runOpMode() {
@@ -78,11 +67,11 @@ public class BlueBackWithGlyphAutonomousOpMode extends BaseAutonomousOpMode
         DropArmKnockLiftArmReposition(AllianceColor.Blue, 1800);
 
         if (GetGlyphPosition() == RelicRecoveryVuMark.LEFT) {
-            SlideRobot(-100); // change this number to match left position
+            SlideRobot(300); // change this number to match left position
         } else if (GetGlyphPosition() == RelicRecoveryVuMark.RIGHT) {
-            SlideRobot(-300); // change this number to match right position
+            SlideRobot(100); // change this number to match right position
         } else {
-            SlideRobot(-200); // change this number to match center position
+            SlideRobot(200); // change this number to match center position
         }
 
         OpenClaw(100);

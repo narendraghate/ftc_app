@@ -189,9 +189,14 @@ abstract class BaseAutonomousOpMode extends LinearOpMode
         int FrontRed = 0;
         int BackRed = 0;
 
-        for (int x = 0; x<11; x++) {
+        for (int x = 0; x<21; x++) {
 
             sleep(50);
+
+            telemetry.addData("front red", frontColorSensor.red());
+            telemetry.addData("back red", backColorSensor.red());
+            telemetry.addData("total counts ", "%d %d", FrontRed, BackRed);
+            telemetry.update();
 
             if (frontColorSensor.red() > backColorSensor.red()){
                 FrontRed = FrontRed + 1;
@@ -212,7 +217,7 @@ abstract class BaseAutonomousOpMode extends LinearOpMode
         if (allianceColor == AllianceColor.Blue) {
             // drop arm
             robot.GetLeftServo().setPosition(1.0);
-            sleep(2000);
+            sleep(2500);
             // check color
             if (isRedInFront(robot.GetLeftFrontColorSensor(), robot.GetLeftBackColorSensor())){
                 // move forward
@@ -234,7 +239,7 @@ abstract class BaseAutonomousOpMode extends LinearOpMode
         } else if (allianceColor == AllianceColor.Red){
             // drop arm
             robot.GetRightServo().setPosition(1.0);
-            sleep(2000);
+            sleep(2500);
             // check color
             if (isRedInFront(robot.GetRightFrontColorSensor(), robot.GetRightBackColorSensor()) == false){
                 // move forward
@@ -438,8 +443,8 @@ abstract class BaseAutonomousOpMode extends LinearOpMode
         robot.GetSlide().setPower(currentWheelPower);
 
         // waiting for the turn to finish
-        //while (opModeIsActive() && robot.GetSlide().isBusy()) {
-        //}
+        while (opModeIsActive() && robot.GetSlide().isBusy()) {
+        }
 
         robot.GetSlide().setPower(0);
 
