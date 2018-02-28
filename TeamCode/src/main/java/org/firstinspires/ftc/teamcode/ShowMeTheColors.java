@@ -48,8 +48,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
  */
 
 
-@Autonomous(name="Red Back Glyph Mode", group="Robot Opmode")
-public class RedBackWithGlyphAutonomousOpMode extends BaseAutonomousOpMode
+@Autonomous(name="Show Me The Colors", group="Robot Opmode")
+public class ShowMeTheColors extends BaseAutonomousOpMode
 {
     @Override
     public void runOpMode() {
@@ -62,28 +62,16 @@ public class RedBackWithGlyphAutonomousOpMode extends BaseAutonomousOpMode
         telemetry.addData("Starting", "now");
         telemetry.update();
 
-        LoadGlyphPosition();
-
-        DropArmKnockLiftArmReposition(AllianceColor.Red, 1800);
-
-        if (GetGlyphPosition() == RelicRecoveryVuMark.LEFT) {
-            SlideRobot(300); // change this number to match left position
-        } else if (GetGlyphPosition() == RelicRecoveryVuMark.RIGHT) {
-            SlideRobot(100); // change this number to match right position
-        } else {
-            SlideRobot(200); // change this number to match center position
+        while (opModeIsActive()){
+            telemetry.addData("Left Front Red", "%d", robot.GetLeftFrontColorSensor().red());
+            telemetry.addData("Left Front Blue", "%d", robot.GetLeftFrontColorSensor().blue());
+            telemetry.addData("Right Front Red", "%d", robot.GetRightFrontColorSensor().red());
+            telemetry.addData("Right Front Blue", "%d", robot.GetRightFrontColorSensor().blue());
+            telemetry.addData("Left Position", "%d", robot.GetLeft().getCurrentPosition());
+            telemetry.addData("Right Position", "%d", robot.GetRight().getCurrentPosition());
+            telemetry.addData("Slide Position", "%d", robot.GetSlide().getCurrentPosition());
+            telemetry.update();
         }
-
-        OpenClaw(100);
-
-        sleep(500);
-        // push it in
-
-        MoveRobot(800);  // change this number if we don't push it in far enough
-
-        // backup
-        MoveRobot(-300); // change this number based on the above number
-
         telemetry.addData("Status","Finished");
         telemetry.update();
     }

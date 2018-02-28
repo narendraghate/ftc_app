@@ -97,7 +97,6 @@ abstract class BaseAutonomousOpMode extends LinearOpMode
 
         robot.GetSlide().setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.GetSlide().setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-        robot.GetSlide().setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         robot.GetLeft().setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.GetLeft().setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -185,26 +184,27 @@ abstract class BaseAutonomousOpMode extends LinearOpMode
         currentWheelPower = wheelPowerLevel;
     }
 
-    protected boolean isRedInFront(ColorSensor frontColorSensor, ColorSensor backColorSensor) {
+    protected boolean isRedInFront(ColorSensor colorSensor) {
         int FrontRed = 0;
         int BackRed = 0;
 
-        for (int x = 0; x<21; x++) {
+        for (int x = 0; x<11; x++) {
 
             sleep(50);
 
-            telemetry.addData("front red", frontColorSensor.red());
-            telemetry.addData("back red", backColorSensor.red());
+            telemetry.addData("front red", colorSensor.red());
+            telemetry.addData("front blue", colorSensor.blue());
             telemetry.addData("total counts ", "%d %d", FrontRed, BackRed);
             telemetry.update();
 
-            if (frontColorSensor.red() > backColorSensor.red()){
+            if (colorSensor.red() > colorSensor.blue()){
                 FrontRed = FrontRed + 1;
             }
             else {
                 BackRed = BackRed + 1;
             }
         }
+
         if (FrontRed > BackRed) {
             return true;
         }
@@ -216,21 +216,21 @@ abstract class BaseAutonomousOpMode extends LinearOpMode
     protected void DropArmKnockLiftArmReposition(AllianceColor allianceColor, int distanceToMoveAfterWards) {
         if (allianceColor == AllianceColor.Blue) {
             // drop arm
-            robot.GetLeftServo().setPosition(1.0);
+            robot.GetLeftServo().setPosition(0.0);
             sleep(2500);
             // check color
-            if (isRedInFront(robot.GetLeftFrontColorSensor(), robot.GetLeftBackColorSensor())){
+            if (isRedInFront(robot.GetLeftFrontColorSensor())){
                 // move forward
-                MoveRobot(400); // if you change this number change the other 400's
+                MoveRobot(200); // if you change this number change the other 400's
                 // raise arm
-                robot.GetLeftServo().setPosition(0);
+                robot.GetLeftServo().setPosition(1.0);
                 sleep(1500);
-                MoveRobot(distanceToMoveAfterWards - 400);
+                MoveRobot(distanceToMoveAfterWards - 200);
             } else {
                 // turn
                 TurnSlightLeft();
                 // raise arm
-                robot.GetLeftServo().setPosition(0);
+                robot.GetLeftServo().setPosition(1.0);
                 sleep(1500);
                 // move forward
                 MoveToPosition(0,0);
@@ -238,21 +238,21 @@ abstract class BaseAutonomousOpMode extends LinearOpMode
             }
         } else if (allianceColor == AllianceColor.Red){
             // drop arm
-            robot.GetRightServo().setPosition(1.0);
+            robot.GetRightServo().setPosition(0.0);
             sleep(2500);
             // check color
-            if (isRedInFront(robot.GetRightFrontColorSensor(), robot.GetRightBackColorSensor()) == false){
+            if (isRedInFront(robot.GetRightFrontColorSensor()) == false){
                 // move forward
-                MoveRobot(400); // if you change this number change the other 400's
+                MoveRobot(200); // if you change this number change the other 400's
                 // raise arm
-                robot.GetRightServo().setPosition(0);
+                robot.GetRightServo().setPosition(1.0);
                 sleep(1500);
-                MoveRobot(distanceToMoveAfterWards - 400);
+                MoveRobot(distanceToMoveAfterWards - 200);
             } else {
                 // turn
                 TurnSlightRight();
                 // raise arm
-                robot.GetRightServo().setPosition(0);
+                robot.GetRightServo().setPosition(1.0);
                 sleep(1000);
                 // move forward
                 MoveToPosition(0,0);
@@ -260,6 +260,7 @@ abstract class BaseAutonomousOpMode extends LinearOpMode
             }
         }
     }
+
 
     protected void OpenClaw(long openForHowLongInMilliseconds) {
         int currentPower = -1;
@@ -438,7 +439,7 @@ abstract class BaseAutonomousOpMode extends LinearOpMode
     protected void SlideRobot(int distance) {
         robot.GetSlide().setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        robot.GetSlide().setTargetPosition(distance);
+        robot.GetSlide().setTargetPosition(robot.GetSlide().getCurrentPosition() + distance);
 
         robot.GetSlide().setPower(currentWheelPower);
 

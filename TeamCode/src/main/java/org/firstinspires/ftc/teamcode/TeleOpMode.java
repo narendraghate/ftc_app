@@ -80,8 +80,8 @@ public class TeleOpMode extends OpMode {
         robot.GetRight().setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.GetRight().setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        robot.GetLeftServo().setPosition(0);
-        robot.GetRightServo().setPosition(0);
+        robot.GetLeftServo().setPosition(1);
+        robot.GetRightServo().setPosition(1);
     }
 
     @Override
