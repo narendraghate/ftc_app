@@ -63,10 +63,10 @@ public class ShowMeTheColors extends BaseAutonomousOpMode
         telemetry.update();
 
         while (opModeIsActive()){
-            telemetry.addData("Left Front Red", "%d", robot.GetLeftFrontColorSensor().red());
-            telemetry.addData("Left Front Blue", "%d", robot.GetLeftFrontColorSensor().blue());
-            telemetry.addData("Right Front Red", "%d", robot.GetRightFrontColorSensor().red());
-            telemetry.addData("Right Front Blue", "%d", robot.GetRightFrontColorSensor().blue());
+            telemetry.addData("Left Front Red", "%d", robot.GetLeftColorSensor().red());
+            telemetry.addData("Left Front Blue", "%d", robot.GetLeftColorSensor().blue());
+            telemetry.addData("Right Front Red", "%d", robot.GetRightColorSensor().red());
+            telemetry.addData("Right Front Blue", "%d", robot.GetRightColorSensor().blue());
             telemetry.addData("Left Position", "%d", robot.GetLeft().getCurrentPosition());
             telemetry.addData("Right Position", "%d", robot.GetRight().getCurrentPosition());
             telemetry.addData("Slide Position", "%d", robot.GetSlide().getCurrentPosition());

@@ -20,8 +20,8 @@ public class PieceOfCakeRobot {
     private DcMotor Lift = null;
     private DcMotor Slide = null;
     private DcMotor Tilt = null;
-    private ColorSensor LeftFrontColorSensor = null;
-    private ColorSensor RightFrontColorSensor = null;
+    private ColorSensor LeftColorSensor = null;
+    private ColorSensor RightColorSensor = null;
     private HardwareMap hwMap = null;
     private double PowerPercentage = 1;
     private Servo LeftServo = null;
@@ -60,11 +60,11 @@ public class PieceOfCakeRobot {
         dcMotor = hwMap.dcMotor.get("slide");
         SetSlide(dcMotor);
 
-        colorSensor = hwMap.colorSensor.get("leftfrontcolorsensor");
-        SetLeftFrontColorSensor(colorSensor);
+        colorSensor = hwMap.colorSensor.get("leftcolorsensor");
+        SetLeftColorSensor(colorSensor);
 
-        colorSensor = hwMap.colorSensor.get("rightfrontcolorsensor");
-        SetRightFrontColorSensor(colorSensor);
+        colorSensor = hwMap.colorSensor.get("rightcolorsensor");
+        SetRightColorSensor(colorSensor);
 
         SetLeftServo(hwMap.servo.get("leftservo"));
 
@@ -101,9 +101,9 @@ public class PieceOfCakeRobot {
         return Tilt;
     }
 
-    public ColorSensor GetLeftFrontColorSensor() { return LeftFrontColorSensor;}
+    public ColorSensor GetLeftColorSensor() { return LeftColorSensor;}
 
-    public ColorSensor GetRightFrontColorSensor() { return RightFrontColorSensor;}
+    public ColorSensor GetRightColorSensor() { return RightColorSensor;}
 
     public Double GetPowerPercentage() {
         return PowerPercentage;
@@ -141,9 +141,9 @@ public class PieceOfCakeRobot {
         Tilt = dcMotor;
     }
 
-    private void SetLeftFrontColorSensor(ColorSensor colorSensor) { LeftFrontColorSensor = colorSensor; }
+    private void SetLeftColorSensor(ColorSensor colorSensor) { LeftColorSensor = colorSensor; }
 
-    private void SetRightFrontColorSensor(ColorSensor colorSensor) { RightFrontColorSensor = colorSensor; }
+    private void SetRightColorSensor(ColorSensor colorSensor) { RightColorSensor = colorSensor; }
 
     private void SetLeftServo(Servo leftServo) { LeftServo = leftServo; }
 

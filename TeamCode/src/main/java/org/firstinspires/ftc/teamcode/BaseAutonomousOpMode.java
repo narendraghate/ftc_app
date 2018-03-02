@@ -219,7 +219,7 @@ abstract class BaseAutonomousOpMode extends LinearOpMode
             robot.GetLeftServo().setPosition(0.0);
             sleep(2500);
             // check color
-            if (isRedInFront(robot.GetLeftFrontColorSensor())){
+            if (isRedInFront(robot.GetLeftColorSensor())){
                 // move forward
                 MoveRobot(200); // if you change this number change the other 400's
                 // raise arm
@@ -241,7 +241,7 @@ abstract class BaseAutonomousOpMode extends LinearOpMode
             robot.GetRightServo().setPosition(0.0);
             sleep(2500);
             // check color
-            if (isRedInFront(robot.GetRightFrontColorSensor()) == false){
+            if (isRedInFront(robot.GetRightColorSensor()) == false){
                 // move forward
                 MoveRobot(200); // if you change this number change the other 400's
                 // raise arm

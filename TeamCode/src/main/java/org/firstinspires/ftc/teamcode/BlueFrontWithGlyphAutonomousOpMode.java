@@ -65,14 +65,14 @@ public class BlueFrontWithGlyphAutonomousOpMode extends BaseAutonomousOpMode
 
         // the 2000 is the distance to travel after knocking the jewel.
         // change it to the match the distance we need to place the left glyph
-        DropArmKnockLiftArmReposition(AllianceColor.Blue, 2000);
+        DropArmKnockLiftArmReposition(AllianceColor.Blue, 1050);
 
         if (GetGlyphPosition() == RelicRecoveryVuMark.LEFT) {
             // do nothing as above move should have us here
         } else if (GetGlyphPosition() == RelicRecoveryVuMark.RIGHT) {
-            MoveRobot(300); // change this number to match right position
+            MoveRobot(2200); // change this number to match right position
         } else {
-            MoveRobot(200); // change this number to match center position
+            MoveRobot(1850); // change this number to match center position
         }
 
         ChangeWheelPowerLevel(0.25);
@@ -90,7 +90,7 @@ public class BlueFrontWithGlyphAutonomousOpMode extends BaseAutonomousOpMode
 
         // backup
         MoveRobot(-600); // change this number based on the above number
-
+/*
         // open claw more
         OpenClaw(500);
 
@@ -105,7 +105,7 @@ public class BlueFrontWithGlyphAutonomousOpMode extends BaseAutonomousOpMode
 
         // backup to safe zone
         MoveRobot(-1000); // change this number if we don't move back far enough to the safe zone
-
+*/
         telemetry.addData("Status","Finished");
         telemetry.update();
     }
