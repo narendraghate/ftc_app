@@ -65,14 +65,14 @@ public class RedFrontWithGlyphAutonomousOpMode extends BaseAutonomousOpMode
 
         // the 2000 is the distance to travel after knocking the jewel.
         // change it to the match the distance we need to place the right glyph
-        DropArmKnockLiftArmReposition(AllianceColor.Red, 2000);
+        DropArmKnockLiftArmReposition(AllianceColor.Red, 1050);
 
         if (GetGlyphPosition() == RelicRecoveryVuMark.LEFT) {
-            MoveRobot(400); // change this number to match left position
+            MoveRobot(1000); // change this number to match left position
         } else if (GetGlyphPosition() == RelicRecoveryVuMark.RIGHT) {
-            // do nothing as we should be here
+            MoveRobot(2200); //change this number to match right position
         } else {
-            MoveRobot(300); // change this number to match center position
+            MoveRobot(1850); // change this number to match center position
         }
 
         ChangeWheelPowerLevel(0.25);
