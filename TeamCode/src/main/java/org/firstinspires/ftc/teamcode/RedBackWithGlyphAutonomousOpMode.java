@@ -76,8 +76,8 @@ public class RedBackWithGlyphAutonomousOpMode extends BaseAutonomousOpMode
 
         Rotate(23, 0.25);
 
-        if (GetGlyphPosition() == RelicRecoveryVuMark.LEFT)  {
-            SlideRobot(125);
+        if (GetGlyphPosition() == RelicRecoveryVuMark.RIGHT)  {
+            SlideRobot(-125);
         }
 
         OpenClaw(100);
