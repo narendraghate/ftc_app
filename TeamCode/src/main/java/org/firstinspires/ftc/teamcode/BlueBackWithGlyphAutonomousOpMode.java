@@ -50,18 +50,17 @@ import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
  * The names of OpModes appear on the menu of the FTC Driver Station.
  * When an selection is made from the menu, the corresponding OpMode
  * class is instantiated on the Robot Controller and executed.
- *
+ * <p>
  * This particular OpMode just executes a basic Tank Drive Teleop for a two wheeled robot
  * It includes all the skeletal structure that all iterative OpModes contain.
- *
+ * <p>
  * Use Android Studios to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
 
 
-@Autonomous(name="Blue Back Glyph Mode", group="Robot Opmode")
-public class BlueBackWithGlyphAutonomousOpMode extends BaseAutonomousOpMode
-{
+@Autonomous(name = "Blue Back Glyph Mode", group = "Robot Opmode")
+public class BlueBackWithGlyphAutonomousOpMode extends BaseAutonomousOpMode {
     @Override
     public void runOpMode() {
 
@@ -77,12 +76,24 @@ public class BlueBackWithGlyphAutonomousOpMode extends BaseAutonomousOpMode
 
         DropArmKnockLiftArmReposition(AllianceColor.Blue, 1800);
 
-        if (GetGlyphPosition() == RelicRecoveryVuMark.LEFT) {
+        /*if (GetGlyphPosition() == RelicRecoveryVuMark.LEFT) {
             SlideRobot(-580); // change this number to match left position
         } else if (GetGlyphPosition() == RelicRecoveryVuMark.RIGHT) {
-            SlideRobot(-1880); // change this number to match right position
+            SlideRobot(-2700); // change this number to match right position
         } else {
-            SlideRobot(-1440); // change this number to match center position
+            SlideRobot(-1600); // change this number to match center position
+        }*/
+        if (GetGlyphPosition() == RelicRecoveryVuMark.LEFT) {
+            SlideRobot(300); // change this number to match left position
+        } else if (GetGlyphPosition() == RelicRecoveryVuMark.RIGHT) {
+            SlideRobot(-1450); // change this number to match right position
+        } else {
+            SlideRobot(-525); // change this number to match center position
+        }
+        Rotate(-23, 0.25);
+
+        if (GetGlyphPosition() == RelicRecoveryVuMark.LEFT) {
+            SlideRobot(125);
         }
 
         OpenClaw(100);
@@ -90,12 +101,14 @@ public class BlueBackWithGlyphAutonomousOpMode extends BaseAutonomousOpMode
         sleep(500);
         // push it in
 
-        MoveRobot(800);  // change this number if we don't push it in far enough
-
+        MoveRobot(600);  // change this number if we don't push it in far enough
         // backup
-        MoveRobot(-300); // change this number based on the above number
+        MoveRobot(-125); // change this number based on the above number
 
-        telemetry.addData("Status","Finished");
+        OpenClaw(150);
+
+
+        telemetry.addData("Status", "Finished");
         telemetry.update();
     }
 }

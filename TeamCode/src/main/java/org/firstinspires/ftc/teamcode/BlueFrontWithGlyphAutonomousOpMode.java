@@ -68,17 +68,17 @@ public class BlueFrontWithGlyphAutonomousOpMode extends BaseAutonomousOpMode
         DropArmKnockLiftArmReposition(AllianceColor.Blue, 1050);
 
         if (GetGlyphPosition() == RelicRecoveryVuMark.LEFT) {
-            MoveRobot(1000); //change this number to match left (above
+            MoveRobot(900); //change this number to match left (above
         } else if (GetGlyphPosition() == RelicRecoveryVuMark.RIGHT) {
-            MoveRobot(2200); // change this number to match right position
+            MoveRobot(2100); // change this number to match right position
         } else {
-            MoveRobot(1850); // change this number to match center position
+            MoveRobot(1550); // change this number to match center position
         }
 
         ChangeWheelPowerLevel(0.25);
 
         // turn left
-        Rotate(89, 0.15);
+        Rotate(85, 0.15);
 
         // drop glyph by opening claws
         OpenClaw(100);

@@ -68,17 +68,17 @@ public class RedFrontWithGlyphAutonomousOpMode extends BaseAutonomousOpMode
         DropArmKnockLiftArmReposition(AllianceColor.Red, 1050);
 
         if (GetGlyphPosition() == RelicRecoveryVuMark.LEFT) {
-            MoveRobot(1000); // change this number to match left position
+            MoveRobot(2100); // change this number to match left position
         } else if (GetGlyphPosition() == RelicRecoveryVuMark.RIGHT) {
-            MoveRobot(2200); //change this number to match right position
+            MoveRobot(900); //change this number to match right position
         } else {
-            MoveRobot(1850); // change this number to match center position
+            MoveRobot(1550); // change this number to match center position
         }
 
         ChangeWheelPowerLevel(0.25);
 
         // turn right
-        Rotate(-90, 0.15);
+        Rotate(-85, 0.15);
 
         // drop glyph by opening claws
         OpenClaw(100);
@@ -86,11 +86,11 @@ public class RedFrontWithGlyphAutonomousOpMode extends BaseAutonomousOpMode
         sleep(500);
 
         // push it in
-        MoveRobot(500);  // change this number if we don't push it in far enough
+        MoveRobot(600);  // change this number if we don't push it in far enough
 
         // backup
-        MoveRobot(-600); // change this number based on the above number
-
+        MoveRobot(-400); // change this number based on the above number
+/*
         // open claw more
         OpenClaw(500);
 
@@ -105,7 +105,7 @@ public class RedFrontWithGlyphAutonomousOpMode extends BaseAutonomousOpMode
 
         // backup to safe zone
         MoveRobot(-1000); // change this number if we don't move back far enough to the safe zone
-
+*/
         telemetry.addData("Status","Finished");
         telemetry.update();
     }

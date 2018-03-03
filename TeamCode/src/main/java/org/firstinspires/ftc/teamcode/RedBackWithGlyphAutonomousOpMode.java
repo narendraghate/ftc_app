@@ -67,11 +67,17 @@ public class RedBackWithGlyphAutonomousOpMode extends BaseAutonomousOpMode
         DropArmKnockLiftArmReposition(AllianceColor.Red, 1800);
 
         if (GetGlyphPosition() == RelicRecoveryVuMark.LEFT) {
-            SlideRobot(1880); // change this number to match left position
+            SlideRobot(1450); // change this number to match left position
         } else if (GetGlyphPosition() == RelicRecoveryVuMark.RIGHT) {
-            SlideRobot(580); // change this number to match right position
+            SlideRobot(-300); // change this number to match right position
         } else {
-            SlideRobot(1400); // change this number to match center position
+            SlideRobot(525); // change this number to match center position
+        }
+
+        Rotate(23, 0.25);
+
+        if (GetGlyphPosition() == RelicRecoveryVuMark.LEFT)  {
+            SlideRobot(125);
         }
 
         OpenClaw(100);
@@ -79,10 +85,12 @@ public class RedBackWithGlyphAutonomousOpMode extends BaseAutonomousOpMode
         sleep(500);
         // push it in
 
-        MoveRobot(800);  // change this number if we don't push it in far enough
+        MoveRobot(600);  // change this number if we don't push it in far enough
 
         // backup
-        MoveRobot(-300); // change this number based on the above number
+        MoveRobot(-125); // change this number based on the above number
+
+        OpenClaw(150);
 
         telemetry.addData("Status","Finished");
         telemetry.update();
