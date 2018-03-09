@@ -70,9 +70,9 @@ public class RedFrontWithGlyphAutonomousOpMode extends BaseAutonomousOpMode
         if (GetGlyphPosition() == RelicRecoveryVuMark.LEFT) {
             MoveRobot(2100); // change this number to match left position
         } else if (GetGlyphPosition() == RelicRecoveryVuMark.RIGHT) {
-            MoveRobot(900); //change this number to match right position
+            MoveRobot(850); //change this number to match right position
         } else {
-            MoveRobot(1550); // change this number to match center position
+            MoveRobot(1500); // change this number to match center position
         }
 
         ChangeWheelPowerLevel(0.25);

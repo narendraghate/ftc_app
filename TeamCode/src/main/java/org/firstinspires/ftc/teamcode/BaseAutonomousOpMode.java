@@ -77,6 +77,7 @@ abstract class BaseAutonomousOpMode extends LinearOpMode
     private double globalAngle;
     private double correction;
     private double currentWheelPower = 0.15;
+    private Boolean centerDefault = false;
 
     private VuforiaLocalizer vuforia;
 
@@ -162,7 +163,8 @@ abstract class BaseAutonomousOpMode extends LinearOpMode
         while (counter < 20)
         {
             RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
-
+            telemetry.addData("VuMark", "%s visible", relicRecoveryVuMark);
+            telemetry.update();
             if (vuMark != RelicRecoveryVuMark.UNKNOWN)
             {
                 relicRecoveryVuMark = vuMark;
@@ -170,8 +172,12 @@ abstract class BaseAutonomousOpMode extends LinearOpMode
             }
 
             counter ++;
-            sleep(50);
+            sleep(100);
+            idle();
         }
+
+        if (counter >= 20)
+            centerDefault = true;
 
         relicTrackables.deactivate();
     }
@@ -182,6 +188,45 @@ abstract class BaseAutonomousOpMode extends LinearOpMode
 
     protected void ChangeWheelPowerLevel(double wheelPowerLevel){
         currentWheelPower = wheelPowerLevel;
+    }
+
+    protected float LowPass(float colorAverage, float colorSample) {
+        // (0 - .99) Lower value results in stronger smoothing.
+        final float FILTER_COEFFICIENT = .2F;
+        // Used to filter out values that are way out of range. Tune for expected range.
+        final float THRESHOLD = 9F;
+
+        // Optional code to remove outliers.
+        /*
+        if (Math.abs(colorSample - colorAverage) > THRESHOLD) {
+            colorSample = colorAverage;
+        }
+        */
+        colorAverage = ((1.0F - FILTER_COEFFICIENT) * (FILTER_COEFFICIENT + colorSample));
+        return  colorAverage;
+    }
+
+
+    protected boolean isRedInFront2(ColorSensor colorSensor) {
+        float redAverage = 0F;
+        float blueAverage = 0F;
+
+        for (int x = 0; x < 100; x++) {
+            redAverage = LowPass(redAverage, colorSensor.red());
+            blueAverage = LowPass(blueAverage, colorSensor.blue());
+            idle();
+
+            telemetry.addData("average red", redAverage);
+            telemetry.addData("average blue", blueAverage);
+            telemetry.addData("x", x);
+            telemetry.update();
+        }
+
+        if (redAverage > blueAverage) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     protected boolean isRedInFront(ColorSensor colorSensor) {
@@ -219,7 +264,7 @@ abstract class BaseAutonomousOpMode extends LinearOpMode
             robot.GetLeftServo().setPosition(0.0);
             sleep(2500);
             // check color
-            if (isRedInFront(robot.GetLeftColorSensor())){
+            if (isRedInFront2(robot.GetLeftColorSensor())){
                 // move forward
                 MoveRobot(200); // if you change this number change the other 400's
                 // raise arm
@@ -241,7 +286,7 @@ abstract class BaseAutonomousOpMode extends LinearOpMode
             robot.GetRightServo().setPosition(0.0);
             sleep(2500);
             // check color
-            if (isRedInFront(robot.GetRightColorSensor()) == false){
+            if (isRedInFront2(robot.GetRightColorSensor()) == false){
                 // move forward
                 MoveRobot(200); // if you change this number change the other 400's
                 // raise arm
@@ -306,6 +351,7 @@ abstract class BaseAutonomousOpMode extends LinearOpMode
             telemetry.addData("2 global heading", globalAngle);
             telemetry.addData("3 correction", correction);
             telemetry.addData("VuMark", "%s visible", relicRecoveryVuMark);
+            telemetry.addData("Center Defualt", centerDefault);
             telemetry.addData("Left Position", "%d", robot.GetLeft().getCurrentPosition());
             telemetry.addData("Right Position", "%d", robot.GetRight().getCurrentPosition());
             telemetry.addData("Slide Position", "%d", robot.GetSlide().getCurrentPosition());
