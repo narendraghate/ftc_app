@@ -72,7 +72,7 @@ public class BlueFrontWithGlyphAutonomousOpMode extends BaseAutonomousOpMode
         } else if (GetGlyphPosition() == RelicRecoveryVuMark.RIGHT) {
             MoveRobot(2100); // change this number to match right position
         } else {
-            MoveRobot(1550); // change this number to match center position
+            MoveRobot(1535); // change this number to match center position
         }
 
         ChangeWheelPowerLevel(0.25);
@@ -88,15 +88,16 @@ public class BlueFrontWithGlyphAutonomousOpMode extends BaseAutonomousOpMode
         // push it in
         MoveRobot(600);  // change this number if we don't push it in far enough
 
+        ChangeWheelPowerLevel(0.45);
         // backup
         MoveRobot(-400); // change this number based on the above number
-/*
+
         // open claw more
         OpenClaw(500);
 
         // turn 180
-        Rotate(-180, 0.15);
-
+        Rotate(-170, 0.45);
+/*
         // move towards pile
         MoveRobot(1000); // change this number if don't move far enough into the pile
 

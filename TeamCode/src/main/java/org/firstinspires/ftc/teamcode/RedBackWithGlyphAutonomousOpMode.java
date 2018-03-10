@@ -62,10 +62,20 @@ public class RedBackWithGlyphAutonomousOpMode extends BaseAutonomousOpMode
         telemetry.addData("Starting", "now");
         telemetry.update();
 
+        DropArmKnockLiftArmReposition(AllianceColor.Red, 1400);
+
         LoadGlyphPosition();
 
-        DropArmKnockLiftArmReposition(AllianceColor.Red, 1800);
+        MoveRobot(400);
+        if (GetGlyphPosition() == RelicRecoveryVuMark.LEFT) {
+            SlideRobot(2400); // change this number to match right position
+        } else if (GetGlyphPosition() == RelicRecoveryVuMark.RIGHT) {
+            SlideRobot(500); // change this number to match left position
+        } else {
+            SlideRobot(1550); // change this number to match center position
+        }
 
+        /*
         if (GetGlyphPosition() == RelicRecoveryVuMark.LEFT) {
             SlideRobot(1450); // change this number to match left position
         } else if (GetGlyphPosition() == RelicRecoveryVuMark.RIGHT) {
@@ -79,6 +89,7 @@ public class RedBackWithGlyphAutonomousOpMode extends BaseAutonomousOpMode
         if (GetGlyphPosition() == RelicRecoveryVuMark.RIGHT)  {
             SlideRobot(-125);
         }
+        */
 
         OpenClaw(100);
 
@@ -91,6 +102,17 @@ public class RedBackWithGlyphAutonomousOpMode extends BaseAutonomousOpMode
         MoveRobot(-125); // change this number based on the above number
 
         OpenClaw(150);
+
+        // Move to the center and rotate so we face the pile
+        MoveRobot(-400);
+
+        if (GetGlyphPosition() == RelicRecoveryVuMark.LEFT) {
+            SlideRobot(-1000); // change this number to match left position
+        } else if (GetGlyphPosition() == RelicRecoveryVuMark.RIGHT) {
+            SlideRobot(1100); // change this number to match right position
+        }
+
+        Rotate(135, .25);
 
         telemetry.addData("Status","Finished");
         telemetry.update();

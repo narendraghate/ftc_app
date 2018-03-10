@@ -77,7 +77,7 @@ abstract class BaseAutonomousOpMode extends LinearOpMode
     private double globalAngle;
     private double correction;
     private double currentWheelPower = 0.15;
-    private Boolean centerDefault = false;
+    protected Boolean centerDefault = false;
 
     private VuforiaLocalizer vuforia;
 

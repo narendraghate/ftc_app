@@ -61,18 +61,21 @@ public class RedFrontWithGlyphAutonomousOpMode extends BaseAutonomousOpMode
         telemetry.addData("Starting", "now");
         telemetry.update();
 
-        LoadGlyphPosition();
-
+        // 450 + 650 + 850
+        // 1100 + 1500
+        // 1100 + 2100
         // the 2000 is the distance to travel after knocking the jewel.
         // change it to the match the distance we need to place the right glyph
-        DropArmKnockLiftArmReposition(AllianceColor.Red, 1050);
+        DropArmKnockLiftArmReposition(AllianceColor.Red, 1400);
+
+        LoadGlyphPosition();
 
         if (GetGlyphPosition() == RelicRecoveryVuMark.LEFT) {
-            MoveRobot(2100); // change this number to match left position
+            MoveRobot(1800); // change this number to match left position
         } else if (GetGlyphPosition() == RelicRecoveryVuMark.RIGHT) {
-            MoveRobot(850); //change this number to match right position
+            MoveRobot(400); //change this number to match right position
         } else {
-            MoveRobot(1500); // change this number to match center position
+            MoveRobot(1100); // change this number to match center position
         }
 
         ChangeWheelPowerLevel(0.25);
@@ -86,17 +89,17 @@ public class RedFrontWithGlyphAutonomousOpMode extends BaseAutonomousOpMode
         sleep(500);
 
         // push it in
-        MoveRobot(600);  // change this number if we don't push it in far enough
+        MoveRobot(700);  // change this number if we don't push it in far enough
 
         // backup
-        MoveRobot(-400); // change this number based on the above number
-/*
+        MoveRobot(-500); // change this number based on the above number
+
         // open claw more
         OpenClaw(500);
 
         // turn 180
-        Rotate(-180, 0.15);
-
+        Rotate(-180, 0.25);
+/*
         // move towards pile
         MoveRobot(1000); // change this number if don't move far enough into the pile
 

@@ -76,13 +76,14 @@ public class BlueBackWithGlyphAutonomousOpMode extends BaseAutonomousOpMode {
 
         DropArmKnockLiftArmReposition(AllianceColor.Blue, 1800);
 
-        /*if (GetGlyphPosition() == RelicRecoveryVuMark.LEFT) {
-            SlideRobot(-580); // change this number to match left position
+        if (GetGlyphPosition() == RelicRecoveryVuMark.LEFT) {
+            SlideRobot(-605); // change this number to match left position
         } else if (GetGlyphPosition() == RelicRecoveryVuMark.RIGHT) {
-            SlideRobot(-2700); // change this number to match right position
+            SlideRobot(-2500); // change this number to match right position
         } else {
-            SlideRobot(-1600); // change this number to match center position
-        }*/
+            SlideRobot(-1500); // change this number to match center position
+        }
+        /*
         if (GetGlyphPosition() == RelicRecoveryVuMark.LEFT) {
             SlideRobot(300); // change this number to match left position
         } else if (GetGlyphPosition() == RelicRecoveryVuMark.RIGHT) {
@@ -95,18 +96,29 @@ public class BlueBackWithGlyphAutonomousOpMode extends BaseAutonomousOpMode {
         if (GetGlyphPosition() == RelicRecoveryVuMark.LEFT) {
             SlideRobot(125);
         }
-
+        */
         OpenClaw(100);
 
         sleep(500);
         // push it in
 
+        ChangeWheelPowerLevel(0.35);
         MoveRobot(600);  // change this number if we don't push it in far enough
         // backup
         MoveRobot(-125); // change this number based on the above number
 
         OpenClaw(150);
 
+        // Move to the center and rotate so we face the pile
+        MoveRobot(-400);
+
+        if (GetGlyphPosition() == RelicRecoveryVuMark.LEFT) {
+            SlideRobot(-1000); // change this number to match left position
+        } else if (GetGlyphPosition() == RelicRecoveryVuMark.RIGHT) {
+            SlideRobot(1100); // change this number to match right position
+        }
+
+        Rotate(-135, .45);
 
         telemetry.addData("Status", "Finished");
         telemetry.update();
