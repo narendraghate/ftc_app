@@ -76,21 +76,6 @@ public class RedBackWithGlyphAutonomousOpMode extends BaseAutonomousOpMode
         }
 
         ChangeWheelPowerLevel(0.45);
-        /*
-        if (GetGlyphPosition() == RelicRecoveryVuMark.LEFT) {
-            SlideRobot(1450); // change this number to match left position
-        } else if (GetGlyphPosition() == RelicRecoveryVuMark.RIGHT) {
-            SlideRobot(-300); // change this number to match right position
-        } else {
-            SlideRobot(525); // change this number to match center position
-        }
-
-        Rotate(23, 0.25);
-
-        if (GetGlyphPosition() == RelicRecoveryVuMark.RIGHT)  {
-            SlideRobot(-125);
-        }
-        */
 
         OpenClaw(100);
 

@@ -83,42 +83,41 @@ public class BlueBackWithGlyphAutonomousOpMode extends BaseAutonomousOpMode {
         } else {
             SlideRobot(-1500); // change this number to match center position
         }
-        /*
-        if (GetGlyphPosition() == RelicRecoveryVuMark.LEFT) {
-            SlideRobot(300); // change this number to match left position
-        } else if (GetGlyphPosition() == RelicRecoveryVuMark.RIGHT) {
-            SlideRobot(-1450); // change this number to match right position
-        } else {
-            SlideRobot(-525); // change this number to match center position
-        }
-        Rotate(-23, 0.25);
 
-        if (GetGlyphPosition() == RelicRecoveryVuMark.LEFT) {
-            SlideRobot(125);
-        }
-        */
+        ChangeWheelPowerLevel(0.45);
+
         OpenClaw(100);
 
         sleep(500);
         // push it in
 
-        ChangeWheelPowerLevel(0.35);
         MoveRobot(600);  // change this number if we don't push it in far enough
+
         // backup
         MoveRobot(-125); // change this number based on the above number
 
-        OpenClaw(150);
+        OpenClaw(550);
 
         // Move to the center and rotate so we face the pile
         MoveRobot(-400);
 
-        if (GetGlyphPosition() == RelicRecoveryVuMark.LEFT) {
-            SlideRobot(-1000); // change this number to match left position
-        } else if (GetGlyphPosition() == RelicRecoveryVuMark.RIGHT) {
-            SlideRobot(1100); // change this number to match right position
+        if (GetGlyphPosition() == RelicRecoveryVuMark.CENTER) {
+            SlideRobot(-1000); // change this number to match right position
         }
 
-        Rotate(-135, .45);
+        if (GetGlyphPosition() == RelicRecoveryVuMark.LEFT) {
+            SlideRobot(-1895); // change this number to match left position
+        }
+
+        Rotate(-135, .25);
+
+        ChangeWheelPowerLevel(0.60);
+
+        MoveRobot(3000);
+
+        CloseClaw(700);
+
+        MoveRobot(-3000);
 
         telemetry.addData("Status", "Finished");
         telemetry.update();
