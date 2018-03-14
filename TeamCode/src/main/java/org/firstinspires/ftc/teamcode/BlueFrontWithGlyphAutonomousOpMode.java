@@ -63,22 +63,25 @@ public class BlueFrontWithGlyphAutonomousOpMode extends BaseAutonomousOpMode
 
         LoadGlyphPosition();
 
+        // 1050 + 900
+        // 1050 + 2100
+        // 1050 + 1535
         // the 2000 is the distance to travel after knocking the jewel.
         // change it to the match the distance we need to place the left glyph
-        DropArmKnockLiftArmReposition(AllianceColor.Blue, 1050);
+        DropArmKnockLiftArmReposition(AllianceColor.Blue, 1400);
 
         if (GetGlyphPosition() == RelicRecoveryVuMark.LEFT) {
-            MoveRobot(900); //change this number to match left (above
+            MoveRobot(550); //change this number to match left (above
         } else if (GetGlyphPosition() == RelicRecoveryVuMark.RIGHT) {
-            MoveRobot(2100); // change this number to match right position
+            MoveRobot(1750); // change this number to match right position
         } else {
-            MoveRobot(1535); // change this number to match center position
+            MoveRobot(1185); // change this number to match center position
         }
 
-        ChangeWheelPowerLevel(0.25);
+        ChangeWheelPowerLevel(0.45);
 
         // turn left
-        Rotate(85, 0.15);
+        Rotate(85, 0.25);
 
         // drop glyph by opening claws
         OpenClaw(100);
@@ -86,27 +89,28 @@ public class BlueFrontWithGlyphAutonomousOpMode extends BaseAutonomousOpMode
         sleep(500);
 
         // push it in
-        MoveRobot(600);  // change this number if we don't push it in far enough
+        MoveRobot(700);  // change this number if we don't push it in far enough
 
-        ChangeWheelPowerLevel(0.45);
         // backup
-        MoveRobot(-400); // change this number based on the above number
+        MoveRobot(-500); // change this number based on the above number
 
         // open claw more
         OpenClaw(500);
 
         // turn 180
         Rotate(-170, 0.45);
-/*
+
+        ChangeWheelPowerLevel(0.60);
+
         // move towards pile
-        MoveRobot(1000); // change this number if don't move far enough into the pile
+        MoveRobot(2500); // change this number if don't move far enough into the pile
 
         // close claw
         CloseClaw(700);
 
         // backup to safe zone
-        MoveRobot(-1000); // change this number if we don't move back far enough to the safe zone
-*/
+        MoveRobot(-2500); // change this number if we don't move back far enough to the safe zone
+
         telemetry.addData("Status","Finished");
         telemetry.update();
     }

@@ -211,7 +211,7 @@ abstract class BaseAutonomousOpMode extends LinearOpMode
         float redAverage = 0F;
         float blueAverage = 0F;
 
-        for (int x = 0; x < 100; x++) {
+        for (int x = 0; x < 50; x++) {
             redAverage = LowPass(redAverage, colorSensor.red());
             blueAverage = LowPass(blueAverage, colorSensor.blue());
             idle();

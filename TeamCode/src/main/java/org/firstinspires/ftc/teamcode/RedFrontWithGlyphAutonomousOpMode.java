@@ -78,7 +78,7 @@ public class RedFrontWithGlyphAutonomousOpMode extends BaseAutonomousOpMode
             MoveRobot(1100); // change this number to match center position
         }
 
-        ChangeWheelPowerLevel(0.25);
+        ChangeWheelPowerLevel(0.45);
 
         // turn right
         Rotate(-85, 0.15);
@@ -95,20 +95,22 @@ public class RedFrontWithGlyphAutonomousOpMode extends BaseAutonomousOpMode
         MoveRobot(-500); // change this number based on the above number
 
         // open claw more
-        OpenClaw(500);
+        OpenClaw(700);
 
         // turn 180
-        Rotate(-180, 0.25);
-/*
+        Rotate(-170, 0.45);
+
+        ChangeWheelPowerLevel(0.60);
+
         // move towards pile
-        MoveRobot(1000); // change this number if don't move far enough into the pile
+        MoveRobot(2500); // change this number if don't move far enough into the pile
 
         // close claw
-        CloseClaw(500);
+        CloseClaw(700);
 
         // backup to safe zone
-        MoveRobot(-1000); // change this number if we don't move back far enough to the safe zone
-*/
+        MoveRobot(-2500); // change this number if we don't move back far enough to the safe zone
+
         telemetry.addData("Status","Finished");
         telemetry.update();
     }
