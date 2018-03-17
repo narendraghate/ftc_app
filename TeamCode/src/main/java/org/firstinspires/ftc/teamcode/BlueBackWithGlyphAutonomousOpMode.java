@@ -77,11 +77,11 @@ public class BlueBackWithGlyphAutonomousOpMode extends BaseAutonomousOpMode {
         DropArmKnockLiftArmReposition(AllianceColor.Blue, 1800);
 
         if (GetGlyphPosition() == RelicRecoveryVuMark.LEFT) {
-            SlideRobot(-605); // change this number to match left position
+            SlideRobot(-705); // change this number to match left position
         } else if (GetGlyphPosition() == RelicRecoveryVuMark.RIGHT) {
             SlideRobot(-2500); // change this number to match right position
         } else {
-            SlideRobot(-1500); // change this number to match center position
+            SlideRobot(-1600); // change this number to match center position
         }
 
         ChangeWheelPowerLevel(0.45);
@@ -109,7 +109,7 @@ public class BlueBackWithGlyphAutonomousOpMode extends BaseAutonomousOpMode {
             SlideRobot(-1895); // change this number to match left position
         }
 
-        Rotate(-135, .25);
+        Rotate(-145, .25);
 
         ChangeWheelPowerLevel(0.60);
 

@@ -72,7 +72,7 @@ public class RedBackWithGlyphAutonomousOpMode extends BaseAutonomousOpMode
         } else if (GetGlyphPosition() == RelicRecoveryVuMark.RIGHT) {
             SlideRobot(550); // change this number to match left position
         } else {
-            SlideRobot(1550); // change this number to match center position
+            SlideRobot(1650); // change this number to match center position
         }
 
         ChangeWheelPowerLevel(0.45);
@@ -100,7 +100,7 @@ public class RedBackWithGlyphAutonomousOpMode extends BaseAutonomousOpMode
             SlideRobot(1850); // change this number to match right position
         }
 
-        Rotate(135, .25);
+        Rotate(145, .25);
 
         ChangeWheelPowerLevel(0.60);
 
